@@ -1,0 +1,27 @@
+{
+  "name": "agame",
+  "version": "1.0.0",
+  "description": "Hello GameWorld\r Hello GameWorld",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kamoex/AGame.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Kamoex/AGame/issues"
+  },
+  "homepage": "https://github.com/Kamoex/AGame#readme",
+  "devDependencies": {
+    "@types/mongodb": "^3.1.31",
+    "@types/mysql": "^2.15.6",
+    "anywhere": "^1.5.0",
+    "mongodb": "^3.3.0-beta2",
+    "mysql": "^2.17.1",
+    "nodejs-websocket": "^1.7.2"
+  }
+}
