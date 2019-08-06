@@ -33,9 +33,13 @@ wsServer.on('request', function (request) {
     connection.on('message', function (message) {
         if (message.type === 'utf8') {
             console.log('Received Message: ' + message.utf8Data);
-            connection.sendUTF(message.utf8Data);
+            if(message.utf8Data == undefined)
+                return;
+            connection.sendUTF(message.utf8Data.toString());
         }
         else if (message.type === 'binary') {
+            if(message.binaryData == undefined)
+                return;
             console.log('Received Binary Message of ' + message.binaryData.length + ' bytes');
             connection.sendBytes(message.binaryData);
         }

@@ -27,7 +27,7 @@
     "long": "^4.0.0",
     "mongodb": "^3.3.0-beta2",
     "mysql": "^2.17.1",
-    "websocket": "^1.7.2",
-    "protobufjs": "^6.8.8"
+    "protobufjs": "^6.8.8",
+    "websocket": "^1.0.29"
   }
 }
