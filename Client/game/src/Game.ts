@@ -10,6 +10,7 @@ export class Game {
         this.socket = new Laya.Socket();
         //这里我们采用小端
         this.socket.endian = Laya.Byte.LITTLE_ENDIAN;
+        //this.socket.protocols = "echo-protocol";
         //建立连接
         this.socket.connectByUrl("ws://127.0.0.1:8001");
         this.socket.on(Laya.Event.OPEN, this, this.openHandler);
