@@ -2,21 +2,21 @@ import { load, Root } from "protobufjs"; // respectively "./node_modules/protobu
 
 export class test_ptb {
 
-    private message: any;
-    private AwesomeMessage: any;
+    public message: any;
+    public AwesomeMessage: any;
 
     constructor() {
 
     }
 
     public initMsg() {
-        load("./Common/message/test.proto", (err, root: any) => {
+        load("../Common/message/test.proto", (err, root: any) => {
             if (err)
                 throw err;
             try {
                 this.AwesomeMessage = root.lookupType("TestPackage.TestMessage");
                 this.message = this.AwesomeMessage.create({
-                    sName: "hello",
+                    sName: "hello_client",
                     nId: 1001,
                     fWeight: 55.7,
                     bSex: true

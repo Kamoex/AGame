@@ -1,5 +1,10 @@
 import * as http from "http";
 import { server } from "websocket";
+import { test_ptb } from "./test_ptb";
+
+
+let ptb: test_ptb = new test_ptb();
+ptb.initMsg();
 
 const hostname = '127.0.0.1';
 const port = 8001;
@@ -42,6 +47,10 @@ wsServer.on('request', function (request) {
             if(message.binaryData == undefined)
                 return;
             console.log('Received Binary Message of ' + message.binaryData.length + ' bytes');
+
+            let clientData = ptb.AwesomeMessage.decode(message.binaryData);
+            console.log(`decoded = ${JSON.stringify(clientData)}`);
+
             connection.sendBytes(message.binaryData);
         }
     });

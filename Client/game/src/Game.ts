@@ -1,3 +1,5 @@
+    import { Network_ProtocolBuffer } from "./ptorobuf_test";
+
 export class Game {
     private socket: Laya.Socket;
     private byte: Laya.Byte;
@@ -17,25 +19,30 @@ export class Game {
         this.socket.on(Laya.Event.MESSAGE, this, this.receiveHandler);
         this.socket.on(Laya.Event.CLOSE, this, this.closeHandler);
         this.socket.on(Laya.Event.ERROR, this, this.errorHandler);
-console.log("Game constructor");
+        console.log("Game constructor");
     }
     private openHandler(event: any = null): void {
         //正确建立连接；
         console.log("connect success");
+        // 发送消息
+        this.socket.send("hello world");//这是发送字符串的形式。
     }
     private receiveHandler(msg: any = null): void {
         ///接收到数据触发函数
         console.log("receive " + msg);
         let a = true;
-        if(a) {
-            this.socket.send("hello world");//这是发送字符串的形式。
+        if (a) {
+            new Network_ProtocolBuffer((buff) => {
+                this.socket.send(buff);
+                console.log("send success!!! msg: " + buff);
+            });
         }
         else {
             this.byte.writeByte(1);//写入一个字节
             this.byte.writeInt16(20);//写入一个int16的数据
             this.byte.writeFloat32(20.5);//写入一个32位的浮点数据
             this.byte.writeUTFString("hello");// 写入一个字符串；
-            var by:Laya.Byte = new Laya.Byte();//这里声明一个临时Byte类型
+            var by: Laya.Byte = new Laya.Byte();//这里声明一个临时Byte类型
             by.endian = Laya.Byte.LITTLE_ENDIAN;//设置endian；
             by.writeInt32(5000);//写入一个int32数据
             by.writeUint16(16);//写入一个uint16 数据
