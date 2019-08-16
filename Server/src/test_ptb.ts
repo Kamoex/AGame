@@ -10,6 +10,12 @@ export class test_ptb {
 
 
     constructor() {
+        let test: any = msg.TestPackage.TestMessage.create();
+        test.sName = "SB";
+        test.nId = 1234;
+        test.fWeight = 12.34;
+        test.bSex = true;
+
         this.initMsg();
     }
 
@@ -25,12 +31,12 @@ export class test_ptb {
                     fWeight: 55.7,
                     bSex: true
                 });
-        
+
                 console.log(`load complete!!! message_test1 = ${JSON.stringify(this.message)}`);
-        
+
                 let buffer = this.msg_proto1.encode(this.message).finish();
                 console.log(`buffer = ${Array.prototype.toString.call(buffer)}`);
-        
+
                 let decoded = this.msg_proto1.decode(buffer);
                 console.log(`decoded = ${JSON.stringify(decoded)}`);
 
@@ -50,12 +56,12 @@ export class test_ptb {
                 // this.message2.sName = "Dad";
                 // this.message2.nAge = 60;
                 // this.message2.PeopleType = this.msg_proto2.People.eTypes.e_Dad;
-        
+
                 console.log(`load complete!!! message_test2 = ${JSON.stringify(this.message2)}`);
-        
+
                 let buffer = this.msg_proto2.encode(this.message2).finish();
                 console.log(`buffer = ${Array.prototype.toString.call(buffer)}`);
-        
+
                 let decoded = this.msg_proto2.decode(buffer);
                 console.log(`decoded = ${JSON.stringify(decoded)}`);
 

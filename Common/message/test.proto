@@ -3,7 +3,7 @@ package TestPackage;
 syntax = "proto3";
 
 message TestMessage {
-    strings sName    = 1; // 姓名
+    string sName    = 1; // 姓名
     int64  nId      = 2; // ID
     float  fWeight  = 3; // 体重
     bool   bSex     = 4; // 性别
