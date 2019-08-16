@@ -1,0 +1,20 @@
+
+package TestPackage2;
+syntax = "proto3";
+
+message People {
+    string sName    = 1; // 姓名
+    int32 nAge = 2;
+    enum eTypes {
+        e_NULL = 0;
+        e_Mom = 1;
+        e_Dad = 2;
+        e_End = 3;
+    }
+    eTypes PeopleType = 3;
+}
+
+message Parent {
+    People person = 1;
+    string sComment = 2;
+}

@@ -4,7 +4,6 @@ import { test_ptb } from "./test_ptb";
 
 
 let ptb: test_ptb = new test_ptb();
-ptb.initMsg();
 
 const hostname = '127.0.0.1';
 const port = 8001;
@@ -35,7 +34,6 @@ wsServer.on('request', function (request) {
 
     var connection = request.accept(undefined, request.origin);
     console.log((new Date()) + ' Connection accepted.');
-    connection.sendUTF("hhhhh");
     connection.on('message', function (message) {
         if (message.type === 'utf8') {
             console.log('Received Message: ' + message.utf8Data);
@@ -48,10 +46,12 @@ wsServer.on('request', function (request) {
                 return;
             console.log('Received Binary Message of ' + message.binaryData.length + ' bytes');
 
-            let clientData = ptb.AwesomeMessage.decode(message.binaryData);
+            let clientData = ptb.msg_proto2.decode(message.binaryData);
             console.log(`decoded = ${JSON.stringify(clientData)}`);
 
-            connection.sendBytes(message.binaryData);
+            // 发送
+            let send_msg = ptb.msg_proto1.encode(ptb.message).finish();
+            connection.sendBytes(Buffer.from(send_msg));
         }
     });
     connection.on('close', function (reasonCode, description) {
