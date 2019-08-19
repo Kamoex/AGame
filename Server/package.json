@@ -29,5 +29,9 @@
     "mysql": "^2.17.1",
     "protobufjs": "^6.8.8",
     "websocket": "^1.0.29"
+  },
+  "dependencies": {
+    "@types/socket.io": "^2.1.2",
+    "socket.io": "^2.2.0"
   }
 }

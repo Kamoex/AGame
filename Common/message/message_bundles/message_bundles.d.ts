@@ -2,7 +2,7 @@ type Long = protobuf.Long;
 // DO NOT EDIT! This is a generated file. Edit the JSDoc in src/*.js instead and run 'npm run types'.
 
 /** Namespace TestPackage. */
-declare namespace TestPackage {
+export declare namespace TestPackage {
 
     /** Properties of a TestMessage. */
     interface ITestMessage {
@@ -86,7 +86,7 @@ declare namespace TestPackage {
 }
 
 /** Namespace TestPackage2. */
-declare namespace TestPackage2 {
+export declare namespace TestPackage2 {
 
     /** Properties of a People. */
     interface IPeople {
