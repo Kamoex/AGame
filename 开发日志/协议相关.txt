@@ -1,0 +1,13 @@
+
+1.协议使用的是protobufjs，利用pb-egret插件来生成协议
+
+pb-egret 使用说明
+npm install pb-egret -g
+以下两行命令会在当前路径下生成protobuf文件夹，里面包含protobuf库，以及放置.proto的文件夹
+pb-egret add
+pb-egret generate
+
+可在Common\message\protobuf\pbconfig.json进行相关配置
+
+注意！！！
+项目中只是安装pb-egret 已经protobufjs就可以了，然后运行Common\message\msg_build.bat
