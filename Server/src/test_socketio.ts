@@ -27,13 +27,14 @@ function onConnect(socket: any) {
     } catch (error) {
       console.log(error);
     }
-    
-    ptb.message2.sName = "Mom";
-    ptb.message2.nAge = 60;
-    ptb.message2.PeopleType = 2;
 
-    console.log("send 001:", ptb.message2);
-    let proto2 = ptb.msg_proto2.encode(ptb.message2).finish();
+    ptb.message.sName = "Mom";
+    ptb.message.nId = 21000000009;
+    ptb.message.fWeight = 1889.5;
+    ptb.message.bSex = true;
+
+    console.log("send 001:", ptb.message);
+    let proto2 = ptb.msg_proto1.encode(ptb.message).finish();
 
     socket.send(proto2);
 

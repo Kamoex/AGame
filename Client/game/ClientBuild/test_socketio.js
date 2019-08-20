@@ -9,13 +9,14 @@ export class TestSocketIO {
         this.socket = io.connect(this.serverHost);
         this.socket.on("connect", () => {
             // 发送消息
-            let msg2 = TestPackage2.People.create();
+            let msg2 = TestPackage.TestMessage.create();
             msg2.sName = "Dad";
-            msg2.nAge = 60;
-            msg2.PeopleType = 1;
+            msg2.nId = 21000000009;
+            msg2.fWeight = 19.5;
+            msg2.bSex = false;
             let bufferSend = new Laya.Byte();
             bufferSend.clear();
-            bufferSend.writeArrayBuffer(TestPackage2.People.encode(msg2).finish());
+            bufferSend.writeArrayBuffer(TestPackage.TestMessage.encode(msg2).finish());
             // let people: TestPackage2.People = TestPackage2.People.create();
             // people.sName = "Mom";
             // people.nAge = 16;
@@ -36,7 +37,7 @@ export class TestSocketIO {
             let bufferSend = new Laya.Byte();
             bufferSend.writeArrayBuffer(message);
             let buffer = new Uint8Array(bufferSend.buffer);
-            let recv_msg = TestPackage2.People.decode(buffer);
+            let recv_msg = TestPackage.TestMessage.decode(buffer);
             console.log("error: " + recv_msg);
         });
     }
