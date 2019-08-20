@@ -21,42 +21,38 @@
     GameConfig.exportSceneToJson = true;
     GameConfig.init();
 
-    let msg2 = TestPackage2.People.create();
-    msg2.sName = "Dad";
-    msg2.nAge = 60;
-    msg2.PeopleType = 1;
-    class Game {
+    class TestSocketIO {
         constructor() {
-            Laya.init(600, 400, Laya.WebGL);
-            this.byte = new Laya.Byte();
-            this.byte.endian = Laya.Byte.LITTLE_ENDIAN;
-            this.socket = new Laya.Socket();
-            this.socket.endian = Laya.Byte.LITTLE_ENDIAN;
-            this.socket.connectByUrl("ws://127.0.0.1:8001");
-            this.socket.on(Laya.Event.OPEN, this, this.openHandler);
-            this.socket.on(Laya.Event.MESSAGE, this, this.receiveHandler);
-            this.socket.on(Laya.Event.CLOSE, this, this.closeHandler);
-            this.socket.on(Laya.Event.ERROR, this, this.errorHandler);
-            console.log("Game constructor");
+            this.serverHost = "http://127.0.0.1:8001";
+            this.connect();
         }
-        openHandler(event = null) {
-            console.log("connect success");
-            let send_msg = TestPackage2.People.encode(msg2).finish();
-            this.socket.send(send_msg);
-        }
-        receiveHandler(msg = null) {
-            console.log("receive " + msg);
-            {
-                let rev = new Laya.Byte(msg);
-                let recv_msg = TestPackage.TestMessage.decode(rev.readUint8Array(0, rev.length));
-                console.log("msg_content: " + JSON.stringify(recv_msg));
-            }
-        }
-        closeHandler(e = null) {
-            console.log("close " + e);
-        }
-        errorHandler(e = null) {
-            console.log("error " + e);
+        connect() {
+            console.log("开始连接服务器服务器: ");
+            this.socket = io.connect(this.serverHost);
+            this.socket.on("connect", () => {
+                let msg2 = TestPackage2.People.create();
+                msg2.sName = "Dad";
+                msg2.nAge = 60;
+                msg2.PeopleType = 1;
+                let bufferSend = new Laya.Byte();
+                bufferSend.clear();
+                bufferSend.writeArrayBuffer(TestPackage2.People.encode(msg2).finish());
+                this.socket.send(bufferSend.buffer);
+            });
+            this.socket.on("disconnect", (e)=> {
+                console.log("disconnect: " + e);
+                this.socket.close();
+            });
+            this.socket.on("error", function (e) {
+                console.log("error: " + e);
+            });
+            this.socket.on("message", function (message) {
+                let bufferSend = new Laya.Byte();
+                bufferSend.writeArrayBuffer(message);
+                let buffer = new Uint8Array(bufferSend.buffer);
+                let recv_msg = TestPackage2.People.decode(buffer);
+                console.log("error: " + recv_msg);
+            });
         }
     }
 
@@ -92,6 +88,6 @@
         }
     }
     new Main();
-    new Game();
+    new TestSocketIO();
 
 }());

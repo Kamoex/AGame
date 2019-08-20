@@ -1,5 +1,5 @@
 import GameConfig from "./GameConfig";
-import { Game } from "./Game";
+import { TestSocketIO } from "./test_socketio";
 var Browser = Laya.Browser;
 class Main {
     constructor() {
@@ -39,4 +39,5 @@ class Main {
 }
 //激活启动类
 new Main();
-new Game();
+// new Game();
+new TestSocketIO();

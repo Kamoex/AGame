@@ -1,3 +1,4 @@
 ##ignore##
 /Server/ServerBuild/*
 /Server/node_modules/*
+/Client/game/.laya

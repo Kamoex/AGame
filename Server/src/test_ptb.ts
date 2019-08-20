@@ -1,5 +1,7 @@
 
 import { load, Root } from "protobufjs"; // respectively "./node_modules/protobufjs"
+// /// <reference path="../../Common/message/message_bundles/message_bundles.d.ts" />
+// import * as msg from "../../Common/message/message_bundles/message_bundles";
 
 export class test_ptb {
 
@@ -10,11 +12,11 @@ export class test_ptb {
 
 
     constructor() {
-        let test: any = msg.TestPackage.TestMessage.create();
-        test.sName = "SB";
-        test.nId = 1234;
-        test.fWeight = 12.34;
-        test.bSex = true;
+        // let test: any = msg.TestPackage.TestMessage.create();
+        // test.sName = "SB";
+        // test.nId = 1234;
+        // test.fWeight = 12.34;
+        // test.bSex = true;
 
         this.initMsg();
     }
