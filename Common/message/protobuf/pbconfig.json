@@ -6,5 +6,5 @@
 		"no-delimited": false
 	},
 	"sourceRoot": "../",
-	"outputFile": "../message_bundles/message_bundles.js"
+	"outputFile": "../message_bundles/message_client.js"
 }

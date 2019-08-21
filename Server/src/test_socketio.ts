@@ -1,4 +1,8 @@
 import * as http from "http";
+import {TestPackage, TestPackage2} from '../MessageBuild/message_server'
+
+let a = TestPackage.TestMessage.create();
+
 import { test_ptb } from "./test_ptb";
 
 
@@ -19,10 +23,13 @@ function onConnect(socket: any) {
   console.log('有机器连接服务器')
 
   socket.on('message', function (data: any) {
-    let proto1 = ptb.msg_proto1.encode(ptb.message).finish();
+    let proto1 = TestPackage.TestMessage.encode(ptb.message).finish();
     console.log("data:", data);
     try {
-      let recvMsg = ptb.msg_proto2.decode(data);
+      let ui8 = new Uint8Array(data);
+      let buf = Buffer.from(ui8);
+      let recvMsg = TestPackage.TestMessage.decode(data);
+      let recvMsg2 = TestPackage.TestMessage.decode(buf);
       console.log("data_decode: ", recvMsg);
     } catch (error) {
       console.log(error);

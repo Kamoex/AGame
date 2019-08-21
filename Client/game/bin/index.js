@@ -14,6 +14,6 @@ loadLib("libs/laya.physics.js")
 loadLib("libs/socket.io-client.js")
 loadLib("libs/protobuf-library.js")
 // loadLib("libs/protobuf-bundles.js")
-loadLib("libs/message_bundles.min.js")
+loadLib("libs/message_client.min.js")
 //-----libs-end-------
 loadLib("js/bundle.js");

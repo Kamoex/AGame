@@ -1,8 +1,6 @@
-type Long = protobuf.Long;
-// DO NOT EDIT! This is a generated file. Edit the JSDoc in src/*.js instead and run 'npm run types'.
-
+import * as $protobuf from "protobufjs";
 /** Namespace TestPackage. */
-export declare namespace TestPackage {
+export namespace TestPackage {
 
     /** Properties of a TestMessage. */
     interface ITestMessage {
@@ -54,7 +52,7 @@ export declare namespace TestPackage {
          * @param [writer] Writer to encode to
          * @returns Writer
          */
-        public static encode(message: TestPackage.ITestMessage, writer?: protobuf.Writer): protobuf.Writer;
+        public static encode(message: TestPackage.ITestMessage, writer?: $protobuf.Writer): $protobuf.Writer;
 
         /**
          * Encodes the specified TestMessage message, length delimited. Does not implicitly {@link TestPackage.TestMessage.verify|verify} messages.
@@ -62,7 +60,7 @@ export declare namespace TestPackage {
          * @param [writer] Writer to encode to
          * @returns Writer
          */
-        public static encodeDelimited(message: TestPackage.ITestMessage, writer?: protobuf.Writer): protobuf.Writer;
+        public static encodeDelimited(message: TestPackage.ITestMessage, writer?: $protobuf.Writer): $protobuf.Writer;
 
         /**
          * Decodes a TestMessage message from the specified reader or buffer.
@@ -70,23 +68,23 @@ export declare namespace TestPackage {
          * @param [length] Message length if known beforehand
          * @returns TestMessage
          * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {protobuf.util.ProtocolError} If required fields are missing
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decode(reader: (protobuf.Reader|Uint8Array), length?: number): TestPackage.TestMessage;
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): TestPackage.TestMessage;
 
         /**
          * Decodes a TestMessage message from the specified reader or buffer, length delimited.
          * @param reader Reader or buffer to decode from
          * @returns TestMessage
          * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {protobuf.util.ProtocolError} If required fields are missing
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decodeDelimited(reader: (protobuf.Reader|Uint8Array)): TestPackage.TestMessage;
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): TestPackage.TestMessage;
     }
 }
 
 /** Namespace TestPackage2. */
-export declare namespace TestPackage2 {
+export namespace TestPackage2 {
 
     /** Properties of a People. */
     interface IPeople {
@@ -132,7 +130,7 @@ export declare namespace TestPackage2 {
          * @param [writer] Writer to encode to
          * @returns Writer
          */
-        public static encode(message: TestPackage2.IPeople, writer?: protobuf.Writer): protobuf.Writer;
+        public static encode(message: TestPackage2.IPeople, writer?: $protobuf.Writer): $protobuf.Writer;
 
         /**
          * Encodes the specified People message, length delimited. Does not implicitly {@link TestPackage2.People.verify|verify} messages.
@@ -140,7 +138,7 @@ export declare namespace TestPackage2 {
          * @param [writer] Writer to encode to
          * @returns Writer
          */
-        public static encodeDelimited(message: TestPackage2.IPeople, writer?: protobuf.Writer): protobuf.Writer;
+        public static encodeDelimited(message: TestPackage2.IPeople, writer?: $protobuf.Writer): $protobuf.Writer;
 
         /**
          * Decodes a People message from the specified reader or buffer.
@@ -148,18 +146,18 @@ export declare namespace TestPackage2 {
          * @param [length] Message length if known beforehand
          * @returns People
          * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {protobuf.util.ProtocolError} If required fields are missing
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decode(reader: (protobuf.Reader|Uint8Array), length?: number): TestPackage2.People;
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): TestPackage2.People;
 
         /**
          * Decodes a People message from the specified reader or buffer, length delimited.
          * @param reader Reader or buffer to decode from
          * @returns People
          * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {protobuf.util.ProtocolError} If required fields are missing
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decodeDelimited(reader: (protobuf.Reader|Uint8Array)): TestPackage2.People;
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): TestPackage2.People;
     }
 
     namespace People {
@@ -211,7 +209,7 @@ export declare namespace TestPackage2 {
          * @param [writer] Writer to encode to
          * @returns Writer
          */
-        public static encode(message: TestPackage2.IParent, writer?: protobuf.Writer): protobuf.Writer;
+        public static encode(message: TestPackage2.IParent, writer?: $protobuf.Writer): $protobuf.Writer;
 
         /**
          * Encodes the specified Parent message, length delimited. Does not implicitly {@link TestPackage2.Parent.verify|verify} messages.
@@ -219,7 +217,7 @@ export declare namespace TestPackage2 {
          * @param [writer] Writer to encode to
          * @returns Writer
          */
-        public static encodeDelimited(message: TestPackage2.IParent, writer?: protobuf.Writer): protobuf.Writer;
+        public static encodeDelimited(message: TestPackage2.IParent, writer?: $protobuf.Writer): $protobuf.Writer;
 
         /**
          * Decodes a Parent message from the specified reader or buffer.
@@ -227,17 +225,17 @@ export declare namespace TestPackage2 {
          * @param [length] Message length if known beforehand
          * @returns Parent
          * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {protobuf.util.ProtocolError} If required fields are missing
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decode(reader: (protobuf.Reader|Uint8Array), length?: number): TestPackage2.Parent;
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): TestPackage2.Parent;
 
         /**
          * Decodes a Parent message from the specified reader or buffer, length delimited.
          * @param reader Reader or buffer to decode from
          * @returns Parent
          * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {protobuf.util.ProtocolError} If required fields are missing
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decodeDelimited(reader: (protobuf.Reader|Uint8Array)): TestPackage2.Parent;
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): TestPackage2.Parent;
     }
 }
