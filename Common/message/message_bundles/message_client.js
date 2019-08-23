@@ -6,36 +6,35 @@ var $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.ut
 // Exported root namespace
 var $root = $protobuf.roots["default"] || ($protobuf.roots["default"] = {});
 
-$root.TestPackage = (function() {
+$root.MsgBase = (function() {
 
     /**
-     * Namespace TestPackage.
-     * @exports TestPackage
+     * Namespace MsgBase.
+     * @exports MsgBase
      * @namespace
      */
-    var TestPackage = {};
+    var MsgBase = {};
 
-    TestPackage.TestMessage = (function() {
+    MsgBase.MessageHead = (function() {
 
         /**
-         * Properties of a TestMessage.
-         * @memberof TestPackage
-         * @interface ITestMessage
-         * @property {string|null} [sName] TestMessage sName
-         * @property {number|Long|null} [nId] TestMessage nId
-         * @property {number|null} [fWeight] TestMessage fWeight
-         * @property {boolean|null} [bSex] TestMessage bSex
+         * Properties of a MessageHead.
+         * @memberof MsgBase
+         * @interface IMessageHead
+         * @property {number|null} [nMsgID] MessageHead nMsgID
+         * @property {number|null} [nMsgLength] MessageHead nMsgLength
+         * @property {Uint8Array|null} [data] MessageHead data
          */
 
         /**
-         * Constructs a new TestMessage.
-         * @memberof TestPackage
-         * @classdesc Represents a TestMessage.
-         * @implements ITestMessage
+         * Constructs a new MessageHead.
+         * @memberof MsgBase
+         * @classdesc Represents a MessageHead.
+         * @implements IMessageHead
          * @constructor
-         * @param {TestPackage.ITestMessage=} [properties] Properties to set
+         * @param {MsgBase.IMessageHead=} [properties] Properties to set
          */
-        function TestMessage(properties) {
+        function MessageHead(properties) {
             if (properties)
                 for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
@@ -43,114 +42,101 @@ $root.TestPackage = (function() {
         }
 
         /**
-         * TestMessage sName.
-         * @member {string} sName
-         * @memberof TestPackage.TestMessage
+         * MessageHead nMsgID.
+         * @member {number} nMsgID
+         * @memberof MsgBase.MessageHead
          * @instance
          */
-        TestMessage.prototype.sName = "";
+        MessageHead.prototype.nMsgID = 0;
 
         /**
-         * TestMessage nId.
-         * @member {number|Long} nId
-         * @memberof TestPackage.TestMessage
+         * MessageHead nMsgLength.
+         * @member {number} nMsgLength
+         * @memberof MsgBase.MessageHead
          * @instance
          */
-        TestMessage.prototype.nId = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+        MessageHead.prototype.nMsgLength = 0;
 
         /**
-         * TestMessage fWeight.
-         * @member {number} fWeight
-         * @memberof TestPackage.TestMessage
+         * MessageHead data.
+         * @member {Uint8Array} data
+         * @memberof MsgBase.MessageHead
          * @instance
          */
-        TestMessage.prototype.fWeight = 0;
+        MessageHead.prototype.data = $util.newBuffer([]);
 
         /**
-         * TestMessage bSex.
-         * @member {boolean} bSex
-         * @memberof TestPackage.TestMessage
-         * @instance
-         */
-        TestMessage.prototype.bSex = false;
-
-        /**
-         * Creates a new TestMessage instance using the specified properties.
+         * Creates a new MessageHead instance using the specified properties.
          * @function create
-         * @memberof TestPackage.TestMessage
+         * @memberof MsgBase.MessageHead
          * @static
-         * @param {TestPackage.ITestMessage=} [properties] Properties to set
-         * @returns {TestPackage.TestMessage} TestMessage instance
+         * @param {MsgBase.IMessageHead=} [properties] Properties to set
+         * @returns {MsgBase.MessageHead} MessageHead instance
          */
-        TestMessage.create = function create(properties) {
-            return new TestMessage(properties);
+        MessageHead.create = function create(properties) {
+            return new MessageHead(properties);
         };
 
         /**
-         * Encodes the specified TestMessage message. Does not implicitly {@link TestPackage.TestMessage.verify|verify} messages.
+         * Encodes the specified MessageHead message. Does not implicitly {@link MsgBase.MessageHead.verify|verify} messages.
          * @function encode
-         * @memberof TestPackage.TestMessage
+         * @memberof MsgBase.MessageHead
          * @static
-         * @param {TestPackage.ITestMessage} message TestMessage message or plain object to encode
+         * @param {MsgBase.IMessageHead} message MessageHead message or plain object to encode
          * @param {$protobuf.Writer} [writer] Writer to encode to
          * @returns {$protobuf.Writer} Writer
          */
-        TestMessage.encode = function encode(message, writer) {
+        MessageHead.encode = function encode(message, writer) {
             if (!writer)
                 writer = $Writer.create();
-            if (message.sName != null && message.hasOwnProperty("sName"))
-                writer.uint32(/* id 1, wireType 2 =*/10).string(message.sName);
-            if (message.nId != null && message.hasOwnProperty("nId"))
-                writer.uint32(/* id 2, wireType 0 =*/16).int64(message.nId);
-            if (message.fWeight != null && message.hasOwnProperty("fWeight"))
-                writer.uint32(/* id 3, wireType 5 =*/29).float(message.fWeight);
-            if (message.bSex != null && message.hasOwnProperty("bSex"))
-                writer.uint32(/* id 4, wireType 0 =*/32).bool(message.bSex);
+            if (message.nMsgID != null && message.hasOwnProperty("nMsgID"))
+                writer.uint32(/* id 1, wireType 0 =*/8).int32(message.nMsgID);
+            if (message.nMsgLength != null && message.hasOwnProperty("nMsgLength"))
+                writer.uint32(/* id 2, wireType 0 =*/16).int32(message.nMsgLength);
+            if (message.data != null && message.hasOwnProperty("data"))
+                writer.uint32(/* id 3, wireType 2 =*/26).bytes(message.data);
             return writer;
         };
 
         /**
-         * Encodes the specified TestMessage message, length delimited. Does not implicitly {@link TestPackage.TestMessage.verify|verify} messages.
+         * Encodes the specified MessageHead message, length delimited. Does not implicitly {@link MsgBase.MessageHead.verify|verify} messages.
          * @function encodeDelimited
-         * @memberof TestPackage.TestMessage
+         * @memberof MsgBase.MessageHead
          * @static
-         * @param {TestPackage.ITestMessage} message TestMessage message or plain object to encode
+         * @param {MsgBase.IMessageHead} message MessageHead message or plain object to encode
          * @param {$protobuf.Writer} [writer] Writer to encode to
          * @returns {$protobuf.Writer} Writer
          */
-        TestMessage.encodeDelimited = function encodeDelimited(message, writer) {
+        MessageHead.encodeDelimited = function encodeDelimited(message, writer) {
             return this.encode(message, writer).ldelim();
         };
 
         /**
-         * Decodes a TestMessage message from the specified reader or buffer.
+         * Decodes a MessageHead message from the specified reader or buffer.
          * @function decode
-         * @memberof TestPackage.TestMessage
+         * @memberof MsgBase.MessageHead
          * @static
          * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
          * @param {number} [length] Message length if known beforehand
-         * @returns {TestPackage.TestMessage} TestMessage
+         * @returns {MsgBase.MessageHead} MessageHead
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        TestMessage.decode = function decode(reader, length) {
+        MessageHead.decode = function decode(reader, length) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.TestPackage.TestMessage();
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.MsgBase.MessageHead();
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
                 case 1:
-                    message.sName = reader.string();
+                    message.nMsgID = reader.int32();
                     break;
                 case 2:
-                    message.nId = reader.int64();
+                    message.nMsgLength = reader.int32();
                     break;
                 case 3:
-                    message.fWeight = reader.float();
-                    break;
-                case 4:
-                    message.bSex = reader.bool();
+                    message.data = reader.bytes();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -161,25 +147,295 @@ $root.TestPackage = (function() {
         };
 
         /**
-         * Decodes a TestMessage message from the specified reader or buffer, length delimited.
+         * Decodes a MessageHead message from the specified reader or buffer, length delimited.
          * @function decodeDelimited
-         * @memberof TestPackage.TestMessage
+         * @memberof MsgBase.MessageHead
          * @static
          * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {TestPackage.TestMessage} TestMessage
+         * @returns {MsgBase.MessageHead} MessageHead
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        TestMessage.decodeDelimited = function decodeDelimited(reader) {
+        MessageHead.decodeDelimited = function decodeDelimited(reader) {
             if (!(reader instanceof $Reader))
                 reader = new $Reader(reader);
             return this.decode(reader, reader.uint32());
         };
 
-        return TestMessage;
+        return MessageHead;
     })();
 
-    return TestPackage;
+    return MsgBase;
+})();
+
+$root.MsgCS = (function() {
+
+    /**
+     * Namespace MsgCS.
+     * @exports MsgCS
+     * @namespace
+     */
+    var MsgCS = {};
+
+    MsgCS.C2LLogin = (function() {
+
+        /**
+         * Properties of a C2LLogin.
+         * @memberof MsgCS
+         * @interface IC2LLogin
+         * @property {string|null} [sAccount] C2LLogin sAccount
+         * @property {string|null} [sPassword] C2LLogin sPassword
+         */
+
+        /**
+         * Constructs a new C2LLogin.
+         * @memberof MsgCS
+         * @classdesc Represents a C2LLogin.
+         * @implements IC2LLogin
+         * @constructor
+         * @param {MsgCS.IC2LLogin=} [properties] Properties to set
+         */
+        function C2LLogin(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * C2LLogin sAccount.
+         * @member {string} sAccount
+         * @memberof MsgCS.C2LLogin
+         * @instance
+         */
+        C2LLogin.prototype.sAccount = "";
+
+        /**
+         * C2LLogin sPassword.
+         * @member {string} sPassword
+         * @memberof MsgCS.C2LLogin
+         * @instance
+         */
+        C2LLogin.prototype.sPassword = "";
+
+        /**
+         * Creates a new C2LLogin instance using the specified properties.
+         * @function create
+         * @memberof MsgCS.C2LLogin
+         * @static
+         * @param {MsgCS.IC2LLogin=} [properties] Properties to set
+         * @returns {MsgCS.C2LLogin} C2LLogin instance
+         */
+        C2LLogin.create = function create(properties) {
+            return new C2LLogin(properties);
+        };
+
+        /**
+         * Encodes the specified C2LLogin message. Does not implicitly {@link MsgCS.C2LLogin.verify|verify} messages.
+         * @function encode
+         * @memberof MsgCS.C2LLogin
+         * @static
+         * @param {MsgCS.IC2LLogin} message C2LLogin message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        C2LLogin.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.sAccount != null && message.hasOwnProperty("sAccount"))
+                writer.uint32(/* id 1, wireType 2 =*/10).string(message.sAccount);
+            if (message.sPassword != null && message.hasOwnProperty("sPassword"))
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.sPassword);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified C2LLogin message, length delimited. Does not implicitly {@link MsgCS.C2LLogin.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof MsgCS.C2LLogin
+         * @static
+         * @param {MsgCS.IC2LLogin} message C2LLogin message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        C2LLogin.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a C2LLogin message from the specified reader or buffer.
+         * @function decode
+         * @memberof MsgCS.C2LLogin
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {MsgCS.C2LLogin} C2LLogin
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        C2LLogin.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.MsgCS.C2LLogin();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.sAccount = reader.string();
+                    break;
+                case 2:
+                    message.sPassword = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a C2LLogin message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof MsgCS.C2LLogin
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {MsgCS.C2LLogin} C2LLogin
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        C2LLogin.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        return C2LLogin;
+    })();
+
+    MsgCS.L2CLogin = (function() {
+
+        /**
+         * Properties of a L2CLogin.
+         * @memberof MsgCS
+         * @interface IL2CLogin
+         * @property {boolean|null} [bNeedCreate] L2CLogin bNeedCreate
+         */
+
+        /**
+         * Constructs a new L2CLogin.
+         * @memberof MsgCS
+         * @classdesc Represents a L2CLogin.
+         * @implements IL2CLogin
+         * @constructor
+         * @param {MsgCS.IL2CLogin=} [properties] Properties to set
+         */
+        function L2CLogin(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * L2CLogin bNeedCreate.
+         * @member {boolean} bNeedCreate
+         * @memberof MsgCS.L2CLogin
+         * @instance
+         */
+        L2CLogin.prototype.bNeedCreate = false;
+
+        /**
+         * Creates a new L2CLogin instance using the specified properties.
+         * @function create
+         * @memberof MsgCS.L2CLogin
+         * @static
+         * @param {MsgCS.IL2CLogin=} [properties] Properties to set
+         * @returns {MsgCS.L2CLogin} L2CLogin instance
+         */
+        L2CLogin.create = function create(properties) {
+            return new L2CLogin(properties);
+        };
+
+        /**
+         * Encodes the specified L2CLogin message. Does not implicitly {@link MsgCS.L2CLogin.verify|verify} messages.
+         * @function encode
+         * @memberof MsgCS.L2CLogin
+         * @static
+         * @param {MsgCS.IL2CLogin} message L2CLogin message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        L2CLogin.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.bNeedCreate != null && message.hasOwnProperty("bNeedCreate"))
+                writer.uint32(/* id 1, wireType 0 =*/8).bool(message.bNeedCreate);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified L2CLogin message, length delimited. Does not implicitly {@link MsgCS.L2CLogin.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof MsgCS.L2CLogin
+         * @static
+         * @param {MsgCS.IL2CLogin} message L2CLogin message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        L2CLogin.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a L2CLogin message from the specified reader or buffer.
+         * @function decode
+         * @memberof MsgCS.L2CLogin
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {MsgCS.L2CLogin} L2CLogin
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        L2CLogin.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.MsgCS.L2CLogin();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.bNeedCreate = reader.bool();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a L2CLogin message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof MsgCS.L2CLogin
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {MsgCS.L2CLogin} L2CLogin
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        L2CLogin.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        return L2CLogin;
+    })();
+
+    return MsgCS;
 })();
 
 $root.TestPackage2 = (function() {

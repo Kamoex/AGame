@@ -1,0 +1,14 @@
+import "MesssageID.proto";
+package MsgCS;
+syntax = "proto3";
+
+
+// 请求连接
+message C2LLogin {
+    string sAccount         = 1; // 账号
+    string sPassword        = 2; // 密码
+}
+// 请求连接返回
+message L2CLogin {
+    bool bNeedCreate        = 1; // 是否需要创建角色
+}

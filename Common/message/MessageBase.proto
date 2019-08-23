@@ -1,0 +1,9 @@
+package MsgBase;
+syntax = "proto3";
+
+// 消息头
+message MessageHead {
+    int32 nMsgID     = 1; // 消息ID 对应消息字典
+    int32 nMsgLength = 2; // 消息长度(不算消息头)
+    bytes data       = 3; // 消息数据
+}

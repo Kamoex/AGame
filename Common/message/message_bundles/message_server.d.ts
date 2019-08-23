@@ -1,85 +1,213 @@
 import * as $protobuf from "protobufjs";
-/** Namespace TestPackage. */
-export namespace TestPackage {
+/** Namespace MsgBase. */
+export namespace MsgBase {
 
-    /** Properties of a TestMessage. */
-    interface ITestMessage {
+    /** Properties of a MessageHead. */
+    interface IMessageHead {
 
-        /** TestMessage sName */
-        sName?: (string|null);
+        /** MessageHead nMsgID */
+        nMsgID?: (number|null);
 
-        /** TestMessage nId */
-        nId?: (number|Long|null);
+        /** MessageHead nMsgLength */
+        nMsgLength?: (number|null);
 
-        /** TestMessage fWeight */
-        fWeight?: (number|null);
-
-        /** TestMessage bSex */
-        bSex?: (boolean|null);
+        /** MessageHead data */
+        data?: (Uint8Array|null);
     }
 
-    /** Represents a TestMessage. */
-    class TestMessage implements ITestMessage {
+    /** Represents a MessageHead. */
+    class MessageHead implements IMessageHead {
 
         /**
-         * Constructs a new TestMessage.
+         * Constructs a new MessageHead.
          * @param [properties] Properties to set
          */
-        constructor(properties?: TestPackage.ITestMessage);
+        constructor(properties?: MsgBase.IMessageHead);
 
-        /** TestMessage sName. */
-        public sName: string;
+        /** MessageHead nMsgID. */
+        public nMsgID: number;
 
-        /** TestMessage nId. */
-        public nId: (number|Long);
+        /** MessageHead nMsgLength. */
+        public nMsgLength: number;
 
-        /** TestMessage fWeight. */
-        public fWeight: number;
-
-        /** TestMessage bSex. */
-        public bSex: boolean;
+        /** MessageHead data. */
+        public data: Uint8Array;
 
         /**
-         * Creates a new TestMessage instance using the specified properties.
+         * Creates a new MessageHead instance using the specified properties.
          * @param [properties] Properties to set
-         * @returns TestMessage instance
+         * @returns MessageHead instance
          */
-        public static create(properties?: TestPackage.ITestMessage): TestPackage.TestMessage;
+        public static create(properties?: MsgBase.IMessageHead): MsgBase.MessageHead;
 
         /**
-         * Encodes the specified TestMessage message. Does not implicitly {@link TestPackage.TestMessage.verify|verify} messages.
-         * @param message TestMessage message or plain object to encode
+         * Encodes the specified MessageHead message. Does not implicitly {@link MsgBase.MessageHead.verify|verify} messages.
+         * @param message MessageHead message or plain object to encode
          * @param [writer] Writer to encode to
          * @returns Writer
          */
-        public static encode(message: TestPackage.ITestMessage, writer?: $protobuf.Writer): $protobuf.Writer;
+        public static encode(message: MsgBase.IMessageHead, writer?: $protobuf.Writer): $protobuf.Writer;
 
         /**
-         * Encodes the specified TestMessage message, length delimited. Does not implicitly {@link TestPackage.TestMessage.verify|verify} messages.
-         * @param message TestMessage message or plain object to encode
+         * Encodes the specified MessageHead message, length delimited. Does not implicitly {@link MsgBase.MessageHead.verify|verify} messages.
+         * @param message MessageHead message or plain object to encode
          * @param [writer] Writer to encode to
          * @returns Writer
          */
-        public static encodeDelimited(message: TestPackage.ITestMessage, writer?: $protobuf.Writer): $protobuf.Writer;
+        public static encodeDelimited(message: MsgBase.IMessageHead, writer?: $protobuf.Writer): $protobuf.Writer;
 
         /**
-         * Decodes a TestMessage message from the specified reader or buffer.
+         * Decodes a MessageHead message from the specified reader or buffer.
          * @param reader Reader or buffer to decode from
          * @param [length] Message length if known beforehand
-         * @returns TestMessage
+         * @returns MessageHead
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): TestPackage.TestMessage;
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): MsgBase.MessageHead;
 
         /**
-         * Decodes a TestMessage message from the specified reader or buffer, length delimited.
+         * Decodes a MessageHead message from the specified reader or buffer, length delimited.
          * @param reader Reader or buffer to decode from
-         * @returns TestMessage
+         * @returns MessageHead
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): TestPackage.TestMessage;
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): MsgBase.MessageHead;
+    }
+}
+
+/** Namespace MsgCS. */
+export namespace MsgCS {
+
+    /** Properties of a C2LLogin. */
+    interface IC2LLogin {
+
+        /** C2LLogin sAccount */
+        sAccount?: (string|null);
+
+        /** C2LLogin sPassword */
+        sPassword?: (string|null);
+    }
+
+    /** Represents a C2LLogin. */
+    class C2LLogin implements IC2LLogin {
+
+        /**
+         * Constructs a new C2LLogin.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: MsgCS.IC2LLogin);
+
+        /** C2LLogin sAccount. */
+        public sAccount: string;
+
+        /** C2LLogin sPassword. */
+        public sPassword: string;
+
+        /**
+         * Creates a new C2LLogin instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns C2LLogin instance
+         */
+        public static create(properties?: MsgCS.IC2LLogin): MsgCS.C2LLogin;
+
+        /**
+         * Encodes the specified C2LLogin message. Does not implicitly {@link MsgCS.C2LLogin.verify|verify} messages.
+         * @param message C2LLogin message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: MsgCS.IC2LLogin, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified C2LLogin message, length delimited. Does not implicitly {@link MsgCS.C2LLogin.verify|verify} messages.
+         * @param message C2LLogin message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: MsgCS.IC2LLogin, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a C2LLogin message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns C2LLogin
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): MsgCS.C2LLogin;
+
+        /**
+         * Decodes a C2LLogin message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns C2LLogin
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): MsgCS.C2LLogin;
+    }
+
+    /** Properties of a L2CLogin. */
+    interface IL2CLogin {
+
+        /** L2CLogin bNeedCreate */
+        bNeedCreate?: (boolean|null);
+    }
+
+    /** Represents a L2CLogin. */
+    class L2CLogin implements IL2CLogin {
+
+        /**
+         * Constructs a new L2CLogin.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: MsgCS.IL2CLogin);
+
+        /** L2CLogin bNeedCreate. */
+        public bNeedCreate: boolean;
+
+        /**
+         * Creates a new L2CLogin instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns L2CLogin instance
+         */
+        public static create(properties?: MsgCS.IL2CLogin): MsgCS.L2CLogin;
+
+        /**
+         * Encodes the specified L2CLogin message. Does not implicitly {@link MsgCS.L2CLogin.verify|verify} messages.
+         * @param message L2CLogin message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: MsgCS.IL2CLogin, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified L2CLogin message, length delimited. Does not implicitly {@link MsgCS.L2CLogin.verify|verify} messages.
+         * @param message L2CLogin message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: MsgCS.IL2CLogin, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a L2CLogin message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns L2CLogin
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): MsgCS.L2CLogin;
+
+        /**
+         * Decodes a L2CLogin message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns L2CLogin
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): MsgCS.L2CLogin;
     }
 }
 

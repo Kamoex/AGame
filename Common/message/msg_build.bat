@@ -18,29 +18,41 @@ if %errorlevel% NEQ 0 goto server_error
 call pbts -o message_bundles/message_server.d.ts message_bundles/message_server.js
 if %errorlevel% NEQ 0 goto server_error
 
+echo --------------------------------------------------------------
 REM 生成客户端消息
 call pb-egret generate
 if %errorlevel% NEQ 0 goto client_error
 
+echo --------------------------------------------------------------
 REM 拷贝服务器消息
 echo server message copy
-xcopy .\message_bundles\message_server.js ..\..\Server\src\MessageBuild         /e/y
-xcopy .\message_bundles\message_server.d.ts ..\..\Server\src\MessageBuild       /e/y
+xcopy .\message_bundles\message_server.js ..\..\Server\message                     /y
+xcopy .\message_bundles\message_server.d.ts ..\..\Server\message                   /y
+xcopy .\message_bundles\message_server.js ..\..\Server\ServerBuild\message         /y
+xcopy .\message_bundles\message_server.d.ts ..\..\Server\ServerBuild\message       /y
+copy .\MsgDefine.ts ..\..\Server\message\msg_define_build.ts                       /y
+copy .\MsgDefine.ts ..\..\Server\ServerBuild\message\msg_define_build.ts           /y
 
+
+echo --------------------------------------------------------------
 REM 拷贝客户端消息
 echo client message copy
-xcopy .\message_bundles\message_client.min.js ..\..\Client\game\bin\libs  /e/y
-xcopy .\message_bundles\message_client.d.ts ..\..\Client\game\libs        /e/y
+xcopy .\message_bundles\message_client.min.js ..\..\Client\game\bin\libs  /y
+xcopy .\message_bundles\message_client.d.ts ..\..\Client\game\libs        /y
+copy .\MsgDefine.ts ..\..\Client\game\src\message\msg_define_build.ts     /y
 
 pause
 exit
 
 :server_error
+echo xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 echo server message build faild!!! please check .proto file
 pause
 exit
 
 :client_error
+echo xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 echo client message build faild!!! please check .proto file
 pause
 exit
+
