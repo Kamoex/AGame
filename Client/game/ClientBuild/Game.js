@@ -34,7 +34,7 @@ export class Game {
         let a = true;
         if (a) {
             let rev = new Laya.Byte(msg);
-            let recv_msg = TestPackage.TestMessage.decode(rev.readUint8Array(0, rev.length));
+            let recv_msg = MsgCS.C2LLogin.decode(rev.readUint8Array(0, rev.length));
             console.log("msg_content: " + JSON.stringify(recv_msg));
         }
         else {
