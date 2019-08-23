@@ -1,9 +1,23 @@
 2019.8.20
 TODO
-1.protobuf协议 服务器引用问题
+1.protobuf协议 服务器引用问题 ok
 2.服务器收到的64位会有问题 long类型的问题
 
 在封装的时候了解下
-2.laya的byte
-3.node.js的buffer
-4.sokietio关闭心跳
+2.laya的byte ok
+3.node.js的buffer ok
+4.sokietio关闭心跳 ok
+
+2019.8.21
+1.服务器接收64位INT值 会有溢出 暂时先用string代替
+2.了解nginx
+
+2019.8.22
+1.IO雏形完成50% ok
+2.服务器接收64位INT值 会有溢出 暂时先用string代替
+3.了解nginx
+
+2019.8.23
+1.Login写了一部分,message注册与处理需要再完善下 CL CG SS之间消息要分开定义
+2.服务器接收64位INT值 会有溢出 暂时先用string代替
+3.了解nginx

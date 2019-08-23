@@ -1,13 +1,8 @@
 
-1.协议使用的是protobufjs，利用pb-egret插件来生成协议
+1.客户端消息生成使用pb-egret插件
+2.服务器消息生成使用原生protobufjs
 
-pb-egret 使用说明
-npm install pb-egret -g
-以下两行命令会在当前路径下生成protobuf文件夹，里面包含protobuf库，以及放置.proto的文件夹
-pb-egret add
-pb-egret generate
-
-可在Common\message\protobuf\pbconfig.json进行相关配置
-
-注意！！！
-项目中只是安装pb-egret 已经protobufjs就可以了，然后运行Common\message\msg_build.bat
+注意：
+1.刚拉下来的client与server目录中是没有消息目录的，需要执行Common/message/msg_build.bat 会生成客户端与服务器对应的message
+2.每次消息更新变动需要重新执行msg_build.bat
+2.client与server目录中的消息目录 不！ 许！ 提！ 交！

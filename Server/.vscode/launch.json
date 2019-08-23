@@ -16,8 +16,8 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "test_ptb",
-            "program": "${workspaceFolder}\\ServerBuild\\test_ptb.js",
+            "name": "LoginServer",
+            "program": "${workspaceFolder}\\ServerBuild\\src\\net\\LoginServer.js",
             "outFiles": [
                 "${workspaceFolder}/**/*.js"
             ]
