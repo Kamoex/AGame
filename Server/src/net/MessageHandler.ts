@@ -34,7 +34,7 @@ export class MessageHandler {
 
     // 消息处理
     public MessageHandle(msgID: number, msg: any) {
-        this.messageMap[msgID](msg);
+        this.messageFun[msgID](msg);
     }
 
     public HandleC2LLogin(msg: any) {
