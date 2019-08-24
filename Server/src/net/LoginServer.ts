@@ -45,7 +45,7 @@ export class LoginServer extends ServerBase {
     private OnRecv(socket: SocketIO.Socket, recvData: any): void {
         try {
             let recvMsg = MsgBase.MessageHead.decode(recvData);
-            MessageHandler.GetInstance().MessageHandle(recvMsg.nMsgID, recvMsg.data, recvMsg.nMsgLength);
+            MessageHandler.GetInstance().MessageHandle(recvMsg.nMsgID, recvMsg.data);
             console.log("data_decode: ", recvData);
         } catch (error) {
             console.log(error.stack);
