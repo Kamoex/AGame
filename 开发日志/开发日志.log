@@ -18,9 +18,22 @@ TODO
 3.了解nginx
 
 2019.8.23
-1.Login写了一部分,message注册与处理需要再完善下 CL CG SS之间消息要分开定义
+1.Login写了一部分,message注册与处理需要再完善下 CL CG SS之间消息要分开定义  ok
 2.服务器接收64位INT值 会有溢出 暂时先用string代替
 3.了解nginx
 
 2019.8.24
 1.assert
+2.服务器接收64位INT值 会有溢出 暂时先用string代替
+3.了解nginx
+
+2019.8.26
+1.assert
+2.服务器接收64位INT值 会有溢出 暂时先用string代替
+3.了解nginx
+4.mysql 连接池中的连接 可能会出现不够用的情况 看看之后需不需要搞个备用连接ok
+
+2019.8.27
+1.assert
+2.服务器接收64位INT值 会有溢出 暂时先用string代替
+3.了解nginx

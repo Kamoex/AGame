@@ -2,9 +2,13 @@ import { ServerBase } from "./ServerBase";
 import { MessageHandler } from "./MessageHandler";
 import { SOCKET_CONNECTION, SOCKET_MESSAGE, SOCKET_DISCONNECTION, SOCKET_ERROR } from "../common/CommonDefine";
 import { MsgBase } from "../../message/message_server";
+import { MariaDBMgr } from "../db/MariaDBMgr";
+import { LoginServerCfg } from "../LoginServerCfg";
 
 
 export class LoginServer extends ServerBase {
+
+    public mariaDB: MariaDBMgr = new MariaDBMgr();
 
     private static ins: LoginServer = null;
     private constructor() {
@@ -15,6 +19,11 @@ export class LoginServer extends ServerBase {
         if (!LoginServer.ins)
             LoginServer.ins = new LoginServer();
         return LoginServer.ins;
+    }
+
+    // 初始化服务器
+    async Init() {
+        await this.mariaDB.Init(LoginServerCfg.mariadb_cfg);
     }
 
     // 启动服务器
@@ -63,9 +72,19 @@ export class LoginServer extends ServerBase {
     }
 }
 
-// 读取配置表
+async function StartLoginServer() {
+    try {
+        // 读取配置表
+    
+        // 注册消息
+        MessageHandler.GetInstance().MessageRegist();
+    
+        await LoginServer.GetInstance().Init();
+        LoginServer.GetInstance().StartServer(8001);
+        
+    } catch (error) {
+    
+    }
+}
 
-// 注册消息
-MessageHandler.GetInstance().MessageRegist();
-
-LoginServer.GetInstance().StartServer(8001);
+StartLoginServer();
