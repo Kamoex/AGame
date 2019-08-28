@@ -4,6 +4,7 @@ import { SOCKET_CONNECTION, SOCKET_MESSAGE, SOCKET_DISCONNECTION, SOCKET_ERROR }
 import { MsgBase } from "../../message/message_server";
 import { MariaDBMgr } from "../db/MariaDBMgr";
 import { LoginServerCfg } from "../LoginServerCfg";
+import { MongoDBMgr } from "../db/MongoDBMgr";
 
 
 export class LoginServer extends ServerBase {
