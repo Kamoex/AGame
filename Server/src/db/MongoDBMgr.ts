@@ -1,6 +1,8 @@
 import * as mongodb from 'mongodb';
 import { GameServerCfg } from '../GameServerCfg';
 import { DB_LOG_LOGIN } from './MongoLogCollections';
+import { MongoLog } from '../log/LogMgr';
+import { MongoAssert } from '../utils/Utils';
 
 export class MongoDBMgr {
 
@@ -17,10 +19,6 @@ export class MongoDBMgr {
                 authSource: GameServerCfg.mongo_databass,
                 useNewUrlParser: true,
                 autoReconnect: true,    // 自动重连
-                // auth: {
-                //     user: GameServerCfg.mongo_user,
-                //     password: GameServerCfg.mongo_password,
-                // }
             });
 
             // 绑定库
@@ -34,10 +32,10 @@ export class MongoDBMgr {
             // 多创建一天 是因为异步的原因 不想回调
             await this.CreateLogCollections(DB_LOG_LOGIN + tomorrowDate);
 
-            console.log("mongodb init success")
+            MongoLog.Info('Mongodb init success!!!', true);
 
         } catch (error) {
-            console.error(error);
+            MongoLog.Error('Mongodb init failed!!!', error);
         }
     }
 
@@ -49,7 +47,9 @@ export class MongoDBMgr {
     // 删除LOG表
     async DropLogCollections(colName: string) {
         let res: boolean = await this.db.dropCollection(colName);
-        console.log("drop log " + colName + " op: " + res);
+        if(MongoAssert(res, 'DropLogCollections')) 
+            return;
+        MongoLog.Info("DropLogCollections: " + colName + " op_res: " + res)
     }
 
     // 插入LOG

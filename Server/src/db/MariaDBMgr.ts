@@ -2,6 +2,7 @@ import * as mariadb from "mariadb";
 import { EDBOP } from "../common/CommonDefine";
 import { SQLProcedure, SQL_FUN_DROP_ADD_COLUMN, SQL_FUN_CREATE_ADD_COLUMN } from "./SQLProcedure";
 import { SQL_TBL_ACCOUNT } from "./SQLTable";
+import { LogMgr, MariaLog } from "../log/LogMgr";
 
 export class MariaDBMgr {
     private cfg: mariadb.PoolConfig = null;
@@ -9,7 +10,7 @@ export class MariaDBMgr {
     // 备用连接 防止连接池满 等待超时后 就用备用连接
     private conStandby: mariadb.Connection;
 
-    async Init(cfg: mariadb.PoolConfig) {
+    public async Init(cfg: mariadb.PoolConfig) {
         this.cfg = cfg;
 
         // 连接DB
@@ -30,12 +31,17 @@ export class MariaDBMgr {
         await this.CreateTables();
         // 创建字段
         await this.AddFields();
+
+        MariaLog.Info('MariaDB init success!!!', true);
     }
 
     public Close() {
-        if(this.pool)
+        if(this.pool) {
             this.pool.end();
-        console.log("close MariaDB");
+            this.conStandby.end();
+            this.conStandby.destroy();
+        }
+        MariaLog.Info('MariaDB closed!!!', true);
     }
 
     // 创建存储过程
@@ -43,13 +49,11 @@ export class MariaDBMgr {
         let conPool: mariadb.PoolConnection = await this.pool.getConnection();
         try {
             // 创建ADD_COLUMN
-            let sql = SQL_FUN_DROP_ADD_COLUMN;
             await conPool.query(SQL_FUN_DROP_ADD_COLUMN);
-            // sql = SQL_FUN_CREATE_ADD_COLUMN;
             await conPool.query(SQL_FUN_CREATE_ADD_COLUMN);
-            console.log("CreateProcedures")
+            MariaLog.Info('MariaDB createProcedures success!!!', true);
         } catch (error) {
-            console.error(error);
+            MariaLog.Error('MariaDB createProcedures failed!!!', error);
             this.Close();
         }
         conPool.release();
@@ -61,9 +65,9 @@ export class MariaDBMgr {
         try {
             // account表
             await conPool.query(SQL_TBL_ACCOUNT);
-            console.log("CreateTables")
+            MariaLog.Info('MariaDB createTables success!!!', true);
         } catch (error) {
-            console.error(error);
+            MariaLog.Error('MariaDB createTables failed!!!', error);
             this.Close();
         }
 
@@ -73,14 +77,14 @@ export class MariaDBMgr {
     // 添加字段
     async AddFields() {
         let conPool: mariadb.PoolConnection = await this.pool.getConnection();
-        let res;
         try {
-            let sql: string = "";
+            let sql: string = '';
             sql = SQLProcedure.ADD_COLUMN('account', 'test_field', 'varchar(255)', 'not null default "1970-1-1"');
-            res = await conPool.query(sql);
-            console.log("AddFields")
+            await conPool.query(sql);
+
+            MariaLog.Info('MariaDB addFields success!!!', true);
         } catch (error) {
-            console.error(error);
+            MariaLog.Error('MariaDB addFields failed!!!', error);
             this.Close();
         }
         conPool.release();
@@ -104,8 +108,7 @@ export class MariaDBMgr {
                     break;
             }
         } catch (error) {
-            console.error("MariaDB OP ERROR!!! SQL: " + sql);
-            console.error(error.stack);
+            MariaLog.Error('MariaDB DBOP failed!!! op: ' + op, true);
         }
     }
 
@@ -136,7 +139,7 @@ export class MariaDBMgr {
     // 检查空闲连接
     private CheckIdleConnections() {
         if(this.pool.idleConnections() <= 0) {
-            console.log("MariaDBMgr connections busy!!!")
+            MariaLog.Warn('MariaDB connections busy!!! taskQueues: ' + this.pool.taskQueueSize + '|activedCons: ' + this.pool.totalConnections + '|totalCons: ' + this.pool.activeConnections + '|idleCons: ' + this.pool.idleConnections, true);
         }
     }
 }

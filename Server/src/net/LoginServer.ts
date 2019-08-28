@@ -5,6 +5,7 @@ import { MsgBase } from "../../message/message_server";
 import { MariaDBMgr } from "../db/MariaDBMgr";
 import { LoginServerCfg } from "../LoginServerCfg";
 import { MongoDBMgr } from "../db/MongoDBMgr";
+import { LogMgr } from "../log/LogMgr";
 
 
 export class LoginServer extends ServerBase {
@@ -76,15 +77,15 @@ export class LoginServer extends ServerBase {
 async function StartLoginServer() {
     try {
         // 读取配置表
-    
+
         // 注册消息
         MessageHandler.GetInstance().MessageRegist();
-    
+
         await LoginServer.GetInstance().Init();
         LoginServer.GetInstance().StartServer(8001);
-        
+
     } catch (error) {
-    
+        console.error(error);
     }
 }
 
