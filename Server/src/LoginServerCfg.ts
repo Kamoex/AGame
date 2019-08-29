@@ -6,8 +6,8 @@ export class LoginServerCfg {
     // 服务器配置
     public static readonly server_id = 1001;                    // login serverID
     public static readonly server_name = "测试一区";             // login server_name
-    public static readonly gamesrv_ip = "127.0.0.1";            // login连接game服的IP
-    public static readonly gamesrv_port = 8002;                 // game服端口
+    public static readonly login2game_port = 8002;              // login对game_srv开放的端口
+    public static readonly login2client_port = 8001;            // login对client开放的端口
     public static readonly open_time = "2019:8:24:9:00";        // 开服时间
 
     // MariaDB配置

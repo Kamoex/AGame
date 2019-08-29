@@ -31,6 +31,7 @@
   "dependencies": {
     "@types/async": "^3.0.1",
     "@types/socket.io": "^2.1.2",
+    "@types/socket.io-client": "^1.4.32",
     "@types/winston": "^2.4.4",
     "async": "^3.1.0",
     "mariadb": "^2.1.0",

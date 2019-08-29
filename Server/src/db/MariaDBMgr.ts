@@ -45,7 +45,7 @@ export class MariaDBMgr {
     }
 
     // 创建存储过程
-    async CreateProcedures() {
+    private async CreateProcedures() {
         let conPool: mariadb.PoolConnection = await this.pool.getConnection();
         try {
             // 创建ADD_COLUMN
@@ -60,7 +60,7 @@ export class MariaDBMgr {
     }
 
     // 创建表
-    async CreateTables() {
+    private async CreateTables() {
         let conPool: mariadb.PoolConnection = await this.pool.getConnection();
         try {
             // account表
@@ -75,7 +75,7 @@ export class MariaDBMgr {
     }
 
     // 添加字段
-    async AddFields() {
+    private async AddFields() {
         let conPool: mariadb.PoolConnection = await this.pool.getConnection();
         try {
             let sql: string = '';
@@ -112,7 +112,7 @@ export class MariaDBMgr {
         }
     }
 
-    async Find(sql: string, cb: (res) => void) {
+    public async Find(sql: string, cb: (res) => void) {
         this.CheckIdleConnections();
         let conn: mariadb.PoolConnection = await this.pool.getConnection();
         let res = await conn.query(sql);
@@ -120,7 +120,7 @@ export class MariaDBMgr {
         cb(res);
     }
 
-    async Update(sql: string, cb: any) {
+    public async Update(sql: string, cb: any) {
         this.CheckIdleConnections();
         let conn: mariadb.PoolConnection = await this.pool.getConnection();
         let res = await conn.query(sql);
@@ -128,7 +128,7 @@ export class MariaDBMgr {
         cb(res.affectedRows);
     }
 
-    async Delete(sql: string, cb: any) {
+    public async Delete(sql: string, cb: any) {
         this.CheckIdleConnections();
         let conn: mariadb.PoolConnection = await this.pool.getConnection();
         let res = await conn.query(sql);

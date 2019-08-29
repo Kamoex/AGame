@@ -21,13 +21,23 @@
     GameConfig.exportSceneToJson = true;
     GameConfig.init();
 
-    var EMessageID;
-    (function (EMessageID) {
-        EMessageID[EMessageID["MsgNull"] = 0] = "MsgNull";
-        EMessageID[EMessageID["C2LLogin"] = 1] = "C2LLogin";
-        EMessageID[EMessageID["L2CLogin"] = 2] = "L2CLogin";
-        EMessageID[EMessageID["MsgEnd"] = 3] = "MsgEnd";
-    })(EMessageID || (EMessageID = {}));
+    var ELGSMessageID;
+    (function (ELGSMessageID) {
+        ELGSMessageID[ELGSMessageID["ELGSNull"] = 0] = "ELGSNull";
+        ELGSMessageID[ELGSMessageID["ELGSEnd"] = 1] = "ELGSEnd";
+    })(ELGSMessageID || (ELGSMessageID = {}));
+    var ELCMessageID;
+    (function (ELCMessageID) {
+        ELCMessageID[ELCMessageID["ELCNull"] = 1] = "ELCNull";
+        ELCMessageID[ELCMessageID["C2LLogin"] = 2] = "C2LLogin";
+        ELCMessageID[ELCMessageID["L2CLogin"] = 3] = "L2CLogin";
+        ELCMessageID[ELCMessageID["ELCEnd"] = 4] = "ELCEnd";
+    })(ELCMessageID || (ELCMessageID = {}));
+    var EGSCMessageID;
+    (function (EGSCMessageID) {
+        EGSCMessageID[EGSCMessageID["EGSCNull"] = 4] = "EGSCNull";
+        EGSCMessageID[EGSCMessageID["EGSCMsgEnd"] = 5] = "EGSCMsgEnd";
+    })(EGSCMessageID || (EGSCMessageID = {}));
 
     class TestSocketIO {
         constructor() {
@@ -40,7 +50,7 @@
             this.socket = io.connect(this.serverHost);
             this.socket.on("connect", () => {
                 let head = MsgBase.MessageHead.create();
-                head.nMsgID = EMessageID.C2LLogin;
+                head.nMsgID = ELCMessageID.C2LLogin;
                 let msg = MsgCS.C2LLogin.create();
                 msg.sAccount = "inuyashazh";
                 msg.sPassword = "123456";

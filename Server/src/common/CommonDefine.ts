@@ -1,11 +1,16 @@
 import * as os from 'os'
 
 
-// SOKCET连接信息
-export const SOCKET_CONNECTION     = "connection";
-export const SOCKET_MESSAGE        = "message";
-export const SOCKET_DISCONNECTION  = "disconnect";
-export const SOCKET_ERROR          = "error";
+// SOKCET.IO连接信息
+export const SOCKET_IO_CONNECTION     = "connection";
+export const SOCKET_IO_MESSAGE        = "message";
+export const SOCKET_IO_DISCONNECTION  = "disconnect";
+export const SOCKET_IO_ERROR          = "error";
+// WEBSOCKET连接信息
+export const SOCKET_WS_REQUEST        = "request";
+export const SOCKET_WS_MESSAGE        = "message";
+export const SOCKET_WS_BINARY         = "binary";
+export const SOCKET_WS_CLOSE          = "close";
 
 // MARIADB的连接数量 cpu内核数量*2 + 1
 export const MARIADB_CONNECTIONS   = (os.cpus().length) * 2 + 1;

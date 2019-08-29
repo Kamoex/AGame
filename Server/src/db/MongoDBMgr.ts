@@ -9,20 +9,20 @@ export class MongoDBMgr {
     private mongo: mongodb.MongoClient = null;
     private db: mongodb.Db = null;
 
-    async Init() {
+    public async Init(user: string, password: string, host: string, port: number, databass: string) {
         try {
             // 建立连接
-            let mongourl: string = 'mongodb://' + GameServerCfg.mongo_user + ':' + GameServerCfg.mongo_password + '@';
-            mongourl = mongourl + GameServerCfg.mongo_host + ':' + GameServerCfg.mongo_port + '/admin';
+            let mongourl: string = 'mongodb://' + user + ':' + password + '@';
+            mongourl = mongourl + host + ':' + port + '/admin';
 
             this.mongo = await mongodb.MongoClient.connect(mongourl, {
-                authSource: GameServerCfg.mongo_databass,
+                authSource: databass,
                 useNewUrlParser: true,
                 autoReconnect: true,    // 自动重连
             });
 
             // 绑定库
-            this.db = this.mongo.db(GameServerCfg.mongo_databass);
+            this.db = this.mongo.db(databass);
 
             // 创建表
             let todayDate: string = new Date().toLocaleDateString();
@@ -40,12 +40,12 @@ export class MongoDBMgr {
     }
 
     // 创建LOG表
-    async CreateLogCollections(colName: string) {
+    private async CreateLogCollections(colName: string) {
         await this.db.createCollection(colName, {});
     }
 
     // 删除LOG表
-    async DropLogCollections(colName: string) {
+    private async DropLogCollections(colName: string) {
         let res: boolean = await this.db.dropCollection(colName);
         if(MongoAssert(res, 'DropLogCollections failed!!! colName: ' + colName)) 
             return;
