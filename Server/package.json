@@ -16,7 +16,11 @@
     "url": "https://github.com/Kamoex/AGame/issues"
   },
   "homepage": "https://github.com/Kamoex/AGame#readme",
-  "devDependencies": {
+  "dependencies": {
+    "@types/async": "^3.0.1",
+    "@types/socket.io": "^2.1.2",
+    "@types/socket.io-client": "^1.4.32",
+    "@types/winston": "^2.4.4",
     "@types/long": "^4.0.0",
     "@types/mongodb": "^3.2.1",
     "@types/node": "^12.7.1",
@@ -26,13 +30,7 @@
     "long": "^4.0.0",
     "mongodb": "^3.3.0-beta2",
     "protobufjs": "^6.8.8",
-    "websocket": "^1.0.29"
-  },
-  "dependencies": {
-    "@types/async": "^3.0.1",
-    "@types/socket.io": "^2.1.2",
-    "@types/socket.io-client": "^1.4.32",
-    "@types/winston": "^2.4.4",
+    "websocket": "^1.0.29",
     "async": "^3.1.0",
     "mariadb": "^2.1.0",
     "socket.io": "^2.2.0",

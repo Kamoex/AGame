@@ -1,9 +1,7 @@
 ##ignore##
 /Server/ServerBuild/*
 /Server/node_modules/*
-/Server/message/*
 /Server/.vscode/*
 /Client/game/.laya/*
-/Client/game/.rpt2_cache/*
-/Client/game/src/message/*
-/Client/game/ClientBuild/*
+# /Client/game/.rpt2_cache/*
+# /Client/game/ClientBuild/*

@@ -26,10 +26,10 @@ if %errorlevel% NEQ 0 goto client_error
 echo --------------------------------------------------------------
 REM 拷贝服务器消息
 echo server message copy
-xcopy .\message_bundles\message_server.js ..\..\Server\message                     /y
-xcopy .\message_bundles\message_server.d.ts ..\..\Server\message                   /y
-xcopy .\message_bundles\message_server.js ..\..\Server\ServerBuild\message         /y
-xcopy .\message_bundles\message_server.d.ts ..\..\Server\ServerBuild\message       /y
+xcopy .\message_bundles\message_server.js ..\..\Server\message\                     /y
+xcopy .\message_bundles\message_server.d.ts ..\..\Server\message\                   /y
+xcopy .\message_bundles\message_server.js ..\..\Server\ServerBuild\message\         /y
+xcopy .\message_bundles\message_server.d.ts ..\..\Server\ServerBuild\message\       /y
 copy .\MsgDefine.ts ..\..\Server\message\msg_define_build.ts                       /y
 copy .\MsgDefine.ts ..\..\Server\ServerBuild\message\msg_define_build.ts           /y
 
