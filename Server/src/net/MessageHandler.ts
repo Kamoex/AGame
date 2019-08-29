@@ -27,7 +27,8 @@ export class MessageHandler {
             let value = parseInt(props[i].toString());
             this.messageMap[key] = value;
         }
-        console.log("MessageRegist");
+        
+        console.log("MessageRegist success!");
         // 注册函数
         this.messageFun[EMessageID.C2LLogin] = this.HandleC2LLogin;
     }

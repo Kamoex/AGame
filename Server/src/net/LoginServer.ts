@@ -5,7 +5,7 @@ import { MsgBase } from "../../message/message_server";
 import { MariaDBMgr } from "../db/MariaDBMgr";
 import { LoginServerCfg } from "../LoginServerCfg";
 import { MongoDBMgr } from "../db/MongoDBMgr";
-import { LogMgr } from "../log/LogMgr";
+import { LogMgr, LoginLog } from "../log/LogMgr";
 
 
 export class LoginServer extends ServerBase {
@@ -37,7 +37,6 @@ export class LoginServer extends ServerBase {
     // 连接成功
     private OnConnected(socket: SocketIO.Socket) {
         console.log('a client connected!!! socket: ' + socket);
-
         // 消息处理
         socket.on(SOCKET_MESSAGE, (recvData: any) => {
             LoginServer.GetInstance().OnRecv(socket, recvData);
@@ -48,29 +47,34 @@ export class LoginServer extends ServerBase {
         });
 
         socket.on(SOCKET_ERROR, (error: any) => {
-            LoginServer.GetInstance().OnDisconnect(socket, error);
+            LoginServer.GetInstance().OnError(socket, error);
         });
     }
 
     // 接收消息
     private OnRecv(socket: SocketIO.Socket, recvData: any): void {
+        let msgID: number = 0;
         try {
             let recvMsg = MsgBase.MessageHead.decode(recvData);
+            msgID = recvMsg.nMsgID;
             MessageHandler.GetInstance().MessageHandle(recvMsg.nMsgID, recvMsg.data);
             console.log("data_decode: ", recvData);
         } catch (error) {
-            console.log(error.stack);
+            socket.disconnect(true);
+            LoginLog.Error('OnRecv Error!!! msgID: ' + msgID, error);
         }
     }
 
     // 断开连接与客户端
     private OnDisconnect(socket: SocketIO.Socket, info: any): void {
+        socket.disconnect(true)
         console.log("client disconnect: ", info);
     }
 
     // 错误
-    private OnError(error: any): void {
-        console.log("LoginServer error: ", error);
+    private OnError(socket: SocketIO.Socket, error: any): void {
+        socket.disconnect(true);
+        LoginLog.Error('OnRecv Error!!! error: ' + error, null);
     }
 }
 

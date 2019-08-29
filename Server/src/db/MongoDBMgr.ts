@@ -47,7 +47,7 @@ export class MongoDBMgr {
     // 删除LOG表
     async DropLogCollections(colName: string) {
         let res: boolean = await this.db.dropCollection(colName);
-        if(MongoAssert(res, 'DropLogCollections')) 
+        if(MongoAssert(res, 'DropLogCollections failed!!! colName: ' + colName)) 
             return;
         MongoLog.Info("DropLogCollections: " + colName + " op_res: " + res)
     }

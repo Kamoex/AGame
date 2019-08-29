@@ -30,7 +30,6 @@ export function GameAssert(obj: any, log: string,): boolean {
 
 export function LoginAssert(obj: any, log: string): boolean {
     if(!obj) {
-        let stack: any = new Error().stack;
         LoginLog.Assert(log);
         debugger;
         return true;

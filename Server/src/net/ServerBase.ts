@@ -16,20 +16,20 @@ export class ServerBase {
     public CreateServerIO(nPort: number) {
         // 创建httpServer
         let http_Server: http.Server = http.createServer(function (request, response) {
-          console.log((new Date()) + ' Received request for ' + request.url);
+          console.log((new Date().toLocaleString()) + ' Received request for ' + request.url);
           response.writeHead(404);
           response.end();
         });
     
         // 监听
         http_Server.listen(nPort, function () {
-          console.log((new Date()) + ' Server is listening on ' + nPort);
+          console.log((new Date().toLocaleString()) + ' Server is listening on ' + nPort);
         });
     
         // 绑定server
         this.serverIO = new io((http_Server), {
-          pingTimeout: 99999999,
-          pingInterval: 99999999
+          pingTimeout: 1000,
+          pingInterval: 1000
         });
     
       }
