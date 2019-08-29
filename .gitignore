@@ -3,5 +3,5 @@
 /Server/node_modules/*
 /Server/.vscode/*
 /Client/game/.laya/*
-# /Client/game/.rpt2_cache/*
-# /Client/game/ClientBuild/*
+/Client/game/.rpt2_cache/*
+/Client/game/ClientBuild/*
