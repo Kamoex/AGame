@@ -12,7 +12,7 @@ export class TestSocketIO {
     public connect(): void {
 
         console.log("开始连接服务器服务器: ");
-        let msg2222: MsgCS.C2LLogin = MsgCS.C2LLogin.create();
+        let msg2222: MsgLC.C2LLogin = MsgLC.C2LLogin.create();
         
         let self = this;
         this.socket = io.connect(this.serverHost)
@@ -21,10 +21,10 @@ export class TestSocketIO {
             let head = MsgBase.MessageHead.create();
             head.nMsgID = ELCMessageID.C2LLogin;
 
-            let msg: MsgCS.C2LLogin = MsgCS.C2LLogin.create();
+            let msg: MsgLC.C2LLogin = MsgLC.C2LLogin.create();
             msg.sAccount = "inuyashazh";
             msg.sPassword = "123456";
-            head.data = MsgCS.C2LLogin.encode(msg).finish();
+            head.data = MsgLC.C2LLogin.encode(msg).finish();
             head.nMsgLength = head.data.length;
 
             let bufferSend = new Laya.Byte();
@@ -56,7 +56,7 @@ export class TestSocketIO {
             let bufferSend = new Laya.Byte();
             bufferSend.writeArrayBuffer(message);
             let buffer: Uint8Array = new Uint8Array(bufferSend.buffer);
-            let recv_msg = MsgCS.L2CLogin.decode(buffer);
+            let recv_msg = MsgLC.L2CLogin.decode(buffer);
             console.log("error: " + recv_msg);
         })
 

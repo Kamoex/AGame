@@ -1,0 +1,17 @@
+import "MesssageID.proto";
+package MsgGSC;
+syntax = "proto3";
+
+/*
+* Game服务器与Client通信消息定义
+*/
+
+// 请求连接
+message C2GSConnect {
+    string ip = 1;
+    string game_version = 2;
+}
+// 请求连接返回
+message GS2CConnect {
+    bool success = 1;
+}

@@ -1,7 +1,10 @@
 import "MesssageID.proto";
-package MsgCS;
+package MsgLC;
 syntax = "proto3";
 
+/*
+* Login服务器与Client通信消息定义
+*/
 
 // 请求连接
 message C2LLogin {

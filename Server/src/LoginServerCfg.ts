@@ -1,14 +1,15 @@
 import * as mariadb from "mariadb";
 import { MARIADB_CONNECTIONS } from "./common/CommonDefine";
+var md5 = require('md5');
 
 export class LoginServerCfg {
     private constructor(){}
     // 服务器配置
     public static readonly server_id = 1001;                    // login serverID
     public static readonly server_name = "测试一区";             // login server_name
-    public static readonly login2game_port = 8002;              // login对game_srv开放的端口
-    public static readonly login2client_port = 8001;            // login对client开放的端口
-    public static readonly open_time = "2019:8:24:9:00";        // 开服时间
+    public static readonly gs_port = 8002;                      // login对game_srv开放的端口
+    public static readonly client_port = 8001;                  // login对client开放的端口
+    public static readonly token = 'tempToken';                 // login服务器验证
 
     // MariaDB配置
     public static readonly mariadb_cfg: mariadb.PoolConfig = {

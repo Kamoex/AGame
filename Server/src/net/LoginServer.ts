@@ -2,17 +2,21 @@ import { MariaDBMgr } from "../db/MariaDBMgr";
 import { LoginServerCfg } from "../LoginServerCfg";
 import { ServerSession } from "./ServerSession";
 import { LCMsgHandler } from "../msg_handler/LCMsgHandler";
+import { LGSMsgHandler } from "../msg_handler/LGSMsgHandler";
+import { LoginLog } from "../log/LogMgr";
 
 
 export class LoginServer{
 
     private mariaDB: MariaDBMgr = new MariaDBMgr();
-    // 负责处理client连接信息
-    private clSession: ServerSession = new ServerSession();
+    // client连接信息处理
+    private clSession: ServerSession = null;
+    // client消息处理
     private clMsgHandler: LCMsgHandler = LCMsgHandler.GetInstance();
-    // 负责处理gameserver连接信息
-    private gsSession: ServerSession = new ServerSession();
-    private gsMsgHandler: LCMsgHandler = null;
+    // gameserver连接信息处理
+    private gsSession: ServerSession = null;
+    // gameserver消息处理
+    private gsMsgHandler: LGSMsgHandler = LGSMsgHandler.GetInstance();
 
     private static ins: LoginServer = null;
     private constructor() {}
@@ -26,12 +30,15 @@ export class LoginServer{
     public async Init() {
         // DB初始化
         await this.mariaDB.Init(LoginServerCfg.mariadb_cfg);
+        // 初始化session
+        this.clSession = new ServerSession(LoginServerCfg.server_id, LoginServerCfg.server_name, this.clMsgHandler, LoginLog);
+        this.gsSession = new ServerSession(LoginServerCfg.server_id,LoginServerCfg.server_name, this.gsMsgHandler, LoginLog);
     }
     
     // 启动服务器
     public StartServer() {
-        this.clSession.CreateSession(LoginServerCfg.server_name, this.clMsgHandler, LoginServerCfg.login2client_port);
-        // this.gsSession.CreateSession(LoginServerCfg.server_name, this.gsMsgHandler, LoginServerCfg.login2game_port);
+        this.clSession.CreateSession(LoginServerCfg.client_port);
+        this.gsSession.CreateSession(LoginServerCfg.gs_port);
     }
 }
 
@@ -41,6 +48,7 @@ async function StartLoginServer() {
 
         // 注册消息
         LCMsgHandler.GetInstance().MessageRegist();
+        LGSMsgHandler.GetInstance().MessageRegist();
 
         await LoginServer.GetInstance().Init();
         await LoginServer.GetInstance().StartServer();

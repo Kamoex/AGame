@@ -171,20 +171,290 @@ $root.MsgBase = (function() {
     return MsgBase;
 })();
 
-$root.MsgCS = (function() {
+$root.MsgGSC = (function() {
 
     /**
-     * Namespace MsgCS.
-     * @exports MsgCS
+     * Namespace MsgGSC.
+     * @exports MsgGSC
      * @namespace
      */
-    var MsgCS = {};
+    var MsgGSC = {};
 
-    MsgCS.C2LLogin = (function() {
+    MsgGSC.C2GSConnect = (function() {
+
+        /**
+         * Properties of a C2GSConnect.
+         * @memberof MsgGSC
+         * @interface IC2GSConnect
+         * @property {string|null} [ip] C2GSConnect ip
+         * @property {string|null} [gameVersion] C2GSConnect gameVersion
+         */
+
+        /**
+         * Constructs a new C2GSConnect.
+         * @memberof MsgGSC
+         * @classdesc Represents a C2GSConnect.
+         * @implements IC2GSConnect
+         * @constructor
+         * @param {MsgGSC.IC2GSConnect=} [properties] Properties to set
+         */
+        function C2GSConnect(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * C2GSConnect ip.
+         * @member {string} ip
+         * @memberof MsgGSC.C2GSConnect
+         * @instance
+         */
+        C2GSConnect.prototype.ip = "";
+
+        /**
+         * C2GSConnect gameVersion.
+         * @member {string} gameVersion
+         * @memberof MsgGSC.C2GSConnect
+         * @instance
+         */
+        C2GSConnect.prototype.gameVersion = "";
+
+        /**
+         * Creates a new C2GSConnect instance using the specified properties.
+         * @function create
+         * @memberof MsgGSC.C2GSConnect
+         * @static
+         * @param {MsgGSC.IC2GSConnect=} [properties] Properties to set
+         * @returns {MsgGSC.C2GSConnect} C2GSConnect instance
+         */
+        C2GSConnect.create = function create(properties) {
+            return new C2GSConnect(properties);
+        };
+
+        /**
+         * Encodes the specified C2GSConnect message. Does not implicitly {@link MsgGSC.C2GSConnect.verify|verify} messages.
+         * @function encode
+         * @memberof MsgGSC.C2GSConnect
+         * @static
+         * @param {MsgGSC.IC2GSConnect} message C2GSConnect message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        C2GSConnect.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.ip != null && message.hasOwnProperty("ip"))
+                writer.uint32(/* id 1, wireType 2 =*/10).string(message.ip);
+            if (message.gameVersion != null && message.hasOwnProperty("gameVersion"))
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.gameVersion);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified C2GSConnect message, length delimited. Does not implicitly {@link MsgGSC.C2GSConnect.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof MsgGSC.C2GSConnect
+         * @static
+         * @param {MsgGSC.IC2GSConnect} message C2GSConnect message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        C2GSConnect.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a C2GSConnect message from the specified reader or buffer.
+         * @function decode
+         * @memberof MsgGSC.C2GSConnect
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {MsgGSC.C2GSConnect} C2GSConnect
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        C2GSConnect.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.MsgGSC.C2GSConnect();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.ip = reader.string();
+                    break;
+                case 2:
+                    message.gameVersion = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a C2GSConnect message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof MsgGSC.C2GSConnect
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {MsgGSC.C2GSConnect} C2GSConnect
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        C2GSConnect.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        return C2GSConnect;
+    })();
+
+    MsgGSC.GS2CConnect = (function() {
+
+        /**
+         * Properties of a GS2CConnect.
+         * @memberof MsgGSC
+         * @interface IGS2CConnect
+         * @property {boolean|null} [success] GS2CConnect success
+         */
+
+        /**
+         * Constructs a new GS2CConnect.
+         * @memberof MsgGSC
+         * @classdesc Represents a GS2CConnect.
+         * @implements IGS2CConnect
+         * @constructor
+         * @param {MsgGSC.IGS2CConnect=} [properties] Properties to set
+         */
+        function GS2CConnect(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * GS2CConnect success.
+         * @member {boolean} success
+         * @memberof MsgGSC.GS2CConnect
+         * @instance
+         */
+        GS2CConnect.prototype.success = false;
+
+        /**
+         * Creates a new GS2CConnect instance using the specified properties.
+         * @function create
+         * @memberof MsgGSC.GS2CConnect
+         * @static
+         * @param {MsgGSC.IGS2CConnect=} [properties] Properties to set
+         * @returns {MsgGSC.GS2CConnect} GS2CConnect instance
+         */
+        GS2CConnect.create = function create(properties) {
+            return new GS2CConnect(properties);
+        };
+
+        /**
+         * Encodes the specified GS2CConnect message. Does not implicitly {@link MsgGSC.GS2CConnect.verify|verify} messages.
+         * @function encode
+         * @memberof MsgGSC.GS2CConnect
+         * @static
+         * @param {MsgGSC.IGS2CConnect} message GS2CConnect message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        GS2CConnect.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.success != null && message.hasOwnProperty("success"))
+                writer.uint32(/* id 1, wireType 0 =*/8).bool(message.success);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified GS2CConnect message, length delimited. Does not implicitly {@link MsgGSC.GS2CConnect.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof MsgGSC.GS2CConnect
+         * @static
+         * @param {MsgGSC.IGS2CConnect} message GS2CConnect message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        GS2CConnect.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a GS2CConnect message from the specified reader or buffer.
+         * @function decode
+         * @memberof MsgGSC.GS2CConnect
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {MsgGSC.GS2CConnect} GS2CConnect
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        GS2CConnect.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.MsgGSC.GS2CConnect();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.success = reader.bool();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a GS2CConnect message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof MsgGSC.GS2CConnect
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {MsgGSC.GS2CConnect} GS2CConnect
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        GS2CConnect.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        return GS2CConnect;
+    })();
+
+    return MsgGSC;
+})();
+
+$root.MsgLC = (function() {
+
+    /**
+     * Namespace MsgLC.
+     * @exports MsgLC
+     * @namespace
+     */
+    var MsgLC = {};
+
+    MsgLC.C2LLogin = (function() {
 
         /**
          * Properties of a C2LLogin.
-         * @memberof MsgCS
+         * @memberof MsgLC
          * @interface IC2LLogin
          * @property {string|null} [sAccount] C2LLogin sAccount
          * @property {string|null} [sPassword] C2LLogin sPassword
@@ -192,11 +462,11 @@ $root.MsgCS = (function() {
 
         /**
          * Constructs a new C2LLogin.
-         * @memberof MsgCS
+         * @memberof MsgLC
          * @classdesc Represents a C2LLogin.
          * @implements IC2LLogin
          * @constructor
-         * @param {MsgCS.IC2LLogin=} [properties] Properties to set
+         * @param {MsgLC.IC2LLogin=} [properties] Properties to set
          */
         function C2LLogin(properties) {
             if (properties)
@@ -208,7 +478,7 @@ $root.MsgCS = (function() {
         /**
          * C2LLogin sAccount.
          * @member {string} sAccount
-         * @memberof MsgCS.C2LLogin
+         * @memberof MsgLC.C2LLogin
          * @instance
          */
         C2LLogin.prototype.sAccount = "";
@@ -216,7 +486,7 @@ $root.MsgCS = (function() {
         /**
          * C2LLogin sPassword.
          * @member {string} sPassword
-         * @memberof MsgCS.C2LLogin
+         * @memberof MsgLC.C2LLogin
          * @instance
          */
         C2LLogin.prototype.sPassword = "";
@@ -224,21 +494,21 @@ $root.MsgCS = (function() {
         /**
          * Creates a new C2LLogin instance using the specified properties.
          * @function create
-         * @memberof MsgCS.C2LLogin
+         * @memberof MsgLC.C2LLogin
          * @static
-         * @param {MsgCS.IC2LLogin=} [properties] Properties to set
-         * @returns {MsgCS.C2LLogin} C2LLogin instance
+         * @param {MsgLC.IC2LLogin=} [properties] Properties to set
+         * @returns {MsgLC.C2LLogin} C2LLogin instance
          */
         C2LLogin.create = function create(properties) {
             return new C2LLogin(properties);
         };
 
         /**
-         * Encodes the specified C2LLogin message. Does not implicitly {@link MsgCS.C2LLogin.verify|verify} messages.
+         * Encodes the specified C2LLogin message. Does not implicitly {@link MsgLC.C2LLogin.verify|verify} messages.
          * @function encode
-         * @memberof MsgCS.C2LLogin
+         * @memberof MsgLC.C2LLogin
          * @static
-         * @param {MsgCS.IC2LLogin} message C2LLogin message or plain object to encode
+         * @param {MsgLC.IC2LLogin} message C2LLogin message or plain object to encode
          * @param {$protobuf.Writer} [writer] Writer to encode to
          * @returns {$protobuf.Writer} Writer
          */
@@ -253,11 +523,11 @@ $root.MsgCS = (function() {
         };
 
         /**
-         * Encodes the specified C2LLogin message, length delimited. Does not implicitly {@link MsgCS.C2LLogin.verify|verify} messages.
+         * Encodes the specified C2LLogin message, length delimited. Does not implicitly {@link MsgLC.C2LLogin.verify|verify} messages.
          * @function encodeDelimited
-         * @memberof MsgCS.C2LLogin
+         * @memberof MsgLC.C2LLogin
          * @static
-         * @param {MsgCS.IC2LLogin} message C2LLogin message or plain object to encode
+         * @param {MsgLC.IC2LLogin} message C2LLogin message or plain object to encode
          * @param {$protobuf.Writer} [writer] Writer to encode to
          * @returns {$protobuf.Writer} Writer
          */
@@ -268,18 +538,18 @@ $root.MsgCS = (function() {
         /**
          * Decodes a C2LLogin message from the specified reader or buffer.
          * @function decode
-         * @memberof MsgCS.C2LLogin
+         * @memberof MsgLC.C2LLogin
          * @static
          * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
          * @param {number} [length] Message length if known beforehand
-         * @returns {MsgCS.C2LLogin} C2LLogin
+         * @returns {MsgLC.C2LLogin} C2LLogin
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
         C2LLogin.decode = function decode(reader, length) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.MsgCS.C2LLogin();
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.MsgLC.C2LLogin();
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
@@ -300,10 +570,10 @@ $root.MsgCS = (function() {
         /**
          * Decodes a C2LLogin message from the specified reader or buffer, length delimited.
          * @function decodeDelimited
-         * @memberof MsgCS.C2LLogin
+         * @memberof MsgLC.C2LLogin
          * @static
          * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {MsgCS.C2LLogin} C2LLogin
+         * @returns {MsgLC.C2LLogin} C2LLogin
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
@@ -316,22 +586,22 @@ $root.MsgCS = (function() {
         return C2LLogin;
     })();
 
-    MsgCS.L2CLogin = (function() {
+    MsgLC.L2CLogin = (function() {
 
         /**
          * Properties of a L2CLogin.
-         * @memberof MsgCS
+         * @memberof MsgLC
          * @interface IL2CLogin
          * @property {boolean|null} [bNeedCreate] L2CLogin bNeedCreate
          */
 
         /**
          * Constructs a new L2CLogin.
-         * @memberof MsgCS
+         * @memberof MsgLC
          * @classdesc Represents a L2CLogin.
          * @implements IL2CLogin
          * @constructor
-         * @param {MsgCS.IL2CLogin=} [properties] Properties to set
+         * @param {MsgLC.IL2CLogin=} [properties] Properties to set
          */
         function L2CLogin(properties) {
             if (properties)
@@ -343,7 +613,7 @@ $root.MsgCS = (function() {
         /**
          * L2CLogin bNeedCreate.
          * @member {boolean} bNeedCreate
-         * @memberof MsgCS.L2CLogin
+         * @memberof MsgLC.L2CLogin
          * @instance
          */
         L2CLogin.prototype.bNeedCreate = false;
@@ -351,21 +621,21 @@ $root.MsgCS = (function() {
         /**
          * Creates a new L2CLogin instance using the specified properties.
          * @function create
-         * @memberof MsgCS.L2CLogin
+         * @memberof MsgLC.L2CLogin
          * @static
-         * @param {MsgCS.IL2CLogin=} [properties] Properties to set
-         * @returns {MsgCS.L2CLogin} L2CLogin instance
+         * @param {MsgLC.IL2CLogin=} [properties] Properties to set
+         * @returns {MsgLC.L2CLogin} L2CLogin instance
          */
         L2CLogin.create = function create(properties) {
             return new L2CLogin(properties);
         };
 
         /**
-         * Encodes the specified L2CLogin message. Does not implicitly {@link MsgCS.L2CLogin.verify|verify} messages.
+         * Encodes the specified L2CLogin message. Does not implicitly {@link MsgLC.L2CLogin.verify|verify} messages.
          * @function encode
-         * @memberof MsgCS.L2CLogin
+         * @memberof MsgLC.L2CLogin
          * @static
-         * @param {MsgCS.IL2CLogin} message L2CLogin message or plain object to encode
+         * @param {MsgLC.IL2CLogin} message L2CLogin message or plain object to encode
          * @param {$protobuf.Writer} [writer] Writer to encode to
          * @returns {$protobuf.Writer} Writer
          */
@@ -378,11 +648,11 @@ $root.MsgCS = (function() {
         };
 
         /**
-         * Encodes the specified L2CLogin message, length delimited. Does not implicitly {@link MsgCS.L2CLogin.verify|verify} messages.
+         * Encodes the specified L2CLogin message, length delimited. Does not implicitly {@link MsgLC.L2CLogin.verify|verify} messages.
          * @function encodeDelimited
-         * @memberof MsgCS.L2CLogin
+         * @memberof MsgLC.L2CLogin
          * @static
-         * @param {MsgCS.IL2CLogin} message L2CLogin message or plain object to encode
+         * @param {MsgLC.IL2CLogin} message L2CLogin message or plain object to encode
          * @param {$protobuf.Writer} [writer] Writer to encode to
          * @returns {$protobuf.Writer} Writer
          */
@@ -393,18 +663,18 @@ $root.MsgCS = (function() {
         /**
          * Decodes a L2CLogin message from the specified reader or buffer.
          * @function decode
-         * @memberof MsgCS.L2CLogin
+         * @memberof MsgLC.L2CLogin
          * @static
          * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
          * @param {number} [length] Message length if known beforehand
-         * @returns {MsgCS.L2CLogin} L2CLogin
+         * @returns {MsgLC.L2CLogin} L2CLogin
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
         L2CLogin.decode = function decode(reader, length) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.MsgCS.L2CLogin();
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.MsgLC.L2CLogin();
             while (reader.pos < end) {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
@@ -422,10 +692,10 @@ $root.MsgCS = (function() {
         /**
          * Decodes a L2CLogin message from the specified reader or buffer, length delimited.
          * @function decodeDelimited
-         * @memberof MsgCS.L2CLogin
+         * @memberof MsgLC.L2CLogin
          * @static
          * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {MsgCS.L2CLogin} L2CLogin
+         * @returns {MsgLC.L2CLogin} L2CLogin
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
@@ -438,7 +708,291 @@ $root.MsgCS = (function() {
         return L2CLogin;
     })();
 
-    return MsgCS;
+    return MsgLC;
+})();
+
+$root.MsgLGS = (function() {
+
+    /**
+     * Namespace MsgLGS.
+     * @exports MsgLGS
+     * @namespace
+     */
+    var MsgLGS = {};
+
+    MsgLGS.GS2LConnectAuth = (function() {
+
+        /**
+         * Properties of a GS2LConnectAuth.
+         * @memberof MsgLGS
+         * @interface IGS2LConnectAuth
+         * @property {string|null} [ip] GS2LConnectAuth ip
+         * @property {number|null} [serverId] GS2LConnectAuth serverId
+         * @property {string|null} [serverName] GS2LConnectAuth serverName
+         */
+
+        /**
+         * Constructs a new GS2LConnectAuth.
+         * @memberof MsgLGS
+         * @classdesc Represents a GS2LConnectAuth.
+         * @implements IGS2LConnectAuth
+         * @constructor
+         * @param {MsgLGS.IGS2LConnectAuth=} [properties] Properties to set
+         */
+        function GS2LConnectAuth(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * GS2LConnectAuth ip.
+         * @member {string} ip
+         * @memberof MsgLGS.GS2LConnectAuth
+         * @instance
+         */
+        GS2LConnectAuth.prototype.ip = "";
+
+        /**
+         * GS2LConnectAuth serverId.
+         * @member {number} serverId
+         * @memberof MsgLGS.GS2LConnectAuth
+         * @instance
+         */
+        GS2LConnectAuth.prototype.serverId = 0;
+
+        /**
+         * GS2LConnectAuth serverName.
+         * @member {string} serverName
+         * @memberof MsgLGS.GS2LConnectAuth
+         * @instance
+         */
+        GS2LConnectAuth.prototype.serverName = "";
+
+        /**
+         * Creates a new GS2LConnectAuth instance using the specified properties.
+         * @function create
+         * @memberof MsgLGS.GS2LConnectAuth
+         * @static
+         * @param {MsgLGS.IGS2LConnectAuth=} [properties] Properties to set
+         * @returns {MsgLGS.GS2LConnectAuth} GS2LConnectAuth instance
+         */
+        GS2LConnectAuth.create = function create(properties) {
+            return new GS2LConnectAuth(properties);
+        };
+
+        /**
+         * Encodes the specified GS2LConnectAuth message. Does not implicitly {@link MsgLGS.GS2LConnectAuth.verify|verify} messages.
+         * @function encode
+         * @memberof MsgLGS.GS2LConnectAuth
+         * @static
+         * @param {MsgLGS.IGS2LConnectAuth} message GS2LConnectAuth message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        GS2LConnectAuth.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.ip != null && message.hasOwnProperty("ip"))
+                writer.uint32(/* id 1, wireType 2 =*/10).string(message.ip);
+            if (message.serverId != null && message.hasOwnProperty("serverId"))
+                writer.uint32(/* id 2, wireType 0 =*/16).int32(message.serverId);
+            if (message.serverName != null && message.hasOwnProperty("serverName"))
+                writer.uint32(/* id 3, wireType 2 =*/26).string(message.serverName);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified GS2LConnectAuth message, length delimited. Does not implicitly {@link MsgLGS.GS2LConnectAuth.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof MsgLGS.GS2LConnectAuth
+         * @static
+         * @param {MsgLGS.IGS2LConnectAuth} message GS2LConnectAuth message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        GS2LConnectAuth.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a GS2LConnectAuth message from the specified reader or buffer.
+         * @function decode
+         * @memberof MsgLGS.GS2LConnectAuth
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {MsgLGS.GS2LConnectAuth} GS2LConnectAuth
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        GS2LConnectAuth.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.MsgLGS.GS2LConnectAuth();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.ip = reader.string();
+                    break;
+                case 2:
+                    message.serverId = reader.int32();
+                    break;
+                case 3:
+                    message.serverName = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a GS2LConnectAuth message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof MsgLGS.GS2LConnectAuth
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {MsgLGS.GS2LConnectAuth} GS2LConnectAuth
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        GS2LConnectAuth.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        return GS2LConnectAuth;
+    })();
+
+    MsgLGS.L2GSConnectAuth = (function() {
+
+        /**
+         * Properties of a L2GSConnectAuth.
+         * @memberof MsgLGS
+         * @interface IL2GSConnectAuth
+         * @property {boolean|null} [success] L2GSConnectAuth success
+         */
+
+        /**
+         * Constructs a new L2GSConnectAuth.
+         * @memberof MsgLGS
+         * @classdesc Represents a L2GSConnectAuth.
+         * @implements IL2GSConnectAuth
+         * @constructor
+         * @param {MsgLGS.IL2GSConnectAuth=} [properties] Properties to set
+         */
+        function L2GSConnectAuth(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * L2GSConnectAuth success.
+         * @member {boolean} success
+         * @memberof MsgLGS.L2GSConnectAuth
+         * @instance
+         */
+        L2GSConnectAuth.prototype.success = false;
+
+        /**
+         * Creates a new L2GSConnectAuth instance using the specified properties.
+         * @function create
+         * @memberof MsgLGS.L2GSConnectAuth
+         * @static
+         * @param {MsgLGS.IL2GSConnectAuth=} [properties] Properties to set
+         * @returns {MsgLGS.L2GSConnectAuth} L2GSConnectAuth instance
+         */
+        L2GSConnectAuth.create = function create(properties) {
+            return new L2GSConnectAuth(properties);
+        };
+
+        /**
+         * Encodes the specified L2GSConnectAuth message. Does not implicitly {@link MsgLGS.L2GSConnectAuth.verify|verify} messages.
+         * @function encode
+         * @memberof MsgLGS.L2GSConnectAuth
+         * @static
+         * @param {MsgLGS.IL2GSConnectAuth} message L2GSConnectAuth message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        L2GSConnectAuth.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.success != null && message.hasOwnProperty("success"))
+                writer.uint32(/* id 1, wireType 0 =*/8).bool(message.success);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified L2GSConnectAuth message, length delimited. Does not implicitly {@link MsgLGS.L2GSConnectAuth.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof MsgLGS.L2GSConnectAuth
+         * @static
+         * @param {MsgLGS.IL2GSConnectAuth} message L2GSConnectAuth message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        L2GSConnectAuth.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a L2GSConnectAuth message from the specified reader or buffer.
+         * @function decode
+         * @memberof MsgLGS.L2GSConnectAuth
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {MsgLGS.L2GSConnectAuth} L2GSConnectAuth
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        L2GSConnectAuth.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.MsgLGS.L2GSConnectAuth();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.success = reader.bool();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a L2GSConnectAuth message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof MsgLGS.L2GSConnectAuth
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {MsgLGS.L2GSConnectAuth} L2GSConnectAuth
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        L2GSConnectAuth.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        return L2GSConnectAuth;
+    })();
+
+    return MsgLGS;
 })();
 
 $root.TestPackage2 = (function() {

@@ -77,8 +77,142 @@ export namespace MsgBase {
     }
 }
 
-/** Namespace MsgCS. */
-export namespace MsgCS {
+/** Namespace MsgGSC. */
+export namespace MsgGSC {
+
+    /** Properties of a C2GSConnect. */
+    interface IC2GSConnect {
+
+        /** C2GSConnect ip */
+        ip?: (string|null);
+
+        /** C2GSConnect gameVersion */
+        gameVersion?: (string|null);
+    }
+
+    /** Represents a C2GSConnect. */
+    class C2GSConnect implements IC2GSConnect {
+
+        /**
+         * Constructs a new C2GSConnect.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: MsgGSC.IC2GSConnect);
+
+        /** C2GSConnect ip. */
+        public ip: string;
+
+        /** C2GSConnect gameVersion. */
+        public gameVersion: string;
+
+        /**
+         * Creates a new C2GSConnect instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns C2GSConnect instance
+         */
+        public static create(properties?: MsgGSC.IC2GSConnect): MsgGSC.C2GSConnect;
+
+        /**
+         * Encodes the specified C2GSConnect message. Does not implicitly {@link MsgGSC.C2GSConnect.verify|verify} messages.
+         * @param message C2GSConnect message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: MsgGSC.IC2GSConnect, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified C2GSConnect message, length delimited. Does not implicitly {@link MsgGSC.C2GSConnect.verify|verify} messages.
+         * @param message C2GSConnect message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: MsgGSC.IC2GSConnect, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a C2GSConnect message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns C2GSConnect
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): MsgGSC.C2GSConnect;
+
+        /**
+         * Decodes a C2GSConnect message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns C2GSConnect
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): MsgGSC.C2GSConnect;
+    }
+
+    /** Properties of a GS2CConnect. */
+    interface IGS2CConnect {
+
+        /** GS2CConnect success */
+        success?: (boolean|null);
+    }
+
+    /** Represents a GS2CConnect. */
+    class GS2CConnect implements IGS2CConnect {
+
+        /**
+         * Constructs a new GS2CConnect.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: MsgGSC.IGS2CConnect);
+
+        /** GS2CConnect success. */
+        public success: boolean;
+
+        /**
+         * Creates a new GS2CConnect instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns GS2CConnect instance
+         */
+        public static create(properties?: MsgGSC.IGS2CConnect): MsgGSC.GS2CConnect;
+
+        /**
+         * Encodes the specified GS2CConnect message. Does not implicitly {@link MsgGSC.GS2CConnect.verify|verify} messages.
+         * @param message GS2CConnect message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: MsgGSC.IGS2CConnect, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified GS2CConnect message, length delimited. Does not implicitly {@link MsgGSC.GS2CConnect.verify|verify} messages.
+         * @param message GS2CConnect message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: MsgGSC.IGS2CConnect, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a GS2CConnect message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns GS2CConnect
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): MsgGSC.GS2CConnect;
+
+        /**
+         * Decodes a GS2CConnect message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns GS2CConnect
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): MsgGSC.GS2CConnect;
+    }
+}
+
+/** Namespace MsgLC. */
+export namespace MsgLC {
 
     /** Properties of a C2LLogin. */
     interface IC2LLogin {
@@ -97,7 +231,7 @@ export namespace MsgCS {
          * Constructs a new C2LLogin.
          * @param [properties] Properties to set
          */
-        constructor(properties?: MsgCS.IC2LLogin);
+        constructor(properties?: MsgLC.IC2LLogin);
 
         /** C2LLogin sAccount. */
         public sAccount: string;
@@ -110,23 +244,23 @@ export namespace MsgCS {
          * @param [properties] Properties to set
          * @returns C2LLogin instance
          */
-        public static create(properties?: MsgCS.IC2LLogin): MsgCS.C2LLogin;
+        public static create(properties?: MsgLC.IC2LLogin): MsgLC.C2LLogin;
 
         /**
-         * Encodes the specified C2LLogin message. Does not implicitly {@link MsgCS.C2LLogin.verify|verify} messages.
+         * Encodes the specified C2LLogin message. Does not implicitly {@link MsgLC.C2LLogin.verify|verify} messages.
          * @param message C2LLogin message or plain object to encode
          * @param [writer] Writer to encode to
          * @returns Writer
          */
-        public static encode(message: MsgCS.IC2LLogin, writer?: $protobuf.Writer): $protobuf.Writer;
+        public static encode(message: MsgLC.IC2LLogin, writer?: $protobuf.Writer): $protobuf.Writer;
 
         /**
-         * Encodes the specified C2LLogin message, length delimited. Does not implicitly {@link MsgCS.C2LLogin.verify|verify} messages.
+         * Encodes the specified C2LLogin message, length delimited. Does not implicitly {@link MsgLC.C2LLogin.verify|verify} messages.
          * @param message C2LLogin message or plain object to encode
          * @param [writer] Writer to encode to
          * @returns Writer
          */
-        public static encodeDelimited(message: MsgCS.IC2LLogin, writer?: $protobuf.Writer): $protobuf.Writer;
+        public static encodeDelimited(message: MsgLC.IC2LLogin, writer?: $protobuf.Writer): $protobuf.Writer;
 
         /**
          * Decodes a C2LLogin message from the specified reader or buffer.
@@ -136,7 +270,7 @@ export namespace MsgCS {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): MsgCS.C2LLogin;
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): MsgLC.C2LLogin;
 
         /**
          * Decodes a C2LLogin message from the specified reader or buffer, length delimited.
@@ -145,7 +279,7 @@ export namespace MsgCS {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): MsgCS.C2LLogin;
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): MsgLC.C2LLogin;
     }
 
     /** Properties of a L2CLogin. */
@@ -162,7 +296,7 @@ export namespace MsgCS {
          * Constructs a new L2CLogin.
          * @param [properties] Properties to set
          */
-        constructor(properties?: MsgCS.IL2CLogin);
+        constructor(properties?: MsgLC.IL2CLogin);
 
         /** L2CLogin bNeedCreate. */
         public bNeedCreate: boolean;
@@ -172,23 +306,23 @@ export namespace MsgCS {
          * @param [properties] Properties to set
          * @returns L2CLogin instance
          */
-        public static create(properties?: MsgCS.IL2CLogin): MsgCS.L2CLogin;
+        public static create(properties?: MsgLC.IL2CLogin): MsgLC.L2CLogin;
 
         /**
-         * Encodes the specified L2CLogin message. Does not implicitly {@link MsgCS.L2CLogin.verify|verify} messages.
+         * Encodes the specified L2CLogin message. Does not implicitly {@link MsgLC.L2CLogin.verify|verify} messages.
          * @param message L2CLogin message or plain object to encode
          * @param [writer] Writer to encode to
          * @returns Writer
          */
-        public static encode(message: MsgCS.IL2CLogin, writer?: $protobuf.Writer): $protobuf.Writer;
+        public static encode(message: MsgLC.IL2CLogin, writer?: $protobuf.Writer): $protobuf.Writer;
 
         /**
-         * Encodes the specified L2CLogin message, length delimited. Does not implicitly {@link MsgCS.L2CLogin.verify|verify} messages.
+         * Encodes the specified L2CLogin message, length delimited. Does not implicitly {@link MsgLC.L2CLogin.verify|verify} messages.
          * @param message L2CLogin message or plain object to encode
          * @param [writer] Writer to encode to
          * @returns Writer
          */
-        public static encodeDelimited(message: MsgCS.IL2CLogin, writer?: $protobuf.Writer): $protobuf.Writer;
+        public static encodeDelimited(message: MsgLC.IL2CLogin, writer?: $protobuf.Writer): $protobuf.Writer;
 
         /**
          * Decodes a L2CLogin message from the specified reader or buffer.
@@ -198,7 +332,7 @@ export namespace MsgCS {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): MsgCS.L2CLogin;
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): MsgLC.L2CLogin;
 
         /**
          * Decodes a L2CLogin message from the specified reader or buffer, length delimited.
@@ -207,7 +341,147 @@ export namespace MsgCS {
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): MsgCS.L2CLogin;
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): MsgLC.L2CLogin;
+    }
+}
+
+/** Namespace MsgLGS. */
+export namespace MsgLGS {
+
+    /** Properties of a GS2LConnectAuth. */
+    interface IGS2LConnectAuth {
+
+        /** GS2LConnectAuth ip */
+        ip?: (string|null);
+
+        /** GS2LConnectAuth serverId */
+        serverId?: (number|null);
+
+        /** GS2LConnectAuth serverName */
+        serverName?: (string|null);
+    }
+
+    /** Represents a GS2LConnectAuth. */
+    class GS2LConnectAuth implements IGS2LConnectAuth {
+
+        /**
+         * Constructs a new GS2LConnectAuth.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: MsgLGS.IGS2LConnectAuth);
+
+        /** GS2LConnectAuth ip. */
+        public ip: string;
+
+        /** GS2LConnectAuth serverId. */
+        public serverId: number;
+
+        /** GS2LConnectAuth serverName. */
+        public serverName: string;
+
+        /**
+         * Creates a new GS2LConnectAuth instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns GS2LConnectAuth instance
+         */
+        public static create(properties?: MsgLGS.IGS2LConnectAuth): MsgLGS.GS2LConnectAuth;
+
+        /**
+         * Encodes the specified GS2LConnectAuth message. Does not implicitly {@link MsgLGS.GS2LConnectAuth.verify|verify} messages.
+         * @param message GS2LConnectAuth message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: MsgLGS.IGS2LConnectAuth, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified GS2LConnectAuth message, length delimited. Does not implicitly {@link MsgLGS.GS2LConnectAuth.verify|verify} messages.
+         * @param message GS2LConnectAuth message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: MsgLGS.IGS2LConnectAuth, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a GS2LConnectAuth message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns GS2LConnectAuth
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): MsgLGS.GS2LConnectAuth;
+
+        /**
+         * Decodes a GS2LConnectAuth message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns GS2LConnectAuth
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): MsgLGS.GS2LConnectAuth;
+    }
+
+    /** Properties of a L2GSConnectAuth. */
+    interface IL2GSConnectAuth {
+
+        /** L2GSConnectAuth success */
+        success?: (boolean|null);
+    }
+
+    /** Represents a L2GSConnectAuth. */
+    class L2GSConnectAuth implements IL2GSConnectAuth {
+
+        /**
+         * Constructs a new L2GSConnectAuth.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: MsgLGS.IL2GSConnectAuth);
+
+        /** L2GSConnectAuth success. */
+        public success: boolean;
+
+        /**
+         * Creates a new L2GSConnectAuth instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns L2GSConnectAuth instance
+         */
+        public static create(properties?: MsgLGS.IL2GSConnectAuth): MsgLGS.L2GSConnectAuth;
+
+        /**
+         * Encodes the specified L2GSConnectAuth message. Does not implicitly {@link MsgLGS.L2GSConnectAuth.verify|verify} messages.
+         * @param message L2GSConnectAuth message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: MsgLGS.IL2GSConnectAuth, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified L2GSConnectAuth message, length delimited. Does not implicitly {@link MsgLGS.L2GSConnectAuth.verify|verify} messages.
+         * @param message L2GSConnectAuth message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: MsgLGS.IL2GSConnectAuth, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a L2GSConnectAuth message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns L2GSConnectAuth
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): MsgLGS.L2GSConnectAuth;
+
+        /**
+         * Decodes a L2GSConnectAuth message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns L2GSConnectAuth
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): MsgLGS.L2GSConnectAuth;
     }
 }
 

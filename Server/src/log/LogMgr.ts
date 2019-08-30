@@ -45,21 +45,22 @@ export class LogMgr {
         return true;
     }
 
-    public Info(content: string, isConsole: boolean = false) {
+    public Info(content: string, isConsole: boolean = true) {
         this.Log(content, isConsole, 'info');
     }
-    public Warn(content: string, isConsole: boolean = false) {
+    public Warn(content: string, isConsole: boolean = true) {
         this.Log(content, isConsole, 'warn');
     }
     public Error(content: string, err: any) {
         let stack: any = null;
-        if(!err) {
+        if(err) {
             stack = err.stack;
         }
         else {
             stack = new Error().stack;
         }
-        this.Log(content + ' 出错堆栈:' + stack, true, 'error');
+        this.Log(content + ' 出错堆栈: ' + stack, true, 'error');
+        debugger;
     }
     // 调试专用
     public Assert(content: string) {

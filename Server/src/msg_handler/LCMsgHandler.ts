@@ -1,7 +1,9 @@
 import { ELCMessageID } from "../../message/msg_define_build";
 import { IMsgHandler } from "./MsgHandler";
 
-
+/**
+ * login与client 之间的消息处理器
+ */
 export class LCMsgHandler implements IMsgHandler {
 
     // 消息数量
@@ -26,10 +28,10 @@ export class LCMsgHandler implements IMsgHandler {
 
         // 初始化msg字典
         let props = Reflect.ownKeys(ELCMessageID);
-        for (let i = 0; i < LCMsgHandler.msgNum; i++) {
-            let index = ELCMessageID.END + 1 + i;
-            let msgKey = props[index].toString();
-            let msgName = parseInt(props[i].toString());
+        for (let i = 0; i <= LCMsgHandler.msgNum; i++) {
+            let index = LCMsgHandler.msgNum + 1 + i;
+            let msgName = props[index].toString();
+            let msgKey = parseInt(props[i].toString());
             this.msgName2Key[msgKey] = msgName;
             this.msgKey2Name[msgName] = msgKey;
         }
@@ -37,7 +39,7 @@ export class LCMsgHandler implements IMsgHandler {
         // 注册处理函数
         this.messageFun[ELCMessageID.C2LLogin] = this.HandleC2LLogin;
 
-        console.log("MessageRegist success!");
+        console.log("LCMsgHandler MessageRegist success!");
     }
 
     // 根据消息ID 获取 消息名字

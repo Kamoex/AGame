@@ -25,8 +25,8 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "test_websocket",
-            "program": "${workspaceFolder}\\ServerBuild\\test_websocket.js",
+            "name": "GameServer",
+            "program": "${workspaceFolder}\\ServerBuild\\src\\net\\GameServer.js",
             "outFiles": [
                 "${workspaceFolder}/**/*.js"
             ]
@@ -34,8 +34,8 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "test_socketio",
-            "program": "${workspaceFolder}\\ServerBuild\\test_socketio.js",
+            "name": "test",
+            "program": "${workspaceFolder}\\ServerBuild\\test.js",
             "outFiles": [
                 "${workspaceFolder}/**/*.js"
             ]
