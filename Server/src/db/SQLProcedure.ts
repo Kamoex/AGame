@@ -1,5 +1,5 @@
 
-// 检查表中字段是否存在
+/** 检查表中字段是否存在 */
 const SQL_FUN_ADD_COLUMN = 'ADD_COLUMN';
 export const SQL_FUN_DROP_ADD_COLUMN = `DROP PROCEDURE IF EXISTS ${SQL_FUN_ADD_COLUMN}`;
 export const SQL_FUN_CREATE_ADD_COLUMN = 

@@ -1,30 +1,26 @@
 import { ELGSMessageID } from "../../message/msg_define_build";
-import { IMsgHandler } from "./MsgHandler";
+import { MsgHandler } from "./MsgHandler";
+import { MsgLGS, MsgBase } from "../../message/message_server";
+import { LoginServer } from "../LoginServer";
 
 
 /**
  * login与gameserver之间的消息处理器
  */
-export class LGSMsgHandler implements IMsgHandler {
+export class LGSMsgHandler extends MsgHandler {
 
-    // 消息数量
+    /** 消息数量 */ 
     public static readonly msgNum: number = ELGSMessageID.END - ELGSMessageID.START;
-    // msgName: msgkey
-    private msgName2Key: Object = {};
-    // msgkey: msgName
-    private msgKey2Name: Object = {};
-    // msgName: msgFunction
-    private messageFun: any = {};
-    
+
     private static ins: LGSMsgHandler = null;
-    private constructor() {}
+    private constructor() { super() }
     public static GetInstance(): LGSMsgHandler {
         if (!LGSMsgHandler.ins)
             LGSMsgHandler.ins = new LGSMsgHandler();
         return LGSMsgHandler.ins;
     }
 
-    // 注册消息
+    /** 注册消息 */ 
     public MessageRegist() {
 
         // 初始化msg字典
@@ -33,33 +29,31 @@ export class LGSMsgHandler implements IMsgHandler {
             let index = LGSMsgHandler.msgNum + 1 + i;
             let msgName = props[index].toString();
             let msgKey = parseInt(props[i].toString());
-            this.msgName2Key[msgKey] = msgName;
-            this.msgKey2Name[msgName] = msgKey;
+            this.msgKey2Name[msgKey] = msgName;
+            this.msgName2Key[msgName] = msgKey;
         }
-        
+
         // 注册处理函数
-        // this.messageFun[EGSCMessageID.C2LLogin] = this.HandleC2LLogin;
+        // gameserver请求连接login
+        this.messageFun[ELGSMessageID.GS2LConnectAuth] = this.HandleGS2LConnectAuth;
 
         console.log("LGSMsgHandler MessageRegist success!");
     }
 
-    // 根据消息ID 获取 消息名字
-    public GetMsgName(msgKey: number) {
-        return this.msgKey2Name[msgKey];
+    /** 消息处理 */
+    public MessageHandle(recvData: any) {
+        let recvMsg = MsgBase.MessageHead.decode(recvData);
+        let msgID: number = recvMsg.nMsgID;
+        // TODO 检测下消息长度 看是否过长
+        let msgLen: number = recvMsg.nMsgLength;
+
+        let msgName = this.GetMsgName(msgID);
+        let msgBody: any = MsgLGS[msgName].decode(recvMsg.data);
+        this.messageFun[msgID](msgBody);
     }
 
-    // 根据消息名字 获取 消息ID
-    public GetMsgKey(msgName: string) {
-        return this.msgName2Key[msgName];
+    /** gameserver请求连接login */
+    private HandleGS2LConnectAuth(msg: any) {
+        LoginServer.GetInstance().OnGameServerConnected(msg as MsgLGS.GS2LConnectAuth)
     }
-
-    // 消息处理
-    public MessageHandle(msgID: number, msg: any) {
-        this.messageFun[msgID](msg);
-    }
-
-    // public HandleC2LLogin(msg: any) {
-
-    //     console.log("handle msg!!!");
-    // }
 }

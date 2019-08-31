@@ -62,7 +62,7 @@ export class LogMgr {
         this.Log(content + ' 出错堆栈: ' + stack, true, 'error');
         debugger;
     }
-    // 调试专用
+    /** 调试专用 */
     public Assert(content: string) {
         this.Log(content, true, 'debug');
     }

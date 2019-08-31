@@ -39,20 +39,20 @@ export class MongoDBMgr {
         }
     }
 
-    // 创建LOG表
+    /** 创建LOG */
     private async CreateLogCollections(colName: string) {
         await this.db.createCollection(colName, {});
     }
 
-    // 删除LOG表
+    /** 删除LOG */
     private async DropLogCollections(colName: string) {
         let res: boolean = await this.db.dropCollection(colName);
-        if(MongoAssert(res, 'DropLogCollections failed!!! colName: ' + colName)) 
+        if (MongoAssert(res, 'DropLogCollections failed!!! colName: ' + colName))
             return;
         MongoLog.Info("DropLogCollections: " + colName + " op_res: " + res)
     }
 
-    // 插入LOG
+    /** 插入LOG */
     public LogInsert(colName: string, obj: any, cb: (err, res) => void) {
         let col: mongodb.Collection = this.db.collection(colName);
         col.insertOne(obj, cb);

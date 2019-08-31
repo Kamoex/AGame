@@ -1,29 +1,24 @@
 import { EGSCMessageID } from "../../message/msg_define_build";
-import { IMsgHandler } from "./MsgHandler";
+import { MsgHandler } from "./MsgHandler";
+import { MsgBase, MsgGSC } from "../../message/message_server";
 
 /**
  * gameserver与client之间的消息处理器
  */
-export class GSCMsgHandler implements IMsgHandler {
+export class GSCMsgHandler extends MsgHandler {
 
-    // 消息数量
+    /** 消息数量 */ 
     public static readonly msgNum: number = EGSCMessageID.END - EGSCMessageID.START;
-    // msgName: msgkey
-    private msgName2Key: Object = {};
-    // msgkey: msgName
-    private msgKey2Name: Object = {};
-    // msgName: msgFunction
-    private messageFun: any = {};
-    
+
     private static ins: GSCMsgHandler = null;
-    private constructor() {}
+    private constructor() { super();}
     public static GetInstance(): GSCMsgHandler {
         if (!GSCMsgHandler.ins)
             GSCMsgHandler.ins = new GSCMsgHandler();
         return GSCMsgHandler.ins;
     }
 
-    // 注册消息
+    /** 注册消息 */
     public MessageRegist() {
 
         // 初始化msg字典
@@ -32,8 +27,8 @@ export class GSCMsgHandler implements IMsgHandler {
             let index = GSCMsgHandler.msgNum + 1 + i;
             let msgName = props[index].toString();
             let msgKey = parseInt(props[i].toString());
-            this.msgName2Key[msgKey] = msgName;
-            this.msgKey2Name[msgName] = msgKey;
+            this.msgKey2Name[msgKey] = msgName;
+            this.msgName2Key[msgName] = msgKey;
         }
         
         // 注册处理函数
@@ -42,23 +37,19 @@ export class GSCMsgHandler implements IMsgHandler {
         console.log("GSCMsgHandler MessageRegist success!");
     }
 
-    // 根据消息ID 获取 消息名字
-    public GetMsgName(msgKey: number) {
-        return this.msgKey2Name[msgKey];
-    }
+    /** 消息处理 */
+    public MessageHandle(recvData: any) {
+        let recvMsg = MsgBase.MessageHead.decode(recvData);
+        let msgID: number = recvMsg.nMsgID;
+        let msgLen: number = recvMsg.nMsgLength;
 
-    // 根据消息名字 获取 消息ID
-    public GetMsgKey(msgName: string) {
-        return this.msgName2Key[msgName];
-    }
-
-    // 消息处理
-    public MessageHandle(msgID: number, msg: any) {
-        this.messageFun[msgID](msg);
+        let msgName = this.GetMsgName(msgID);
+        let msgBody: any = MsgGSC[msgName].decode(recvMsg.data);
+        // TODO 检测下消息长度 看是否过长
+        this.messageFun[msgID](msgBody);
     }
 
     // public HandleC2LLogin(msg: any) {
-
     //     console.log("handle msg!!!");
     // }
 }

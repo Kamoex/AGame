@@ -17,7 +17,10 @@
             "type": "node",
             "request": "launch",
             "name": "LoginServer",
-            "program": "${workspaceFolder}\\ServerBuild\\src\\net\\LoginServer.js",
+            "program": "${workspaceFolder}\\ServerBuild\\src\\LoginServer.js",
+            "args": [
+                "st_lg"
+            ],
             "outFiles": [
                 "${workspaceFolder}/**/*.js"
             ]
@@ -26,7 +29,10 @@
             "type": "node",
             "request": "launch",
             "name": "GameServer",
-            "program": "${workspaceFolder}\\ServerBuild\\src\\net\\GameServer.js",
+            "program": "${workspaceFolder}\\ServerBuild\\src\\GameServer.js",
+            "args": [
+                "st_gs"
+            ],
             "outFiles": [
                 "${workspaceFolder}/**/*.js"
             ]
@@ -35,7 +41,7 @@
             "type": "node",
             "request": "launch",
             "name": "test",
-            "program": "${workspaceFolder}\\ServerBuild\\test.js",
+            "program": "${workspaceFolder}\\ServerBuild\\src\\test.js",
             "outFiles": [
                 "${workspaceFolder}/**/*.js"
             ]

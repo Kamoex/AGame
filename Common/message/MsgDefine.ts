@@ -6,7 +6,7 @@
  */
 
 
-// login_server与game_server的消息
+/** login_server与game_server的消息 */
 export enum ELGSMessageID {
     START = 0,
     GS2LConnectAuth,    // gameserver请求连接login
@@ -14,7 +14,7 @@ export enum ELGSMessageID {
     END
 }
 
-// login_server与client的消息
+/** login_server与client的消息 */
 export enum ELCMessageID {
     START = ELGSMessageID.END,
     C2LLogin,       // client请求连接login
@@ -22,7 +22,7 @@ export enum ELCMessageID {
     END
 }
 
-// game_server与client的消息
+/** game_server与client的消息 */
 export enum EGSCMessageID {
     START = ELCMessageID.END,
     C2GSConnect,    // 客户端请求连接gameserver

@@ -8,13 +8,13 @@ export class JsonLoader {
     constructor() {
     }
 
-    // 清空数据
+    /** 清空数据 */
     protected Clear(): void {
         this.jsonData.length = 0;
         this.jsonData = null;
     }
 
-    // 读取配置表
+    /** 读取配置表 */
     protected LoadTable(tblname: string): any {
         // var url: string = __dirname;
         // url = url.split('\AJS')[0];

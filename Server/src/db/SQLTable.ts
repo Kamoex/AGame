@@ -1,5 +1,5 @@
 
-// 创建账号表 account
+/** 创建账号表 account */
 export const SQL_TBL_ACCOUNT = 'create table if not exists account(\
 	account_id int(11) unsigned not null comment "账号ID 服务器ID*1000000 递增",\
 	name varchar(255) not null default "0" comment "用户名",\
