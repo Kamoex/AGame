@@ -16,7 +16,7 @@ export class MongoDBMgr {
             mongourl = mongourl + host + ':' + port + '/admin';
 
             this.mongo = await mongodb.MongoClient.connect(mongourl, {
-                authSource: databass,
+                authSource: 'admin',
                 useNewUrlParser: true,
                 autoReconnect: true,    // 自动重连
             });

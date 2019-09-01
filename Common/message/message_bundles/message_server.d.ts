@@ -354,11 +354,17 @@ export namespace MsgLGS {
         /** GS2LConnectAuth ip */
         ip?: (string|null);
 
+        /** GS2LConnectAuth port */
+        port?: (number|null);
+
         /** GS2LConnectAuth serverId */
         serverId?: (number|null);
 
         /** GS2LConnectAuth serverName */
         serverName?: (string|null);
+
+        /** GS2LConnectAuth token */
+        token?: (string|null);
     }
 
     /** Represents a GS2LConnectAuth. */
@@ -373,11 +379,17 @@ export namespace MsgLGS {
         /** GS2LConnectAuth ip. */
         public ip: string;
 
+        /** GS2LConnectAuth port. */
+        public port: number;
+
         /** GS2LConnectAuth serverId. */
         public serverId: number;
 
         /** GS2LConnectAuth serverName. */
         public serverName: string;
+
+        /** GS2LConnectAuth token. */
+        public token: string;
 
         /**
          * Creates a new GS2LConnectAuth instance using the specified properties.

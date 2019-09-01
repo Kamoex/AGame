@@ -35,7 +35,7 @@ export class LGSMsgHandler extends MsgHandler {
 
         // 注册处理函数
         // gameserver请求连接login
-        this.messageFun[ELGSMessageID.GS2LConnectAuth] = this.HandleGS2LConnectAuth;
+        // this.messageFun[ELGSMessageID.GS2LConnectAuth] = this.HandleGS2LConnectAuth;
 
         console.log("LGSMsgHandler MessageRegist success!");
     }

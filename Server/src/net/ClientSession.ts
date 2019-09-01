@@ -1,5 +1,5 @@
 import * as io_client from 'socket.io-client';
-import { SOCKET_IO_CONNECT, SOCKET_IO_DISCONNECT, SOCKET_IO_MESSAGE, SOCKET_IO_ERROR, SOCKET_IO_CONNECT_ERROR, SOCKET_IO_PING, SOCKET_IO_PONG } from '../common/CommonDefine';
+import { SOCKET_IO_CONNECT, SOCKET_IO_DISCONNECT, SOCKET_IO_MESSAGE, SOCKET_IO_ERROR, SOCKET_IO_CONNECT_ERROR, SOCKET_IO_PING, SOCKET_IO_PONG, SOCKET_IO_FIRST_MSG } from '../common/CommonDefine';
 import { LogMgr } from '../log/LogMgr';
 import { MsgHandler } from '../msg_handler/MsgHandler';
 import { MsgBase } from '../../message/message_server';
@@ -146,6 +146,16 @@ export class ClientSession {
     public Send(data: any) {
         try {
             this.sock.send(data);
+        } catch (error) {
+            this.sock.close();
+            this.logger.Error(data, error);
+        }
+    }
+
+    /** 连接成功后发送的第一条消息 */
+    public SendFirstMsg(data: any) {
+        try {
+            this.sock.emit(SOCKET_IO_FIRST_MSG, data);
         } catch (error) {
             this.sock.close();
             this.logger.Error(data, error);

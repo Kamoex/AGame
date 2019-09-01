@@ -82,7 +82,7 @@ export class GameServer {
     }
 
     /** 向loginserver发送消息 */
-    private Send2Login(data: any) {
+    private Send2Login(data: any, firstMsg: boolean = false) {
         let msgName: string;
         try {
             // 编码消息体
@@ -96,7 +96,12 @@ export class GameServer {
             msgHead.data = buffer;
             // 编码消息头
             let msg: Uint8Array = MsgBase.MessageHead.encode(msgHead).finish();
-            this.loginSession.Send(msg)
+            if(firstMsg) {
+                this.loginSession.SendFirstMsg(msg);
+            }
+            else {
+                this.loginSession.Send(msg)
+            }
         } catch (error) {
             GameLog.Error('Send2Login msgName: ' + msgName, error);            
         }
@@ -113,9 +118,11 @@ export class GameServer {
     public RegistGameServerToLogin() {
         let msg: MsgLGS.GS2LConnectAuth = MsgLGS.GS2LConnectAuth.create();
         msg.ip = GameServerCfg.ip;
+        msg.port = GameServerCfg.port;
         msg.serverId = GameServerCfg.server_id;
         msg.serverName = GameServerCfg.server_name;
-        this.Send2Login(msg);
+        msg.token = "";
+        this.Send2Login(msg, true);
     }
 }
 

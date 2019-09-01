@@ -4,6 +4,7 @@ import * as os from 'os'
 /** SOKCET.IO连接信息 */ 
 export const SOCKET_IO_CONNECT        = "connect";
 export const SOCKET_IO_MESSAGE        = "message";
+export const SOCKET_IO_FIRST_MSG      = "first_msg";     // 自定义消息 首次连接时 客户端发送给服务器的
 export const SOCKET_IO_DISCONNECT     = "disconnect";
 export const SOCKET_IO_PING           = "ping";          // 发送心跳包
 export const SOCKET_IO_PONG           = "pong";          // 收到心跳包

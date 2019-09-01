@@ -4,8 +4,9 @@ import { ServerSession } from "./net/ServerSession";
 import { LCMsgHandler } from "./msg_handler/LCMsgHandler";
 import { LGSMsgHandler } from "./msg_handler/LGSMsgHandler";
 import { LoginLog } from "./log/LogMgr";
-import { MsgLGS } from "./../message/message_server";
-import {Login} from './logic/Login/LoginServerData'
+import { MsgLGS, MsgBase } from "./../message/message_server";
+import { Login } from './logic/Login/LoginServerData'
+import { SOCKET_IO_FIRST_MSG, EDBOP } from "./common/CommonDefine";
 
 
 export class LoginServer {
@@ -37,6 +38,7 @@ export class LoginServer {
         // 初始化session
         this.clSession = new ServerSession(LoginServerCfg.server_id, LoginServerCfg.server_name, this.clMsgHandler, LoginLog);
         this.gsSession = new ServerSession(LoginServerCfg.server_id, LoginServerCfg.server_name, this.gsMsgHandler, LoginLog);
+        this.gsSession.SetEventFun(SOCKET_IO_FIRST_MSG, this.OnGameServerConnected.bind(this))
     }
 
     /** 启动服务器 */
@@ -46,10 +48,20 @@ export class LoginServer {
     }
 
     /** 接收到gameserver的连接 */
-    public OnGameServerConnected(msg: MsgLGS.GS2LConnectAuth) {
+    public OnGameServerConnected(socket: SocketIO.Socket, data: any) {
+        let recvMsg: MsgBase.MessageHead = MsgBase.MessageHead.decode(data);
+        let recvData: MsgLGS.GS2LConnectAuth = MsgLGS.GS2LConnectAuth.decode(recvMsg.data)
+
         let gsInfo: Login.GSInfo = new Login.GSInfo();
-        gsInfo.id = msg.serverId;
+        gsInfo.sockID = socket.id;
+        gsInfo.ip = socket.handshake.address;
+        gsInfo.id = recvData.serverId;
+        gsInfo.port = recvData.port;
+        gsInfo.name = recvData.serverName;
+        gsInfo.token = recvData.token;
+        gsInfo.login_time = new Date().getTime();
         this.gameServers.push(gsInfo);
+
     }
 
 }
@@ -58,7 +70,7 @@ let paramAry = process.argv.slice(2);
 
 /** 启动loginserver */
 async function StartLoginServer(param: string) {
-    if(param != "st_lg") {
+    if (param != "st_lg") {
         return;
     }
     try {

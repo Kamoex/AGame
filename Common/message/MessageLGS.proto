@@ -9,8 +9,10 @@ syntax = "proto3";
 // 请求连接
 message GS2LConnectAuth {
     string ip = 1;
-    int32 server_id = 2;
-    string server_name = 3;
+    int32 port = 2;
+    int32 server_id = 3;
+    string server_name = 4;
+    string token = 5;
 }
 // 请求连接返回
 message L2GSConnectAuth {

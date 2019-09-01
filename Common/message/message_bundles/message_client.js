@@ -724,8 +724,10 @@ $root.MsgLGS = (function() {
          * @memberof MsgLGS
          * @interface IGS2LConnectAuth
          * @property {string|null} [ip] GS2LConnectAuth ip
+         * @property {number|null} [port] GS2LConnectAuth port
          * @property {number|null} [server_id] GS2LConnectAuth server_id
          * @property {string|null} [server_name] GS2LConnectAuth server_name
+         * @property {string|null} [token] GS2LConnectAuth token
          */
 
         /**
@@ -752,6 +754,14 @@ $root.MsgLGS = (function() {
         GS2LConnectAuth.prototype.ip = "";
 
         /**
+         * GS2LConnectAuth port.
+         * @member {number} port
+         * @memberof MsgLGS.GS2LConnectAuth
+         * @instance
+         */
+        GS2LConnectAuth.prototype.port = 0;
+
+        /**
          * GS2LConnectAuth server_id.
          * @member {number} server_id
          * @memberof MsgLGS.GS2LConnectAuth
@@ -766,6 +776,14 @@ $root.MsgLGS = (function() {
          * @instance
          */
         GS2LConnectAuth.prototype.server_name = "";
+
+        /**
+         * GS2LConnectAuth token.
+         * @member {string} token
+         * @memberof MsgLGS.GS2LConnectAuth
+         * @instance
+         */
+        GS2LConnectAuth.prototype.token = "";
 
         /**
          * Creates a new GS2LConnectAuth instance using the specified properties.
@@ -793,10 +811,14 @@ $root.MsgLGS = (function() {
                 writer = $Writer.create();
             if (message.ip != null && message.hasOwnProperty("ip"))
                 writer.uint32(/* id 1, wireType 2 =*/10).string(message.ip);
+            if (message.port != null && message.hasOwnProperty("port"))
+                writer.uint32(/* id 2, wireType 0 =*/16).int32(message.port);
             if (message.server_id != null && message.hasOwnProperty("server_id"))
-                writer.uint32(/* id 2, wireType 0 =*/16).int32(message.server_id);
+                writer.uint32(/* id 3, wireType 0 =*/24).int32(message.server_id);
             if (message.server_name != null && message.hasOwnProperty("server_name"))
-                writer.uint32(/* id 3, wireType 2 =*/26).string(message.server_name);
+                writer.uint32(/* id 4, wireType 2 =*/34).string(message.server_name);
+            if (message.token != null && message.hasOwnProperty("token"))
+                writer.uint32(/* id 5, wireType 2 =*/42).string(message.token);
             return writer;
         };
 
@@ -835,10 +857,16 @@ $root.MsgLGS = (function() {
                     message.ip = reader.string();
                     break;
                 case 2:
-                    message.server_id = reader.int32();
+                    message.port = reader.int32();
                     break;
                 case 3:
+                    message.server_id = reader.int32();
+                    break;
+                case 4:
                     message.server_name = reader.string();
+                    break;
+                case 5:
+                    message.token = reader.string();
                     break;
                 default:
                     reader.skipType(tag & 7);

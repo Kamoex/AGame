@@ -356,11 +356,17 @@ declare namespace MsgLGS {
         /** GS2LConnectAuth ip */
         ip?: (string|null);
 
+        /** GS2LConnectAuth port */
+        port?: (number|null);
+
         /** GS2LConnectAuth server_id */
         server_id?: (number|null);
 
         /** GS2LConnectAuth server_name */
         server_name?: (string|null);
+
+        /** GS2LConnectAuth token */
+        token?: (string|null);
     }
 
     /** Represents a GS2LConnectAuth. */
@@ -375,11 +381,17 @@ declare namespace MsgLGS {
         /** GS2LConnectAuth ip. */
         public ip: string;
 
+        /** GS2LConnectAuth port. */
+        public port: number;
+
         /** GS2LConnectAuth server_id. */
         public server_id: number;
 
         /** GS2LConnectAuth server_name. */
         public server_name: string;
+
+        /** GS2LConnectAuth token. */
+        public token: string;
 
         /**
          * Creates a new GS2LConnectAuth instance using the specified properties.
