@@ -54,6 +54,6 @@ export class LGSMsgHandler extends MsgHandler {
 
     /** gameserver请求连接login */
     private HandleGS2LConnectAuth(msg: any) {
-        LoginServer.GetInstance().OnGameServerConnected(msg as MsgLGS.GS2LConnectAuth)
+        // LoginServer.GetInstance().OnGameServerConnected(msg as MsgLGS.GS2LConnectAuth)
     }
 }
