@@ -1,0 +1,93 @@
+{
+    "frames": {
+        "btn_back_login.png": {
+            "frame": {
+                "h": 34,
+                "idx": 0,
+                "w": 121,
+                "x": 103,
+                "y": 93
+            },
+            "sourceSize": {
+                "h": 34,
+                "w": 121
+            },
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0
+            }
+        },
+        "btn_login.png": {
+            "frame": {
+                "h": 57,
+                "idx": 0,
+                "w": 104,
+                "x": 0,
+                "y": 0
+            },
+            "sourceSize": {
+                "h": 57,
+                "w": 104
+            },
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0
+            }
+        },
+        "btn_regist.png": {
+            "frame": {
+                "h": 50,
+                "idx": 0,
+                "w": 105,
+                "x": 105,
+                "y": 42
+            },
+            "sourceSize": {
+                "h": 50,
+                "w": 105
+            },
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0
+            }
+        },
+        "btn_regist_confirm.png": {
+            "frame": {
+                "h": 41,
+                "idx": 0,
+                "w": 134,
+                "x": 105,
+                "y": 0
+            },
+            "sourceSize": {
+                "h": 41,
+                "w": 134
+            },
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0
+            }
+        },
+        "btn_try_play.png": {
+            "frame": {
+                "h": 57,
+                "idx": 0,
+                "w": 102,
+                "x": 0,
+                "y": 58
+            },
+            "sourceSize": {
+                "h": 57,
+                "w": 102
+            },
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0
+            }
+        }
+    },
+    "meta": {
+        "image": "login.png",
+        "prefix": "login/"
+    }
+}

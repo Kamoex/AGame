@@ -11,9 +11,8 @@ window.screenOrientation = "sensor_landscape";
 loadLib("libs/laya.core.js")
 loadLib("libs/laya.ui.js")
 loadLib("libs/laya.physics.js")
-loadLib("libs/socket.io-client.js")
 loadLib("libs/protobuf-library.js")
-// loadLib("libs/protobuf-bundles.js")
 loadLib("libs/message_client.min.js")
+loadLib("libs/socket.io-client.js")
 //-----libs-end-------
 loadLib("js/bundle.js");

@@ -1,10 +1,99 @@
 (function () {
     'use strict';
 
+    var REG = Laya.ClassUtils.regClass;
+    var ui;
+    (function (ui) {
+        class gameUI extends Laya.View {
+            constructor() { super(); }
+            createChildren() {
+                super.createChildren();
+                this.loadScene("game");
+            }
+        }
+        ui.gameUI = gameUI;
+        REG("ui.gameUI", gameUI);
+        class loginUI extends Laya.View {
+            constructor() { super(); }
+            createChildren() {
+                super.createChildren();
+                this.loadScene("login");
+            }
+        }
+        ui.loginUI = loginUI;
+        REG("ui.loginUI", loginUI);
+        class registUI extends Laya.View {
+            constructor() { super(); }
+            createChildren() {
+                super.createChildren();
+                this.loadScene("regist");
+            }
+        }
+        ui.registUI = registUI;
+        REG("ui.registUI", registUI);
+    })(ui || (ui = {}));
+
+    class GameUI extends ui.gameUI {
+        constructor() {
+            super();
+            GameUI.instance = this;
+        }
+        onEnable() {
+            this.back_login.on(Laya.Event.CLICK, this, this.Back2Login);
+        }
+        Back2Login() {
+            Laya.Scene.open("login.scene");
+        }
+    }
+    GameUI.instance = null;
+
+    class LoginUI extends ui.loginUI {
+        constructor() {
+            super();
+            LoginUI.instance = this;
+        }
+        onEnable() {
+            this.btn_login.on(Laya.Event.CLICK, this, this.LoginGame);
+            this.btn_regist.on(Laya.Event.CLICK, this, this.RegistAccount);
+            this.btn_try.on(Laya.Event.CLICK, this, this.TryGame);
+        }
+        LoginGame() {
+            console.log("login");
+        }
+        RegistAccount() {
+            Laya.Scene.open("regist.scene");
+        }
+        TryGame() {
+            Laya.Scene.open("game.scene");
+        }
+    }
+    LoginUI.instance = null;
+
+    class RegistUI extends ui.registUI {
+        constructor() {
+            super();
+            RegistUI.instance = this;
+        }
+        onEnable() {
+            this.btn_reg_confirm.on(Laya.Event.CLICK, this, this.RegistConfirm);
+            this.btn_back_login.on(Laya.Event.CLICK, this, this.Back2Login);
+        }
+        Back2Login() {
+            Laya.Scene.open("login.scene");
+        }
+        RegistConfirm() {
+            console.log("register");
+        }
+    }
+    RegistUI.instance = null;
+
     class GameConfig {
         constructor() { }
         static init() {
             var reg = Laya.ClassUtils.regClass;
+            reg("logic/GameUI.ts", GameUI);
+            reg("logic/LoginUI.ts", LoginUI);
+            reg("logic/RegistUI.ts", RegistUI);
         }
     }
     GameConfig.width = 640;
@@ -13,7 +102,7 @@
     GameConfig.screenMode = "none";
     GameConfig.alignV = "top";
     GameConfig.alignH = "left";
-    GameConfig.startScene = "";
+    GameConfig.startScene = "login.scene";
     GameConfig.sceneRoot = "";
     GameConfig.debug = false;
     GameConfig.stat = false;
@@ -21,65 +110,6 @@
     GameConfig.exportSceneToJson = true;
     GameConfig.init();
 
-    var ELGSMessageID;
-    (function (ELGSMessageID) {
-        ELGSMessageID[ELGSMessageID["ELGSNull"] = 0] = "ELGSNull";
-        ELGSMessageID[ELGSMessageID["ELGSEnd"] = 1] = "ELGSEnd";
-    })(ELGSMessageID || (ELGSMessageID = {}));
-    var ELCMessageID;
-    (function (ELCMessageID) {
-        ELCMessageID[ELCMessageID["ELCNull"] = 1] = "ELCNull";
-        ELCMessageID[ELCMessageID["C2LLogin"] = 2] = "C2LLogin";
-        ELCMessageID[ELCMessageID["L2CLogin"] = 3] = "L2CLogin";
-        ELCMessageID[ELCMessageID["ELCEnd"] = 4] = "ELCEnd";
-    })(ELCMessageID || (ELCMessageID = {}));
-    var EGSCMessageID;
-    (function (EGSCMessageID) {
-        EGSCMessageID[EGSCMessageID["EGSCNull"] = 4] = "EGSCNull";
-        EGSCMessageID[EGSCMessageID["EGSCMsgEnd"] = 5] = "EGSCMsgEnd";
-    })(EGSCMessageID || (EGSCMessageID = {}));
-
-    class TestSocketIO {
-        constructor() {
-            this.serverHost = "http://127.0.0.1:8001";
-            this.connect();
-        }
-        connect() {
-            console.log("开始连接服务器服务器: ");
-            let msg2222 = MsgCS.C2LLogin.create();
-            this.socket = io.connect(this.serverHost);
-            this.socket.on("connect", () => {
-                let head = MsgBase.MessageHead.create();
-                head.nMsgID = ELCMessageID.C2LLogin;
-                let msg = MsgCS.C2LLogin.create();
-                msg.sAccount = "inuyashazh";
-                msg.sPassword = "123456";
-                head.data = MsgCS.C2LLogin.encode(msg).finish();
-                head.nMsgLength = head.data.length;
-                let bufferSend = new Laya.Byte();
-                bufferSend.clear();
-                bufferSend.writeArrayBuffer(MsgBase.MessageHead.encode(head).finish());
-                this.socket.compress(true);
-                this.socket.send(bufferSend.buffer);
-            });
-            this.socket.on("disconnect", (e) => {
-                console.log("disconnect: " + e);
-                this.socket.close();
-            });
-            this.socket.on("error", (e) => {
-                console.log("error: " + e);
-            });
-            this.socket.on("message", (message) => {
-                let bufferSend = new Laya.Byte();
-                bufferSend.writeArrayBuffer(message);
-                let buffer = new Uint8Array(bufferSend.buffer);
-                let recv_msg = MsgCS.L2CLogin.decode(buffer);
-                console.log("error: " + recv_msg);
-            });
-        }
-    }
-
-    var Browser = Laya.Browser;
     class Main {
         constructor() {
             if (window["Laya3D"])
@@ -101,7 +131,6 @@
                 Laya.Stat.show();
             Laya.alertGlobalError = true;
             Laya.ResourceVersion.enable("version.json", Laya.Handler.create(this, this.onVersionLoaded), Laya.ResourceVersion.FILENAME_VERSION);
-            let ProtoBuf = Browser.window.protobuf;
         }
         onVersionLoaded() {
             Laya.AtlasInfoManager.enable("fileconfig.json", Laya.Handler.create(this, this.onConfigLoaded));
@@ -111,6 +140,5 @@
         }
     }
     new Main();
-    new TestSocketIO();
 
 }());

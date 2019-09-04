@@ -1,21 +1,16 @@
 D .
 D atlas
-R E094D509 .rec
-R D35E6630 comp.atlas
-R 254FB7AF comp.png
-R BE441B60 login.atlas
-P 119F78B1 login.png
 D comp
 P 316AD948 btn_close.png
 P 5B258D17 button.png
 P 3C493DD4 check_circle.png
 P 98E54F0D checkbox.png
-P 6B7AB858 clip_num.png
+R 6B7AB858 clip_num.png
 P 63A22FAC clip_tree_arrow.png
 P D749C312 clip_tree_folder.png
 P 704C5D70 combobox.png
 P D566AE8B fontClip.png
-P 38AB8F3F fontClip_num.png
+R 38AB8F3F fontClip_num.png
 P 6EF336AE hscroll$bar.png
 P 7FF47AC5 hscroll$down.png
 P 3D7B147A hscroll$up.png
@@ -23,7 +18,7 @@ P 750BD445 hscroll.png
 P 9A5EF899 hslider$bar.png
 P 9CED7132 hslider.png
 P BA2A0579 html.png
-P 8236CD48 image.png
+R 8236CD48 image.png
 P 4ACB7AEF img_bg.png
 P FCD04607 img_bg2.png
 P 23FB4D29 img_bg3.png
@@ -44,13 +39,11 @@ P 0587871F vscroll$up.png
 P 5FD17798 vscroll.png
 P DDDDFB9E vslider$bar.png
 P 01BAE7F5 vslider.png
-D game
-P EBDBC8E6 img_game_bg.png
 D login
-P 9B2310E3 btn_back_login.png
-P 7FF06E0C btn_login.png
-P 70B8E717 btn_regist.png
-P D45C3985 btn_regist_confirm.png
-P 62E805CD btn_try_play.png
+P E647C3F3 btn_back_login.png
+P 6A3EABD8 btn_login.png
+P 5AB3D9DD btn_regist.png
+P 7AA514B8 btn_regist_confirm.png
+P DC0B23DE btn_try_play.png
 R 5F1E22EB img_login_bg.png
 R 47621489 img_regist_bg.png
