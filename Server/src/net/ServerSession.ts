@@ -3,9 +3,10 @@ import { MsgBase } from "../../message/message_server";
 import { LogMgr } from "../log/LogMgr";
 import { MsgHandler } from "../msg_handler/MsgHandler";
 import { LoginServerCfg } from "../LoginServerCfg";
-import * as http from "http";
+import * as scio from 'socket.io'
+import { EMessageID } from "../../message/msg_define_build";
+import { GameAssert } from "../utils/Utils";
 var io = require("socket.io");
-import * as io2 from 'socket.io'
 
 export class ServerSession {
     /** 所属信息 */ 
@@ -115,8 +116,32 @@ export class ServerSession {
     /** 发送消息 */
     public Send(socket: SocketIO.Socket, data: any): void {
         try {
-            socket.send(data);
+            let msg: MsgBase.MessageHead = MsgBase.MessageHead.create();
+            
+            let msgID: number = this.msgHandler.GetMsgKey(data.constructor.name);
+            if(!msg.nMsgID) {
+                this.logger.Error("msgid is null!!! msg_name: " + data.constructor.name, null);
+                return;
+            }
+            msg.nMsgID = msgID;
+            msg.data = data.constructor.encode(data).finish();
+            msg.nMsgLength = msg.data.byteLength;
+            this.serverIO.send(data)
+            // socket.send(data);
             console.log("send data: ", data);
+        } catch (error) {
+            this.logger.Error('ServerSession Send error!!! master: ' + this.masterID + '|' + this.masterName + 'data: ' + data, error);
+        }
+    }
+
+    /** 发送消息 */
+    public BroadCast(data: any): void {
+        try {
+            for (const key in this.infos.connected) {
+                let sock: scio.Socket = this.infos.connected[key];
+                sock.send(data);
+            }
+            console.log("broadcast data: ", data);
         } catch (error) {
             this.logger.Error('ServerSession Send error!!! master: ' + this.masterID + '|' + this.masterName + 'data: ' + data, error);
         }

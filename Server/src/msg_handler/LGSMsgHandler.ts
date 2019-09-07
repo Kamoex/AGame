@@ -1,4 +1,4 @@
-import { ELGSMessageID } from "../../message/msg_define_build";
+import { EMessageID } from "../../message/msg_define_build";
 import { MsgHandler } from "./MsgHandler";
 import { MsgLGS, MsgBase } from "../../message/message_server";
 import { LoginServer } from "../LoginServer";
@@ -10,7 +10,7 @@ import { LoginServer } from "../LoginServer";
 export class LGSMsgHandler extends MsgHandler {
 
     /** 消息数量 */ 
-    public static readonly msgNum: number = ELGSMessageID.END - ELGSMessageID.START;
+    public static readonly msgNum: number = EMessageID.LGS_END - EMessageID.LGS_START - 1;
 
     private static ins: LGSMsgHandler = null;
     private constructor() { super() }
@@ -24,18 +24,21 @@ export class LGSMsgHandler extends MsgHandler {
     public MessageRegist() {
 
         // 初始化msg字典
-        let props = Reflect.ownKeys(ELGSMessageID);
-        for (let i = 0; i <= LGSMsgHandler.msgNum; i++) {
-            let index = LGSMsgHandler.msgNum + 1 + i;
-            let msgName = props[index].toString();
-            let msgKey = parseInt(props[i].toString());
+        let props = Reflect.ownKeys(EMessageID);
+        for (let i = 1; i <= LGSMsgHandler.msgNum; i++) {
+            let keyIndex = EMessageID.LGS_START + i;
+            let nameIndex = EMessageID.END + EMessageID.LGS_START + i + 1;
+            let msgName = props[nameIndex].toString();
+            let msgKey = parseInt(props[keyIndex].toString());
             this.msgKey2Name[msgKey] = msgName;
             this.msgName2Key[msgName] = msgKey;
         }
 
         // 注册处理函数
         // gameserver请求连接login
-        // this.messageFun[ELGSMessageID.GS2LConnectAuth] = this.HandleGS2LConnectAuth;
+
+        // 注册处理函数
+        this.messageFun[EMessageID.L2GSConnectAuth] = this.HandleL2GSConnectAuth;
 
         console.log("LGSMsgHandler MessageRegist success!");
     }
@@ -53,7 +56,7 @@ export class LGSMsgHandler extends MsgHandler {
     }
 
     /** gameserver请求连接login */
-    private HandleGS2LConnectAuth(msg: any) {
-        // LoginServer.GetInstance().OnGameServerConnected(msg as MsgLGS.GS2LConnectAuth)
+    private HandleL2GSConnectAuth(msg: any) {
+        console.log(msg);
     }
 }

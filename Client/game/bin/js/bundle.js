@@ -47,6 +47,209 @@
     }
     GameUI.instance = null;
 
+    class Logger {
+        static Error(str, ...optionalParams) {
+            optionalParams.push(new Error().stack);
+            console.error(str, ...optionalParams);
+        }
+        static Trace(str, ...optionalParams) {
+            console.trace(str, ...optionalParams);
+        }
+        static Debug(str, ...optionalParams) {
+            console.debug('%c' + str, 'color:green', ...optionalParams);
+        }
+        static Warn(str, ...optionalParams) {
+            console.warn('%c' + str, 'color:#37aaf1', ...optionalParams);
+        }
+        static Info(str, ...optionalParams) {
+            console.log(str, ...optionalParams);
+        }
+    }
+
+    const SOCKET_IO_CONNECT = "connect";
+    const SOCKET_IO_FIRST_MSG = "first_msg";
+    const SOCKET_IO_MESSAGE = "message";
+    const SOCKET_IO_DISCONNECT = "disconnect";
+    const SOCKET_IO_ERROR = "error";
+    const SOCKET_IO_CONNECT_ERROR = "connect_error";
+
+    var ELGSMessageID;
+    (function (ELGSMessageID) {
+        ELGSMessageID[ELGSMessageID["START"] = 0] = "START";
+        ELGSMessageID[ELGSMessageID["GS2LConnectAuth"] = 1] = "GS2LConnectAuth";
+        ELGSMessageID[ELGSMessageID["L2GSConnectAuth"] = 2] = "L2GSConnectAuth";
+        ELGSMessageID[ELGSMessageID["END"] = 3] = "END";
+    })(ELGSMessageID || (ELGSMessageID = {}));
+    var ELCMessageID;
+    (function (ELCMessageID) {
+        ELCMessageID[ELCMessageID["START"] = 3] = "START";
+        ELCMessageID[ELCMessageID["L2CServerInfo"] = 4] = "L2CServerInfo";
+        ELCMessageID[ELCMessageID["C2LLogin"] = 5] = "C2LLogin";
+        ELCMessageID[ELCMessageID["L2CLogin"] = 6] = "L2CLogin";
+        ELCMessageID[ELCMessageID["END"] = 7] = "END";
+    })(ELCMessageID || (ELCMessageID = {}));
+    var EGSCMessageID;
+    (function (EGSCMessageID) {
+        EGSCMessageID[EGSCMessageID["START"] = 7] = "START";
+        EGSCMessageID[EGSCMessageID["C2GSConnect"] = 8] = "C2GSConnect";
+        EGSCMessageID[EGSCMessageID["GS2CConnect"] = 9] = "GS2CConnect";
+        EGSCMessageID[EGSCMessageID["END"] = 10] = "END";
+    })(EGSCMessageID || (EGSCMessageID = {}));
+
+    class MsgHandler {
+        constructor() {
+            this.msgName2Key = {};
+            this.msgKey2Name = {};
+            this.messageFun = {};
+        }
+        MessageRegist() { }
+        GetMsgName(msgKey) {
+            return this.msgKey2Name[msgKey];
+        }
+        GetMsgKey(msgName) {
+            return this.msgName2Key[msgName];
+        }
+        MessageHandle(recvData) { }
+    }
+
+    class LCMsgHandler extends MsgHandler {
+        constructor() { super(); }
+        static GetInstance() {
+            if (!LCMsgHandler.ins)
+                LCMsgHandler.ins = new LCMsgHandler();
+            return LCMsgHandler.ins;
+        }
+        MessageRegist() {
+            let props = Reflect.ownKeys(ELCMessageID);
+            for (let i = 0; i <= LCMsgHandler.msgNum; i++) {
+                let index = LCMsgHandler.msgNum + 1 + i;
+                let msgName = props[index].toString();
+                let msgKey = parseInt(props[i].toString());
+                this.msgKey2Name[msgKey] = msgName;
+                this.msgName2Key[msgName] = msgKey;
+            }
+            this.messageFun[ELCMessageID.L2CLogin] = this.HandleL2CLogin;
+            console.log("LCMsgHandler MessageRegist success!");
+        }
+        MessageHandle(recvData) {
+            let recvMsg = MsgBase.MessageHead.decode(recvData);
+            let msgID = recvMsg.nMsgID;
+            let msgLen = recvMsg.nMsgLength;
+            let msgName = this.GetMsgName(msgID);
+            let msgBody = MsgLC[msgName].decode(recvMsg.data);
+            this.messageFun[msgID](msgBody);
+        }
+        HandleL2CLogin(msg) {
+            console.log("handle msg!!!");
+        }
+    }
+    LCMsgHandler.msgNum = ELCMessageID.END - ELCMessageID.START;
+    LCMsgHandler.ins = null;
+
+    class LoginLogic {
+        constructor() {
+            this.CONNECT_SRV_CFG = "ConnectSrvCfg.json";
+            this.connected = false;
+        }
+        static GetInstance() {
+            if (!LoginLogic.ins)
+                LoginLogic.ins = new LoginLogic();
+            return LoginLogic.ins;
+        }
+        Init() {
+            LCMsgHandler.GetInstance().MessageRegist();
+            this.serverHost = "http://127.0.0.1:8001?token=tempToken";
+        }
+        ConnectLogin() {
+            Logger.Info("开始连接服务器服务器: " + this.serverHost);
+            try {
+                this.socketIO = io.connect(this.serverHost);
+                this.socketIO.on(SOCKET_IO_CONNECT, this.OnConnect.bind(this));
+                this.socketIO.on(SOCKET_IO_MESSAGE, this.OnRecv.bind(this));
+                this.socketIO.on(SOCKET_IO_DISCONNECT, this.OnDisConnect.bind(this));
+                this.socketIO.on(SOCKET_IO_ERROR, this.OnError.bind(this));
+                this.socketIO.on(SOCKET_IO_CONNECT_ERROR, this.OnConnectError.bind(this));
+            }
+            catch (error) {
+                Logger.Info("Session connect err!!!", error.stack);
+                debugger;
+            }
+        }
+        OnConnect() {
+            Logger.Info("连接服务器成功: " + this.serverHost);
+            this.SetConnect(true);
+            this.socketIO.emit(SOCKET_IO_FIRST_MSG);
+            Laya.ResourceVersion.enable("version.json", Laya.Handler.create(this, this.onVersionLoaded), Laya.ResourceVersion.FILENAME_VERSION);
+        }
+        onVersionLoaded() {
+            Laya.AtlasInfoManager.enable("fileconfig.json", Laya.Handler.create(this, this.onConfigLoaded));
+        }
+        onConfigLoaded() {
+            GameConfig.startScene && Laya.Scene.open(GameConfig.startScene);
+        }
+        OnRecv(recvData) {
+            let msgID = 0;
+            try {
+                let buffer = new Uint8Array(recvData);
+                let msg2 = MsgLC.L2CServerInfo.decode(buffer);
+                LCMsgHandler.GetInstance().MessageHandle(recvData);
+            }
+            catch (error) {
+                this.socketIO.close();
+                Logger.Error('ClientSession OnRecv Error!!! msgID: ' + msgID, error);
+            }
+        }
+        OnDisConnect(info) {
+            try {
+                Logger.Info("ClientSession disConnect!!!", info);
+                this.socketIO.close();
+            }
+            catch (error) {
+                this.socketIO.close();
+                Logger.Warn(info, error);
+            }
+            this.SetConnect(false);
+        }
+        OnConnectError(e) {
+            try {
+                this.socketIO.close();
+                Logger.Error("ClientSession connect_error!!!", e);
+            }
+            catch (error) {
+                this.socketIO.close();
+                Logger.Error(e, error);
+            }
+            this.SetConnect(false);
+        }
+        OnError(e) {
+            try {
+                this.socketIO.close();
+                Logger.Error("ClientSession error!!!", e);
+            }
+            catch (error) {
+                this.socketIO.close();
+                Logger.Error(e, error);
+            }
+            this.SetConnect(false);
+        }
+        Send(data) {
+            try {
+                this.socketIO.send(data);
+            }
+            catch (error) {
+                this.socketIO.close();
+                Logger.Error(data, error);
+            }
+        }
+        SetConnect(state) {
+            this.connected = state;
+        }
+        IsConnect() {
+            return this.connected;
+        }
+    }
+    LoginLogic.ins = null;
+
     class LoginUI extends ui.loginUI {
         constructor() {
             super();
@@ -59,6 +262,7 @@
         }
         LoginGame() {
             console.log("login");
+            LoginLogic.GetInstance().ConnectLogin();
         }
         RegistAccount() {
             Laya.Scene.open("regist.scene");
@@ -130,7 +334,6 @@
             if (GameConfig.stat)
                 Laya.Stat.show();
             Laya.alertGlobalError = true;
-            Laya.ResourceVersion.enable("version.json", Laya.Handler.create(this, this.onVersionLoaded), Laya.ResourceVersion.FILENAME_VERSION);
         }
         onVersionLoaded() {
             Laya.AtlasInfoManager.enable("fileconfig.json", Laya.Handler.create(this, this.onConfigLoaded));
@@ -140,5 +343,7 @@
         }
     }
     new Main();
+    LoginLogic.GetInstance().Init();
+    LoginLogic.GetInstance().ConnectLogin();
 
 }());

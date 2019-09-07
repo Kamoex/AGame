@@ -2,6 +2,7 @@ import GameConfig from "./GameConfig";
 import { Game } from "./Game";
 import {TestSocketIO} from "./test_socketio"
 import Browser = Laya.Browser;
+import { LoginLogic } from "./logic/login/LoginLogic";
 class Main {
 	constructor() {
 		//根据IDE设置初始化引擎		
@@ -23,7 +24,7 @@ class Main {
 		Laya.alertGlobalError = true;
 
 		//激活资源版本控制，version.json由IDE发布功能自动生成，如果没有也不影响后续流程
-		Laya.ResourceVersion.enable("version.json", Laya.Handler.create(this, this.onVersionLoaded), Laya.ResourceVersion.FILENAME_VERSION);
+		// Laya.ResourceVersion.enable("version.json", Laya.Handler.create(this, this.onVersionLoaded), Laya.ResourceVersion.FILENAME_VERSION);
 	}
 
 	onVersionLoaded(): void {
@@ -38,5 +39,8 @@ class Main {
 }
 //激活启动类
 new Main();
+LoginLogic.GetInstance().Init();
+LoginLogic.GetInstance().ConnectLogin();
+
 // new Game();
 // new TestSocketIO();

@@ -1,4 +1,4 @@
-import { ui } from "../ui/layaMaxUI";
+import { ui } from "../../ui/layaMaxUI";
 
 export default class RegistUI extends ui.registUI {
     static instance: RegistUI = null;

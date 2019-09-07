@@ -46,9 +46,10 @@ export class ClientSession {
         [SOCKET_IO_ERROR]: null,
     };
 
-    public constructor(masterID: number, masterName: string, logger: LogMgr) {
+    public constructor(masterID: number, masterName: string, msgHandler: MsgHandler, logger: LogMgr) {
         this.masterID = masterID;
         this.masterName = masterName;
+        this.msgHandler = msgHandler;
         this.logger = logger;
     }
 
@@ -108,6 +109,7 @@ export class ClientSession {
             this.logger.Info("ClientSession disConnect!!!", info);
             this.sock.close();
         } catch (error) {
+            this.sock.close();
             this.logger.Warn(info, error);
         }
     }
@@ -118,6 +120,7 @@ export class ClientSession {
             this.sock.close();
             this.logger.Error("ClientSession connect_error!!! master: " + this.masterID + '|' + this.masterName, e);
         } catch (error) {
+            this.sock.close();
             this.logger.Error(e, error);
         }
     }
@@ -128,6 +131,7 @@ export class ClientSession {
             this.sock.close();
             this.logger.Error("ClientSession error!!! master: " + this.masterID + '|' + this.masterName, e);
         } catch (error) {
+            this.sock.close();
             this.logger.Error(e, error);
         }
     }

@@ -216,14 +216,249 @@ declare namespace MsgGSC {
 /** Namespace MsgLC. */
 declare namespace MsgLC {
 
+    /** Properties of a ServerInfo. */
+    interface IServerInfo {
+
+        /** ServerInfo nID */
+        nID?: (number|null);
+
+        /** ServerInfo sName */
+        sName?: (string|null);
+
+        /** ServerInfo sIp */
+        sIp?: (string|null);
+
+        /** ServerInfo nPort */
+        nPort?: (number|null);
+
+        /** ServerInfo eState */
+        eState?: (MsgLC.ServerInfo.EServerState|null);
+    }
+
+    /** Represents a ServerInfo. */
+    class ServerInfo implements IServerInfo {
+
+        /**
+         * Constructs a new ServerInfo.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: MsgLC.IServerInfo);
+
+        /** ServerInfo nID. */
+        public nID: number;
+
+        /** ServerInfo sName. */
+        public sName: string;
+
+        /** ServerInfo sIp. */
+        public sIp: string;
+
+        /** ServerInfo nPort. */
+        public nPort: number;
+
+        /** ServerInfo eState. */
+        public eState: MsgLC.ServerInfo.EServerState;
+
+        /**
+         * Creates a new ServerInfo instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns ServerInfo instance
+         */
+        public static create(properties?: MsgLC.IServerInfo): MsgLC.ServerInfo;
+
+        /**
+         * Encodes the specified ServerInfo message. Does not implicitly {@link MsgLC.ServerInfo.verify|verify} messages.
+         * @param message ServerInfo message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: MsgLC.IServerInfo, writer?: protobuf.Writer): protobuf.Writer;
+
+        /**
+         * Encodes the specified ServerInfo message, length delimited. Does not implicitly {@link MsgLC.ServerInfo.verify|verify} messages.
+         * @param message ServerInfo message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: MsgLC.IServerInfo, writer?: protobuf.Writer): protobuf.Writer;
+
+        /**
+         * Decodes a ServerInfo message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns ServerInfo
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: (protobuf.Reader|Uint8Array), length?: number): MsgLC.ServerInfo;
+
+        /**
+         * Decodes a ServerInfo message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns ServerInfo
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: (protobuf.Reader|Uint8Array)): MsgLC.ServerInfo;
+    }
+
+    namespace ServerInfo {
+
+        /** EServerState enum. */
+        enum EServerState {
+            ENULL = 0,
+            EOPEN = 1,
+            EOCLOSE = 2
+        }
+    }
+
+    /** Properties of a L2CServerInfo. */
+    interface IL2CServerInfo {
+
+        /** L2CServerInfo serverInfos */
+        serverInfos?: (MsgLC.IServerInfo|null);
+    }
+
+    /** Represents a L2CServerInfo. */
+    class L2CServerInfo implements IL2CServerInfo {
+
+        /**
+         * Constructs a new L2CServerInfo.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: MsgLC.IL2CServerInfo);
+
+        /** L2CServerInfo serverInfos. */
+        public serverInfos?: (MsgLC.IServerInfo|null);
+
+        /**
+         * Creates a new L2CServerInfo instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns L2CServerInfo instance
+         */
+        public static create(properties?: MsgLC.IL2CServerInfo): MsgLC.L2CServerInfo;
+
+        /**
+         * Encodes the specified L2CServerInfo message. Does not implicitly {@link MsgLC.L2CServerInfo.verify|verify} messages.
+         * @param message L2CServerInfo message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: MsgLC.IL2CServerInfo, writer?: protobuf.Writer): protobuf.Writer;
+
+        /**
+         * Encodes the specified L2CServerInfo message, length delimited. Does not implicitly {@link MsgLC.L2CServerInfo.verify|verify} messages.
+         * @param message L2CServerInfo message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: MsgLC.IL2CServerInfo, writer?: protobuf.Writer): protobuf.Writer;
+
+        /**
+         * Decodes a L2CServerInfo message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns L2CServerInfo
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: (protobuf.Reader|Uint8Array), length?: number): MsgLC.L2CServerInfo;
+
+        /**
+         * Decodes a L2CServerInfo message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns L2CServerInfo
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: (protobuf.Reader|Uint8Array)): MsgLC.L2CServerInfo;
+    }
+
+    /** Properties of a SimRoleInfo. */
+    interface ISimRoleInfo {
+
+        /** SimRoleInfo nID */
+        nID?: (number|null);
+
+        /** SimRoleInfo sName */
+        sName?: (string|null);
+    }
+
+    /** Represents a SimRoleInfo. */
+    class SimRoleInfo implements ISimRoleInfo {
+
+        /**
+         * Constructs a new SimRoleInfo.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: MsgLC.ISimRoleInfo);
+
+        /** SimRoleInfo nID. */
+        public nID: number;
+
+        /** SimRoleInfo sName. */
+        public sName: string;
+
+        /**
+         * Creates a new SimRoleInfo instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns SimRoleInfo instance
+         */
+        public static create(properties?: MsgLC.ISimRoleInfo): MsgLC.SimRoleInfo;
+
+        /**
+         * Encodes the specified SimRoleInfo message. Does not implicitly {@link MsgLC.SimRoleInfo.verify|verify} messages.
+         * @param message SimRoleInfo message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: MsgLC.ISimRoleInfo, writer?: protobuf.Writer): protobuf.Writer;
+
+        /**
+         * Encodes the specified SimRoleInfo message, length delimited. Does not implicitly {@link MsgLC.SimRoleInfo.verify|verify} messages.
+         * @param message SimRoleInfo message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: MsgLC.ISimRoleInfo, writer?: protobuf.Writer): protobuf.Writer;
+
+        /**
+         * Decodes a SimRoleInfo message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns SimRoleInfo
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: (protobuf.Reader|Uint8Array), length?: number): MsgLC.SimRoleInfo;
+
+        /**
+         * Decodes a SimRoleInfo message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns SimRoleInfo
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: (protobuf.Reader|Uint8Array)): MsgLC.SimRoleInfo;
+    }
+
     /** Properties of a C2LLogin. */
     interface IC2LLogin {
+
+        /** C2LLogin nChannelID */
+        nChannelID?: (number|null);
+
+        /** C2LLogin sToken */
+        sToken?: (string|null);
 
         /** C2LLogin sAccount */
         sAccount?: (string|null);
 
         /** C2LLogin sPassword */
         sPassword?: (string|null);
+
+        /** C2LLogin sVersion */
+        sVersion?: (string|null);
     }
 
     /** Represents a C2LLogin. */
@@ -235,11 +470,20 @@ declare namespace MsgLC {
          */
         constructor(properties?: MsgLC.IC2LLogin);
 
+        /** C2LLogin nChannelID. */
+        public nChannelID: number;
+
+        /** C2LLogin sToken. */
+        public sToken: string;
+
         /** C2LLogin sAccount. */
         public sAccount: string;
 
         /** C2LLogin sPassword. */
         public sPassword: string;
+
+        /** C2LLogin sVersion. */
+        public sVersion: string;
 
         /**
          * Creates a new C2LLogin instance using the specified properties.
@@ -289,6 +533,9 @@ declare namespace MsgLC {
 
         /** L2CLogin bNeedCreate */
         bNeedCreate?: (boolean|null);
+
+        /** L2CLogin roleInfo */
+        roleInfo?: (MsgLC.ISimRoleInfo|null);
     }
 
     /** Represents a L2CLogin. */
@@ -302,6 +549,9 @@ declare namespace MsgLC {
 
         /** L2CLogin bNeedCreate. */
         public bNeedCreate: boolean;
+
+        /** L2CLogin roleInfo. */
+        public roleInfo?: (MsgLC.ISimRoleInfo|null);
 
         /**
          * Creates a new L2CLogin instance using the specified properties.

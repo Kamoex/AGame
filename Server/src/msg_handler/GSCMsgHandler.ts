@@ -1,4 +1,4 @@
-import { EGSCMessageID } from "../../message/msg_define_build";
+import { EMessageID } from "../../message/msg_define_build";
 import { MsgHandler } from "./MsgHandler";
 import { MsgBase, MsgGSC } from "../../message/message_server";
 
@@ -8,7 +8,7 @@ import { MsgBase, MsgGSC } from "../../message/message_server";
 export class GSCMsgHandler extends MsgHandler {
 
     /** 消息数量 */ 
-    public static readonly msgNum: number = EGSCMessageID.END - EGSCMessageID.START;
+    public static readonly msgNum: number = EMessageID.EGSC_END - EMessageID.EGSC_START;
 
     private static ins: GSCMsgHandler = null;
     private constructor() { super();}
@@ -22,17 +22,18 @@ export class GSCMsgHandler extends MsgHandler {
     public MessageRegist() {
 
         // 初始化msg字典
-        let props = Reflect.ownKeys(EGSCMessageID);
-        for (let i = 0; i <= GSCMsgHandler.msgNum; i++) {
-            let index = GSCMsgHandler.msgNum + 1 + i;
-            let msgName = props[index].toString();
-            let msgKey = parseInt(props[i].toString());
+        let props = Reflect.ownKeys(EMessageID);
+        for (let i = 1; i <= GSCMsgHandler.msgNum; i++) {
+            let keyIndex = EMessageID.EGSC_START + i;
+            let nameIndex = EMessageID.END + EMessageID.EGSC_START + i + 1;
+            let msgName = props[nameIndex].toString();
+            let msgKey = parseInt(props[keyIndex].toString());
             this.msgKey2Name[msgKey] = msgName;
             this.msgName2Key[msgName] = msgKey;
         }
         
         // 注册处理函数
-        // this.messageFun[EGSCMessageID.C2LLogin] = this.HandleC2LLogin;
+        // this.messageFun[ELGSMessageID.L2GSConnectAuth] = this.HandleL2GSConnectAuth;
 
         console.log("GSCMsgHandler MessageRegist success!");
     }
@@ -49,7 +50,7 @@ export class GSCMsgHandler extends MsgHandler {
         this.messageFun[msgID](msgBody);
     }
 
-    // public HandleC2LLogin(msg: any) {
-    //     console.log("handle msg!!!");
-    // }
+    public HandleL2GSConnectAuth(msg: any) {
+        console.log("handle msg!!!");
+    }
 }

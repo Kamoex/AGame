@@ -6,26 +6,35 @@
  */
 
 
-/** login_server与game_server的消息 */
-export enum ELGSMessageID {
-    START = 0,
+ export enum EMessageID {
+    START,
+    /*------------------------------login与gs的消息---------------------------------------*/
+    LGS_START,
     GS2LConnectAuth,    // gameserver请求连接login
     L2GSConnectAuth,    // 请求连接返回
-    END
-}
+    LGS_END,
 
-/** login_server与client的消息 */
-export enum ELCMessageID {
-    START = ELGSMessageID.END,
-    C2LLogin,       // client请求连接login
-    L2CLogin,       // 请求连接返回
-    END
-}
 
-/** game_server与client的消息 */
-export enum EGSCMessageID {
-    START = ELCMessageID.END,
-    C2GSConnect,    // 客户端请求连接gameserver
-    GS2CConnect,    // 请求连接返回
+
+
+    /*------------------------------login与client的消息---------------------------------------*/
+    ELC_START,
+    L2CServerInfo,      // 推送GameServer信息
+    C2LLogin,           // client请求连接login
+    L2CLogin,           // 请求连接返回
+    ELC_END,
+
+
+
+
+    /*------------------------------gs与client的消息---------------------------------------*/
+    EGSC_START,
+    C2GSConnect,        // 客户端请求连接gameserver
+    GS2CConnect,        // 请求连接返回
+    EGSC_END,
+
+
+
+
     END
-}
+ }

@@ -1,0 +1,8 @@
+{
+    "connect_srv": "s1",
+
+    "s1": {
+        "url": "http://127.0.0.1:8001",
+        "comment": "zh_server 自己的测试服"
+    }
+}

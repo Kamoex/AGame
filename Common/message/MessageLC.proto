@@ -1,17 +1,48 @@
-import "MesssageID.proto";
 package MsgLC;
 syntax = "proto3";
 
 /*
 * Login服务器与Client通信消息定义
+* 注意：消息中用到的结构体 不用在msgDefine 里面加msg_key
 */
+
+// 服务器信息
+message ServerInfo {
+    enum EServerState {
+        ENULL = 0;      // 未知
+        EOPEN = 1;      // 开启
+        EOCLOSE = 2;    // 关闭
+    }
+    int32 nID               = 1; // 服务器ID
+    string sName            = 2; // 服务器名字
+    string sIp              = 3; // 服务器IP
+    int32 nPort             = 4; // 服务器端口
+    EServerState eState     = 5; // 服务器状态
+}
+
+// 推送GameServer信息
+message L2CServerInfo {
+    ServerInfo serverInfos = 1;
+    //int32 nID               = 1; // 服务器ID
+}
+
+// 简易角色数据(登录界面用)
+message SimRoleInfo {
+    int32 nID               = 1;
+    string sName            = 2;
+}
 
 // 请求连接
 message C2LLogin {
-    string sAccount         = 1; // 账号
-    string sPassword        = 2; // 密码
+    int32  nChannelID       = 1; // 渠道ID
+    string sToken           = 2; // 渠道验证
+    string sAccount         = 3; // 账号
+    string sPassword        = 4; // 密码
+    string sVersion         = 5; // 客户端版本号
 }
+
 // 请求连接返回
 message L2CLogin {
     bool bNeedCreate        = 1; // 是否需要创建角色
+    SimRoleInfo roleInfo    = 2; // 简易角色信息
 }

@@ -1,4 +1,3 @@
-import "MesssageID.proto";
 package MsgLGS;
 syntax = "proto3";
 

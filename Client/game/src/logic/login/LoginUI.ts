@@ -1,5 +1,5 @@
-import { ui } from "../ui/layaMaxUI";
-import GameConfig from "../GameConfig";
+import { ui } from "../../ui/layaMaxUI";
+import { LoginLogic } from "./LoginLogic";
 
 export default class LoginUI extends ui.loginUI {
     static instance: LoginUI = null;
@@ -16,6 +16,7 @@ export default class LoginUI extends ui.loginUI {
 
     private LoginGame() {
         console.log("login");
+        LoginLogic.GetInstance().ConnectLogin();
     }
 
     private RegistAccount() {

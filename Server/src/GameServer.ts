@@ -43,7 +43,7 @@ export class GameServer {
         await this.mariaDB.Init(GameServerCfg.mariadb_cfg);
         await this.mongoDB.Init(GameServerCfg.mongo_user, GameServerCfg.mongo_password, GameServerCfg.mongo_host, GameServerCfg.mongo_port, GameServerCfg.mongo_databass);
         // 初始化连接loginsession
-        this.loginSession = new ClientSession(GameServerCfg.server_id, GameServerCfg.server_name, GameLog)
+        this.loginSession = new ClientSession(GameServerCfg.server_id, GameServerCfg.server_name, LGSMsgHandler.GetInstance(), GameLog)
         this.loginSession.SetEventFun(SOCKET_IO_CONNECT, this.OnConnectLoginSrv.bind(this));
         this.loginSession.SetEventFun(SOCKET_IO_DISCONNECT, this.OnDisConnectLoginSrv.bind(this));
         // 初始化gameserver
