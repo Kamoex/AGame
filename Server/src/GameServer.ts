@@ -4,10 +4,9 @@ import { MongoDBMgr } from "./db/MongoDBMgr";
 import { GameLog } from "./log/LogMgr";
 import { ServerSession } from "./net/ServerSession";
 import { ClientSession } from "./net/ClientSession";
-import { GSCMsgHandler } from "./msg_handler/GSCMsgHandler";
-import { LGSMsgHandler } from "./msg_handler/LGSMsgHandler";
 import { SOCKET_IO_CONNECT, SOCKET_IO_DISCONNECT } from "./common/CommonDefine";
 import { MsgBase, MsgLGS } from "../message/message_server";
+import { GameServerMsgHandler } from "./msg_handler/GameServerMsgHandler";
 
 
 /**
@@ -22,10 +21,10 @@ export class GameServer {
     public mongoDB: MongoDBMgr = new MongoDBMgr();
     /** client连接信息处理 */
     private clSession: ServerSession = null;
-    /** client消息处理 */
-    private clMsgHandler: GSCMsgHandler = GSCMsgHandler.GetInstance();
     /** login连接信息处理 */
     private loginSession: ClientSession = null;
+    /** 消息处理 */
+    private msgHandler: GameServerMsgHandler = new GameServerMsgHandler();
     /** 与login服务器连接状态 */
     private loginConnected: boolean = false;
 
@@ -39,15 +38,17 @@ export class GameServer {
 
     /** 初始化服务器 */
     public async Init() {
+        // 消息注册
+        this.msgHandler.MessageRegist();
         // 初始化DB
         await this.mariaDB.Init(GameServerCfg.mariadb_cfg);
         await this.mongoDB.Init(GameServerCfg.mongo_user, GameServerCfg.mongo_password, GameServerCfg.mongo_host, GameServerCfg.mongo_port, GameServerCfg.mongo_databass);
         // 初始化连接loginsession
-        this.loginSession = new ClientSession(GameServerCfg.server_id, GameServerCfg.server_name, LGSMsgHandler.GetInstance(), GameLog)
+        this.loginSession = new ClientSession(GameServerCfg.server_id, GameServerCfg.server_name, this.msgHandler, GameLog)
         this.loginSession.SetEventFun(SOCKET_IO_CONNECT, this.OnConnectLoginSrv.bind(this));
         this.loginSession.SetEventFun(SOCKET_IO_DISCONNECT, this.OnDisConnectLoginSrv.bind(this));
         // 初始化gameserver
-        this.clSession = new ServerSession(GameServerCfg.server_id, GameServerCfg.server_name, this.clMsgHandler, GameLog);
+        this.clSession = new ServerSession(GameServerCfg.server_id, GameServerCfg.server_name, this.msgHandler, GameLog);
     }
 
     /** 启动服务器 */
@@ -91,7 +92,7 @@ export class GameServer {
             let msgBody: any = MsgLGS[msgName];
             let buffer: Uint8Array = msgBody.encode(data).finish();
             // 填充消息头
-            msgHead.nMsgID = LGSMsgHandler.GetInstance().GetMsgKey(msgName);
+            msgHead.nMsgID = this.msgHandler.GetMsgKey(msgName);
             msgHead.nMsgLength = buffer.byteLength;
             msgHead.data = buffer;
             // 编码消息头
@@ -131,10 +132,6 @@ let paramAry2 = process.argv.slice(2);
 async function StartGameServer(param: string) {
     try {
         // 读取配置表
-
-        // 注册消息
-        GSCMsgHandler.GetInstance().MessageRegist();
-        LGSMsgHandler.GetInstance().MessageRegist();
 
         await GameServer.GetInstance().Init();
         GameServer.GetInstance().StartServer();

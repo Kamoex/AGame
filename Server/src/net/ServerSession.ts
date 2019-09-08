@@ -4,21 +4,19 @@ import { LogMgr } from "../log/LogMgr";
 import { MsgHandler } from "../msg_handler/MsgHandler";
 import { LoginServerCfg } from "../LoginServerCfg";
 import * as scio from 'socket.io'
-import { EMessageID } from "../../message/msg_define_build";
-import { GameAssert } from "../utils/Utils";
 var io = require("socket.io");
 
 export class ServerSession {
-    /** 所属信息 */ 
+    /** 所属信息 */
     private masterID: number;
     private masterName: string;
-    /** 消息处理器 */ 
+    /** 消息处理器 */
     private msgHandler: MsgHandler;
-    /** serverio.server信息 */ 
+    /** serverio.server信息 */
     private serverIO: SocketIO.Server;
-    /** sokcet管理 */ 
+    /** sokcet管理 */
     private infos: SocketIO.Namespace;
-    /** 日志管理器 */ 
+    /** 日志管理器 */
     private logger: LogMgr;
 
     /** 事件需要自处理的函数 */
@@ -61,7 +59,7 @@ export class ServerSession {
     /** 建立连接前的过滤器 */
     private Allow(request: any, cb: (err: number, success: boolean) => void) {
         try {
-            if(!request._query || request._query.token != LoginServerCfg.token) {
+            if (!request._query || request._query.token != LoginServerCfg.token) {
                 this.logger.Warn('master: ' + this.masterID + '|' + this.masterName + 'client token error: recv_token = ' + request._query.token)
                 // 不允许连接
                 return cb(0, false)
@@ -80,7 +78,6 @@ export class ServerSession {
             // 开启消息压缩开关
             socket.compress(true);
             // 消息处理
-            // socket.on(SOCKET_IO_FIRST_MSG, this.eventFunAry[SOCKET_IO_FIRST_MSG] == null ? this.OnConnectFirstMsg.bind(this) : this.eventFunAry[SOCKET_IO_FIRST_MSG](socket));
             socket.on(SOCKET_IO_FIRST_MSG, this.OnConnectFirstMsg.bind(this, socket));
             socket.on(SOCKET_IO_MESSAGE, this.OnRecv.bind(this, socket));
             // 断线处理
@@ -94,64 +91,44 @@ export class ServerSession {
 
     /** 连接后收到的第一次消息(clientSession 在发送时将firstmsg填写为true 就可以收到) */
     private OnConnectFirstMsg(socket: SocketIO.Socket, recvData: any): void {
-        if(this.eventFunAry[SOCKET_IO_FIRST_MSG]) {
-            this.eventFunAry[SOCKET_IO_FIRST_MSG](socket, recvData);
-        }
-        else {
-            this.logger.Info(this.masterID + '|' + this.masterName + ' recv first msg whithout handler!!!')
+        try {
+            if (this.eventFunAry[SOCKET_IO_FIRST_MSG]) {
+                this.eventFunAry[SOCKET_IO_FIRST_MSG](socket, recvData);
+            }
+            else {
+                this.logger.Info(this.masterID + '|' + this.masterName + ' recv first msg whithout handler!!!')
+            }
+        } catch (error) {
+            socket.disconnect(true);
+            this.logger.Error('ServerSession OnConnectFirstMsg Error!!! master: ' + this.masterID + '|' + this.masterName, error);
         }
     }
 
     /** 接收消息 */
     private OnRecv(socket: SocketIO.Socket, recvData: any): void {
-        let msgID: number = 0;
         try {
-            this.msgHandler.MessageHandle(recvData);
+            if (this.eventFunAry[SOCKET_IO_MESSAGE]) {
+                this.eventFunAry[SOCKET_IO_MESSAGE](socket, recvData);
+            }
+            else {
+                this.msgHandler.MessageHandle(recvData);
+            }
         } catch (error) {
             socket.disconnect(true);
-            this.logger.Error('ServerSession OnRecv Error!!! master: ' + this.masterID + '|' + this.masterName + ' msgID: ' + msgID, error);
-        }
-    }
-
-    /** 发送消息 */
-    public Send(socket: SocketIO.Socket, data: any): void {
-        try {
-            let msg: MsgBase.MessageHead = MsgBase.MessageHead.create();
-            
-            let msgID: number = this.msgHandler.GetMsgKey(data.constructor.name);
-            if(!msg.nMsgID) {
-                this.logger.Error("msgid is null!!! msg_name: " + data.constructor.name, null);
-                return;
-            }
-            msg.nMsgID = msgID;
-            msg.data = data.constructor.encode(data).finish();
-            msg.nMsgLength = msg.data.byteLength;
-            this.serverIO.send(data)
-            // socket.send(data);
-            console.log("send data: ", data);
-        } catch (error) {
-            this.logger.Error('ServerSession Send error!!! master: ' + this.masterID + '|' + this.masterName + 'data: ' + data, error);
-        }
-    }
-
-    /** 发送消息 */
-    public BroadCast(data: any): void {
-        try {
-            for (const key in this.infos.connected) {
-                let sock: scio.Socket = this.infos.connected[key];
-                sock.send(data);
-            }
-            console.log("broadcast data: ", data);
-        } catch (error) {
-            this.logger.Error('ServerSession Send error!!! master: ' + this.masterID + '|' + this.masterName + 'data: ' + data, error);
+            this.logger.Error('ServerSession OnRecv Error!!! master: ' + this.masterID + '|' + this.masterName, error);
         }
     }
 
     /** 断开连接与客户端 */
     private OnDisconnect(socket: SocketIO.Socket, info: any): void {
         try {
+            if (this.eventFunAry[SOCKET_IO_DISCONNECT]) {
+                this.eventFunAry[SOCKET_IO_DISCONNECT](socket, info);
+            }
+            else {
+                console.log("client disconnect: ", info);
+            }
             socket.disconnect(true)
-            console.log("client disconnect: ", info);
         } catch (error) {
             this.logger.Error('ServerSession OnDisconnect Error!!! master: ' + this.masterID + '|' + this.masterName + ' info: ' + info, error);
         }
@@ -165,6 +142,51 @@ export class ServerSession {
         } catch (error) {
             this.logger.Error('ServerSession OnError Error!!! master: ' + this.masterID + '|' + this.masterName + ' error: ' + e, error);
         }
+    }
+
+    /** 发送消息 */
+    public Send(socket: SocketIO.Socket, data: any): void {
+        try {
+            let msg: Uint8Array = this.EncodeMsg(data);
+            if (!msg) {
+                this.logger.Error("msgid is null!!! msg_name: " + data.constructor.name, null);
+                return;
+            }
+            socket.send(msg);
+            console.log("send data: ", data);
+        } catch (error) {
+            this.logger.Error('ServerSession Send error!!! master: ' + this.masterID + '|' + this.masterName + 'data: ' + data, error);
+        }
+    }
+
+    /** 发送消息 */
+    public BroadCast(data: any): void {
+        try {
+            let msg: Uint8Array = this.EncodeMsg(data);
+            if (!msg) {
+                this.logger.Error("msgid is null!!! msg_name: " + data.constructor.name, null);
+                return;
+            }
+            this.serverIO.send(msg)
+            console.log("broadcast data: ", data);
+        } catch (error) {
+            this.logger.Error('ServerSession Send error!!! master: ' + this.masterID + '|' + this.masterName + 'data: ' + data, error);
+        }
+    }
+
+    /** 组建消息 */
+    private EncodeMsg(data: any): Uint8Array {
+        let msg: MsgBase.MessageHead = MsgBase.MessageHead.create();
+
+        let msgID: number = this.msgHandler.GetMsgKey(data.constructor.name);
+        if (msg.nMsgID == undefined || msg.nMsgID == null) {
+            this.logger.Error("msgid is null!!! msg_name: " + data.constructor.name, null);
+            return null;
+        }
+        msg.nMsgID = msgID;
+        msg.data = data.constructor.encode(data).finish();
+        msg.nMsgLength = msg.data.byteLength;
+        return MsgBase.MessageHead.encode(msg).finish();
     }
 
 }
