@@ -1,3 +1,4 @@
+import "MessageBase.proto";
 package MsgGSC;
 syntax = "proto3";
 

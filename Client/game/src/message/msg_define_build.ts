@@ -10,6 +10,7 @@
     START,
     /*------------------------------login与gs的消息---------------------------------------*/
     LGS_START,
+    L2GSConnectSuccess, // 通知gs连接成功
     GS2LConnectAuth,    // gameserver请求连接login
     L2GSConnectAuth,    // 请求连接返回
     LGS_END,

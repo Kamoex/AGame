@@ -7,3 +7,9 @@ message MessageHead {
     int32 nMsgLength = 2; // 消息长度(不算消息头)
     bytes data       = 3; // 消息数据
 }
+
+enum EServerState {
+    ENULL = 0;      // 未知
+    EOPEN = 1;      // 开启
+    EOCLOSE = 2;    // 关闭
+}

@@ -51,7 +51,7 @@ export class LogMgr {
     public Warn(content: string, isConsole: boolean = true) {
         this.Log(content, isConsole, 'warn');
     }
-    public Error(content: string, err: any) {
+    public Error(content: string, err: any = null) {
         let stack: any = null;
         if(err) {
             stack = err.stack;

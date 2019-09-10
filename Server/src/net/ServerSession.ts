@@ -1,4 +1,4 @@
-import { SOCKET_IO_CONNECT, SOCKET_IO_MESSAGE, SOCKET_IO_DISCONNECT, SOCKET_IO_ERROR, HEART_BEAT_TIME_OUT, HEART_BEAT_TIME_INTERVAL, SOCKET_IO_FIRST_MSG } from "../common/CommonDefine";
+import { SOCKET_IO_CONNECT, SOCKET_IO_MESSAGE, SOCKET_IO_DISCONNECT, SOCKET_IO_ERROR, HEART_BEAT_TIME_OUT, HEART_BEAT_TIME_INTERVAL } from "../common/CommonDefine";
 import { MsgBase } from "../../message/message_server";
 import { LogMgr } from "../log/LogMgr";
 import { MsgHandler } from "../msg_handler/MsgHandler";
@@ -10,29 +10,28 @@ export class ServerSession {
     /** 所属信息 */
     private masterID: number;
     private masterName: string;
-    /** 消息处理器 */
-    private msgHandler: MsgHandler;
     /** serverio.server信息 */
     private serverIO: SocketIO.Server;
     /** sokcet管理 */
     private infos: SocketIO.Namespace;
     /** 日志管理器 */
     private logger: LogMgr;
+    /** 成功连接时需要执行的自定义函数 参数 socket: SocketIO.Socket*/
+    private callWhenConnected: Function;
 
     /** 事件需要自处理的函数 */
     private eventFunAry: any = {
         [SOCKET_IO_CONNECT]: null,
         [SOCKET_IO_DISCONNECT]: null,
-        [SOCKET_IO_FIRST_MSG]: null,
         [SOCKET_IO_MESSAGE]: null,
         [SOCKET_IO_ERROR]: null,
     };
 
-    public constructor(masterID: number, masterName: string, msgHandler: MsgHandler, logger: LogMgr) {
+    public constructor(masterID: number, masterName: string, logger: LogMgr, fun: Function) {
         this.masterID = masterID;
         this.masterName = masterName;
-        this.msgHandler = msgHandler;
         this.logger = logger;
+        this.callWhenConnected = fun;
     }
 
     /** 设置事件自处理函数 */
@@ -75,10 +74,10 @@ export class ServerSession {
     private OnConnected(socket: SocketIO.Socket) {
         try {
             console.log('a client connected!!! socket_id: ' + socket.id + ' sockets: ' + this.infos.sockets);
+            // 执行自定义函数
+            this.callWhenConnected(socket)
             // 开启消息压缩开关
             socket.compress(true);
-            // 消息处理
-            socket.on(SOCKET_IO_FIRST_MSG, this.OnConnectFirstMsg.bind(this, socket));
             socket.on(SOCKET_IO_MESSAGE, this.OnRecv.bind(this, socket));
             // 断线处理
             socket.on(SOCKET_IO_DISCONNECT, this.OnDisconnect.bind(this, socket));
@@ -89,29 +88,14 @@ export class ServerSession {
         }
     }
 
-    /** 连接后收到的第一次消息(clientSession 在发送时将firstmsg填写为true 就可以收到) */
-    private OnConnectFirstMsg(socket: SocketIO.Socket, recvData: any): void {
-        try {
-            if (this.eventFunAry[SOCKET_IO_FIRST_MSG]) {
-                this.eventFunAry[SOCKET_IO_FIRST_MSG](socket, recvData);
-            }
-            else {
-                this.logger.Info(this.masterID + '|' + this.masterName + ' recv first msg whithout handler!!!')
-            }
-        } catch (error) {
-            socket.disconnect(true);
-            this.logger.Error('ServerSession OnConnectFirstMsg Error!!! master: ' + this.masterID + '|' + this.masterName, error);
-        }
-    }
-
     /** 接收消息 */
     private OnRecv(socket: SocketIO.Socket, recvData: any): void {
         try {
             if (this.eventFunAry[SOCKET_IO_MESSAGE]) {
-                this.eventFunAry[SOCKET_IO_MESSAGE](socket, recvData);
+                this.eventFunAry[SOCKET_IO_MESSAGE](recvData);
             }
             else {
-                this.msgHandler.MessageHandle(recvData);
+                this.logger.Error('Forget Set OnRecv Function!!!');
             }
         } catch (error) {
             socket.disconnect(true);
@@ -138,7 +122,7 @@ export class ServerSession {
     private OnError(socket: SocketIO.Socket, e: any): void {
         try {
             socket.disconnect(true);
-            this.logger.Error('ServerSession OnRecv Error!!! error: ' + e, null);
+            this.logger.Error('ServerSession OnRecv Error!!! error: ' + e);
         } catch (error) {
             this.logger.Error('ServerSession OnError Error!!! master: ' + this.masterID + '|' + this.masterName + ' error: ' + e, error);
         }
@@ -149,7 +133,7 @@ export class ServerSession {
         try {
             let msg: Uint8Array = this.EncodeMsg(data);
             if (!msg) {
-                this.logger.Error("msgid is null!!! msg_name: " + data.constructor.name, null);
+                this.logger.Error("msgid is null!!! msg_name: " + data.constructor.name);
                 return;
             }
             socket.send(msg);
@@ -164,7 +148,7 @@ export class ServerSession {
         try {
             let msg: Uint8Array = this.EncodeMsg(data);
             if (!msg) {
-                this.logger.Error("msgid is null!!! msg_name: " + data.constructor.name, null);
+                this.logger.Error("msgid is null!!! msg_name: " + data.constructor.name);
                 return;
             }
             this.serverIO.send(msg)
@@ -178,7 +162,7 @@ export class ServerSession {
     private EncodeMsg(data: any): Uint8Array {
         let msg: MsgBase.MessageHead = MsgBase.MessageHead.create();
 
-        let msgID: number = this.msgHandler.GetMsgKey(data.constructor.name);
+        let msgID: number = MsgHandler.GetMsgKey(data.constructor.name);
         if (msg.nMsgID == undefined || msg.nMsgID == null) {
             this.logger.Error("msgid is null!!! msg_name: " + data.constructor.name, null);
             return null;

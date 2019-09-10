@@ -75,6 +75,13 @@ export namespace MsgBase {
          */
         public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): MsgBase.MessageHead;
     }
+
+    /** EServerState enum. */
+    enum EServerState {
+        ENULL = 0,
+        EOPEN = 1,
+        EOCLOSE = 2
+    }
 }
 
 /** Namespace MsgGSC. */
@@ -230,7 +237,7 @@ export namespace MsgLC {
         nPort?: (number|null);
 
         /** ServerInfo eState */
-        eState?: (MsgLC.ServerInfo.EServerState|null);
+        eState?: (MsgBase.EServerState|null);
     }
 
     /** Represents a ServerInfo. */
@@ -255,7 +262,7 @@ export namespace MsgLC {
         public nPort: number;
 
         /** ServerInfo eState. */
-        public eState: MsgLC.ServerInfo.EServerState;
+        public eState: MsgBase.EServerState;
 
         /**
          * Creates a new ServerInfo instance using the specified properties.
@@ -298,16 +305,6 @@ export namespace MsgLC {
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
         public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): MsgLC.ServerInfo;
-    }
-
-    namespace ServerInfo {
-
-        /** EServerState enum. */
-        enum EServerState {
-            ENULL = 0,
-            EOPEN = 1,
-            EOCLOSE = 2
-        }
     }
 
     /** Properties of a L2CServerInfo. */
@@ -597,6 +594,62 @@ export namespace MsgLC {
 
 /** Namespace MsgLGS. */
 export namespace MsgLGS {
+
+    /** Properties of a L2GSConnectSuccess. */
+    interface IL2GSConnectSuccess {
+    }
+
+    /** Represents a L2GSConnectSuccess. */
+    class L2GSConnectSuccess implements IL2GSConnectSuccess {
+
+        /**
+         * Constructs a new L2GSConnectSuccess.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: MsgLGS.IL2GSConnectSuccess);
+
+        /**
+         * Creates a new L2GSConnectSuccess instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns L2GSConnectSuccess instance
+         */
+        public static create(properties?: MsgLGS.IL2GSConnectSuccess): MsgLGS.L2GSConnectSuccess;
+
+        /**
+         * Encodes the specified L2GSConnectSuccess message. Does not implicitly {@link MsgLGS.L2GSConnectSuccess.verify|verify} messages.
+         * @param message L2GSConnectSuccess message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: MsgLGS.IL2GSConnectSuccess, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified L2GSConnectSuccess message, length delimited. Does not implicitly {@link MsgLGS.L2GSConnectSuccess.verify|verify} messages.
+         * @param message L2GSConnectSuccess message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: MsgLGS.IL2GSConnectSuccess, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a L2GSConnectSuccess message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns L2GSConnectSuccess
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): MsgLGS.L2GSConnectSuccess;
+
+        /**
+         * Decodes a L2GSConnectSuccess message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns L2GSConnectSuccess
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): MsgLGS.L2GSConnectSuccess;
+    }
 
     /** Properties of a GS2LConnectAuth. */
     interface IGS2LConnectAuth {

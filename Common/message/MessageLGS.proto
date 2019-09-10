@@ -1,3 +1,4 @@
+import "MessageBase.proto";
 package MsgLGS;
 syntax = "proto3";
 
@@ -5,7 +6,11 @@ syntax = "proto3";
 * Login服务器与Game服务器通信消息定义
 */
 
-// 请求连接
+// 通知gs连接成功
+message L2GSConnectSuccess {
+}
+
+// 向login认证
 message GS2LConnectAuth {
     string ip = 1;
     int32 port = 2;
@@ -13,7 +18,7 @@ message GS2LConnectAuth {
     string server_name = 4;
     string token = 5;
 }
-// 请求连接返回
+// 认证返回
 message L2GSConnectAuth {
     bool success = 1;
 }

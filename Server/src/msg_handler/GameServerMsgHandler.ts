@@ -1,6 +1,8 @@
 import { EMessageID } from "../../message/msg_define_build";
 import { MsgHandler } from "./MsgHandler";
-import { MsgLGS, MsgBase } from "../../message/message_server";
+import { MsgLGS, MsgBase, MsgGSC } from "../../message/message_server";
+import { GSUser } from "../logic/Game/GSUser";
+import { GSLoginLogic } from "../logic/Game/GSLoginLogic";
 
 
 /**
@@ -8,13 +10,21 @@ import { MsgLGS, MsgBase } from "../../message/message_server";
  */
 export class GameServerMsgHandler extends MsgHandler {
 
-    constructor() { super() }
+    private static ins: GameServerMsgHandler = null;
+
+    private constructor() { super(); }
+    public static GetInstance(): GameServerMsgHandler {
+        if (!GameServerMsgHandler.ins)
+            GameServerMsgHandler.ins = new GameServerMsgHandler();
+        return GameServerMsgHandler.ins;
+    }
 
     /** 注册消息 */
     public MessageRegist() {
-        super.MessageRegist();
+        MsgHandler.MessageRegist();
 
         // login->gs        
+        this.messageFun[EMessageID.L2GSConnectSuccess] = this.HandleL2GSConnectSuccess;
         this.messageFun[EMessageID.L2GSConnectAuth] = this.HandleL2GSConnectAuth;
 
         // client->gs
@@ -22,16 +32,28 @@ export class GameServerMsgHandler extends MsgHandler {
         console.log("GameServerMsgHandler MessageRegist success!");
     }
 
-    /** 消息处理 */
-    public MessageHandle(recvData: any) {
+    /** 处理客户端消息 */
+    public MessageHandleForUser(logic: GSUser, recvData: any) {
         let recvMsg = MsgBase.MessageHead.decode(recvData);
         let msgID: number = recvMsg.nMsgID;
         // TODO 检测下消息长度 看是否过长
         let msgLen: number = recvMsg.nMsgLength;
 
-        let msgName = this.GetMsgName(msgID);
+        let msgName = MsgHandler.GetMsgName(msgID);
+        let msgBody: any = MsgGSC[msgName].decode(recvMsg.data);
+        this.messageFun[msgID](logic, msgBody);
+    }
+
+    /** 处理Login消息 */
+    public MessageHandleForLogin(logic: GSLoginLogic, recvData: any) {
+        let recvMsg = MsgBase.MessageHead.decode(recvData);
+        let msgID: number = recvMsg.nMsgID;
+        // TODO 检测下消息长度 看是否过长
+        let msgLen: number = recvMsg.nMsgLength;
+
+        let msgName = MsgHandler.GetMsgName(msgID);
         let msgBody: any = MsgLGS[msgName].decode(recvMsg.data);
-        this.messageFun[msgID](msgBody);
+        this.messageFun[msgID](logic, msgBody);
     }
 
 
@@ -40,9 +62,14 @@ export class GameServerMsgHandler extends MsgHandler {
     /**************************************************************************************************************/
 
 
+    /** login通知连接成功 */
+    private HandleL2GSConnectSuccess(logic: GSLoginLogic, msg: any) {
+        logic.RegistGameServerToLogin();
+    }
+
     /** login认证返回 */
-    private HandleL2GSConnectAuth(msg: any) {
-        console.log(msg);
+    private HandleL2GSConnectAuth(logic: GSLoginLogic, msg: any) {
+        logic.HandleL2GSConnectAuth(msg as MsgLGS.L2GSConnectAuth);
     }
 
 
@@ -58,5 +85,9 @@ export class GameServerMsgHandler extends MsgHandler {
     /*                                              client->gameserver                                            */
     /**************************************************************************************************************/
 
-    
+
+    /** xxxx */
+    // private HandleL2GSConnectAuth(logic: GSUser, msg: any) {
+    //     console.log(msg);
+    // }
 }

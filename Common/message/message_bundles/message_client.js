@@ -165,6 +165,22 @@ $root.MsgBase = (function() {
         return MessageHead;
     })();
 
+    /**
+     * EServerState enum.
+     * @name MsgBase.EServerState
+     * @enum {string}
+     * @property {number} ENULL=0 ENULL value
+     * @property {number} EOPEN=1 EOPEN value
+     * @property {number} EOCLOSE=2 EOCLOSE value
+     */
+    MsgBase.EServerState = (function() {
+        var valuesById = {}, values = Object.create(valuesById);
+        values[valuesById[0] = "ENULL"] = 0;
+        values[valuesById[1] = "EOPEN"] = 1;
+        values[valuesById[2] = "EOCLOSE"] = 2;
+        return values;
+    })();
+
     return MsgBase;
 })();
 
@@ -457,7 +473,7 @@ $root.MsgLC = (function() {
          * @property {string|null} [sName] ServerInfo sName
          * @property {string|null} [sIp] ServerInfo sIp
          * @property {number|null} [nPort] ServerInfo nPort
-         * @property {MsgLC.ServerInfo.EServerState|null} [eState] ServerInfo eState
+         * @property {MsgBase.EServerState|null} [eState] ServerInfo eState
          */
 
         /**
@@ -509,7 +525,7 @@ $root.MsgLC = (function() {
 
         /**
          * ServerInfo eState.
-         * @member {MsgLC.ServerInfo.EServerState} eState
+         * @member {MsgBase.EServerState} eState
          * @memberof MsgLC.ServerInfo
          * @instance
          */
@@ -621,22 +637,6 @@ $root.MsgLC = (function() {
                 reader = new $Reader(reader);
             return this.decode(reader, reader.uint32());
         };
-
-        /**
-         * EServerState enum.
-         * @name MsgLC.ServerInfo.EServerState
-         * @enum {string}
-         * @property {number} ENULL=0 ENULL value
-         * @property {number} EOPEN=1 EOPEN value
-         * @property {number} EOCLOSE=2 EOCLOSE value
-         */
-        ServerInfo.EServerState = (function() {
-            var valuesById = {}, values = Object.create(valuesById);
-            values[valuesById[0] = "ENULL"] = 0;
-            values[valuesById[1] = "EOPEN"] = 1;
-            values[valuesById[2] = "EOCLOSE"] = 2;
-            return values;
-        })();
 
         return ServerInfo;
     })();
@@ -1224,6 +1224,114 @@ $root.MsgLGS = (function() {
      * @namespace
      */
     var MsgLGS = {};
+
+    MsgLGS.L2GSConnectSuccess = (function() {
+
+        /**
+         * Properties of a L2GSConnectSuccess.
+         * @memberof MsgLGS
+         * @interface IL2GSConnectSuccess
+         */
+
+        /**
+         * Constructs a new L2GSConnectSuccess.
+         * @memberof MsgLGS
+         * @classdesc Represents a L2GSConnectSuccess.
+         * @implements IL2GSConnectSuccess
+         * @constructor
+         * @param {MsgLGS.IL2GSConnectSuccess=} [properties] Properties to set
+         */
+        function L2GSConnectSuccess(properties) {
+            if (properties)
+                for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * Creates a new L2GSConnectSuccess instance using the specified properties.
+         * @function create
+         * @memberof MsgLGS.L2GSConnectSuccess
+         * @static
+         * @param {MsgLGS.IL2GSConnectSuccess=} [properties] Properties to set
+         * @returns {MsgLGS.L2GSConnectSuccess} L2GSConnectSuccess instance
+         */
+        L2GSConnectSuccess.create = function create(properties) {
+            return new L2GSConnectSuccess(properties);
+        };
+
+        /**
+         * Encodes the specified L2GSConnectSuccess message. Does not implicitly {@link MsgLGS.L2GSConnectSuccess.verify|verify} messages.
+         * @function encode
+         * @memberof MsgLGS.L2GSConnectSuccess
+         * @static
+         * @param {MsgLGS.IL2GSConnectSuccess} message L2GSConnectSuccess message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        L2GSConnectSuccess.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            return writer;
+        };
+
+        /**
+         * Encodes the specified L2GSConnectSuccess message, length delimited. Does not implicitly {@link MsgLGS.L2GSConnectSuccess.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof MsgLGS.L2GSConnectSuccess
+         * @static
+         * @param {MsgLGS.IL2GSConnectSuccess} message L2GSConnectSuccess message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        L2GSConnectSuccess.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a L2GSConnectSuccess message from the specified reader or buffer.
+         * @function decode
+         * @memberof MsgLGS.L2GSConnectSuccess
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {MsgLGS.L2GSConnectSuccess} L2GSConnectSuccess
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        L2GSConnectSuccess.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            var end = length === undefined ? reader.len : reader.pos + length, message = new $root.MsgLGS.L2GSConnectSuccess();
+            while (reader.pos < end) {
+                var tag = reader.uint32();
+                switch (tag >>> 3) {
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a L2GSConnectSuccess message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof MsgLGS.L2GSConnectSuccess
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {MsgLGS.L2GSConnectSuccess} L2GSConnectSuccess
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        L2GSConnectSuccess.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        return L2GSConnectSuccess;
+    })();
 
     MsgLGS.GS2LConnectAuth = (function() {
 
