@@ -1,4 +1,4 @@
-import { ELCMessageID } from "./message/msg_define_build";
+import { EMessageID } from "./message/msg_define_build";
 
 
 export class TestSocketIO {
@@ -19,7 +19,7 @@ export class TestSocketIO {
         this.socket.on("connect", () => {
             // 发送消息
             let head = MsgBase.MessageHead.create();
-            head.nMsgID = ELCMessageID.C2LLogin;
+            head.nMsgID = EMessageID.C2LLogin;
 
             let msg: MsgLC.C2LLogin = MsgLC.C2LLogin.create();
             msg.sAccount = "inuyashazh";

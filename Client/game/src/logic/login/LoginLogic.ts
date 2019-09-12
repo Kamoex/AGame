@@ -1,7 +1,7 @@
 import { Logger } from "../../util/Logger";
 import { SOCKET_IO_CONNECT, SOCKET_IO_CONNECT_ERROR, SOCKET_IO_MESSAGE, SOCKET_IO_DISCONNECT, SOCKET_IO_ERROR, SOCKET_IO_FIRST_MSG } from "../CommonDefine";
-import { LCMsgHandler } from "../net/LCMsgHandler";
 import GameConfig from "../../GameConfig";
+import { MsgHandler } from "../net/MsgHandler";
 
 
 /**
@@ -32,7 +32,7 @@ export class LoginLogic {
         // this.connectSrvCfg = Laya.Loader.getRes(this.CONNECT_SRV_CFG);
         // let conSrv: string = this.connectSrvCfg.connect_srv;
         // 消息注册
-        LCMsgHandler.GetInstance().MessageRegist();
+        MsgHandler.MessageRegist();
         this.serverHost = "http://127.0.0.1:8001?token=tempToken";
 
         // if(this.connectSrvCfg[conSrv]) {
@@ -86,7 +86,7 @@ export class LoginLogic {
             let buffer = new Uint8Array(recvData)
             let msg2: MsgLC.L2CServerInfo =  MsgLC.L2CServerInfo.decode(buffer);
             // let msg: MsgLC.L2CServerInfo =  MsgLC.L2CServerInfo.decode(recvData);
-            LCMsgHandler.GetInstance().MessageHandle(recvData);
+            // LCMsgHandler.GetInstance().MessageHandle(recvData);
         } catch (error) {
             this.socketIO.close();
             Logger.Error('ClientSession OnRecv Error!!! msgID: ' + msgID, error);
