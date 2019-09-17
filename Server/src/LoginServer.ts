@@ -2,10 +2,10 @@ import { MariaDBMgr } from "./db/MariaDBMgr";
 import { LoginServerCfg } from "./LoginServerCfg";
 import { ServerSession } from "./net/ServerSession";
 import { LoginLog } from "./log/LogMgr";
-import { SOCKET_IO_MESSAGE } from "./common/CommonDefine";
 import { LoginServerMsgHandler } from "./msg_handler/LoginServerMsgHandler";
 import { LoginGSLogic } from "./logic/Login/LoginGSLogic";
 import { LoginUser } from "./logic/Login/LoginUser";
+import { MsgLC } from "../message/message_server";
 
 
 export class LoginServer {
@@ -15,8 +15,6 @@ export class LoginServer {
     private clSession: ServerSession = null;
     /** gameserver连接信息处理 */
     private gsSession: ServerSession = null;
-    /** 所有连接到login的gameserver信息 */
-    private gameServers: Array<LoginGSLogic> = [];
 
     private static ins: LoginServer = null;
     private constructor() { }
@@ -35,7 +33,7 @@ export class LoginServer {
         // 初始化session
         this.gsSession = new ServerSession(LoginServerCfg.server_id, LoginServerCfg.server_name, LoginLog, this.OnGameServerConnected.bind(this));
         this.clSession = new ServerSession(LoginServerCfg.server_id, LoginServerCfg.server_name, LoginLog, this.OnClientConnected.bind(this));
-        
+
     }
 
     /** 启动服务器 */
@@ -43,58 +41,62 @@ export class LoginServer {
         this.clSession.CreateSession(LoginServerCfg.client_port);
         this.gsSession.CreateSession(LoginServerCfg.gs_port);
     }
-    
+
 
     /** 接收到gameserver的连接 */
     public OnGameServerConnected(socket: SocketIO.Socket, data: any) {
         let gsLogic: LoginGSLogic = new LoginGSLogic();
-        gsLogic.SetSocket(socket);
-        this.gsSession.SetEventFun(SOCKET_IO_MESSAGE, gsLogic.HandleMsg.bind(gsLogic))
-
-        // 通知GameServer连接成功
-        gsLogic.InformGSConnectSuccess();
-        
+        gsLogic.Init(socket, this.gsSession);
+        this.gsSession.AddConnector(socket, gsLogic);
+        gsLogic.OnConnected();
     }
 
-    /** 添加gameserver */
-    public AddGSLogic(gsLogic: LoginGSLogic) {
-        for (let i = 0; i < this.gameServers.length; i++) {
-            let gs = this.gameServers[i];
-            if(gs.nID == gsLogic.nID) {
-                gs.UpdateInfo(gsLogic);
-                return;
-            }
-        }
-        this.gameServers.push(gsLogic);
+    public GetGSSession(): ServerSession {
+        return this.gsSession;
     }
-    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     /** 接收到client的连接 */
     public OnClientConnected(socket: SocketIO.Socket, data: any) {
         let clLogic: LoginUser = new LoginUser();
-        clLogic.SetSocket(socket);
-        this.clSession.SetEventFun(SOCKET_IO_MESSAGE, clLogic.HandleMsg.bind(clLogic));
+        clLogic.Init(socket, this.clSession);
+        this.clSession.AddConnector(socket, clLogic);
 
         // 发送给客户端gameserver信息
-        // let msg: MsgLC.L2CServerInfo = MsgLC.L2CServerInfo.create();
-        // let serverInfo: MsgLC.ServerInfo = MsgLC.ServerInfo.create();
-        // msg.serverInfos = MsgLC.ServerInfo.create();
-        // msg.serverInfos.nID = this.gameServers[0].id;
-        // msg.serverInfos.sName = this.gameServers[0].name;
-        // msg.serverInfos.sIp = this.gameServers[0].ip;
-        // msg.serverInfos.nPort = this.gameServers[0].port;
-        // msg.serverInfos.eState = MsgLC.ServerInfo.EServerState.EOPEN;
-        // let buffer = MsgLC.L2CServerInfo.encode(msg).finish();
-        // this.clSession.Send(socket, msg);
+        let msg: MsgLC.L2CServerInfo = MsgLC.L2CServerInfo.create();
+        for (let i = 0; i < 3; i++) {
+            let msg2: MsgLC.ServerInfo = MsgLC.ServerInfo.create();
+            // msg.nID = this.gameServers[0].nID;
+            // msg.sName = this.gameServers[0].sName;
+            // msg.sIp = this.gameServers[0].sIP;
+            // msg.nPort = this.gameServers[0].nPort;
+            // msg.eState = MsgBase.EServerState.EOPEN;
+            msg2.nID = (i + 1) * 1000;
+            msg2.sName = i.toString();
+            msg2.sIp = i.toString() + ".1.1.1";
+            msg2.nPort = (i + 1) * 1000 + 1;
+            msg2.eState = i;
+            msg.serverInfos.push(msg2);
+        }
+        clLogic.SendMsg(msg);
 
         // let dccc = MsgLC.L2CServerInfo.decode(buffer);
         // let  b = 3;
     }
 
-    public GetGSSession() : ServerSession{
-        return this.gsSession;
-    }
-    
-    public GetCLSession() : ServerSession{
+    public GetCLSession(): ServerSession {
         return this.clSession;
     }
 

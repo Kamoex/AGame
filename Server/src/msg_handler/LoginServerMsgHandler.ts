@@ -32,35 +32,40 @@ export class LoginServerMsgHandler extends MsgHandler {
 
     /** 处理客户端消息 */
     public MessageHandleForUser(logic: LoginUser, recvData: any) {
+        let msgID: number = 0;
+        let msgName: string = '';
         try {
             let recvMsg = MsgBase.MessageHead.decode(recvData);
-            let msgID: number = recvMsg.nMsgID;
+            msgID = recvMsg.nMsgID;
             // TODO 检测下消息长度 看是否过长
             let msgLen: number = recvMsg.nMsgLength;
     
-            let msgName = MsgHandler.GetMsgName(msgID);
+            msgName = MsgHandler.GetMsgName(msgID);
             let msgBody: any = MsgLC[msgName].decode(recvMsg.data);
             this.messageFun[msgID](logic, msgBody);
         } catch (error) {
-            LoginLog.Error('MessageHandleForUser error!!!', error);
+            LoginLog.Error('MessageHandleForUser error!!! ' + 'msgID: ' + msgID + ' msgName: ' + msgName + ' ', error);
         }
     }
 
     /** 处理GS消息 */
     public MessageHandleForGS(logic: LoginGSLogic, recvData: any) {
+        let msgID: number = 0;
+        let msgName: string = '';
         try {
             let recvMsg = MsgBase.MessageHead.decode(recvData);
-            let msgID: number = recvMsg.nMsgID;
+            msgID = recvMsg.nMsgID;
             // TODO 检测下消息长度 看是否过长
             let msgLen: number = recvMsg.nMsgLength;
     
-            let msgName = MsgHandler.GetMsgName(msgID);
+            msgName = MsgHandler.GetMsgName(msgID);
             let msgBody: any = MsgLGS[msgName].decode(recvMsg.data);
             this.messageFun[msgID](logic, msgBody);
         } catch (error) {
-            LoginLog.Error('MessageHandleForGS error!!!', error);
+            LoginLog.Error('MessageHandleForGS error!!!' + ' msgID: ' + msgID + ' msgName: ' + msgName + ' ', error);
         }
     }
+
 
 
     /**************************************************************************************************************/

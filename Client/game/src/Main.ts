@@ -3,6 +3,7 @@ import { Game } from "./Game";
 import {TestSocketIO} from "./test_socketio"
 import Browser = Laya.Browser;
 import { LoginLogic } from "./logic/login/LoginLogic";
+import { MsgHandler } from "./logic/net/MsgHandler";
 class Main {
 	constructor() {
 		//根据IDE设置初始化引擎		

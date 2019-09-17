@@ -75,9 +75,9 @@ export class GameServer {
     /** 客户端成功连接 */
     private OnClientConnected(socket: SocketIO.Socket) {
         let clLogic: GSUser = new GSUser();
-        clLogic.SetSocket(socket);
-        // TODO  断线 错误 还都没处理
-        this.clSession.SetEventFun(SOCKET_IO_MESSAGE, clLogic.HandleMsg.bind(clLogic));
+        this.clSession.AddConnector(socket, clLogic);
+        clLogic.Init(socket, this.clSession);
+        clLogic.OnConnected();
     }
 
     public ClearRole(roleID: number) {

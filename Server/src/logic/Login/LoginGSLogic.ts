@@ -1,16 +1,21 @@
 import { LoginServerMsgHandler } from "../../msg_handler/LoginServerMsgHandler";
 import { LoginServer } from "../../LoginServer";
 import { MsgLGS, MsgBase } from "../../../message/message_server";
+import { IConnector } from "../../net/Connector";
+import { LoginLog } from "../../log/LogMgr";
+import { ServerSession } from "../../net/ServerSession";
 
-export class LoginGSLogic {
+export class LoginGSLogic implements IConnector {
     /** socket */
-    public sock: SocketIO.Socket;
+    private sock: SocketIO.Socket;
+    /** loginserver的连接信息 */
+    private session: ServerSession;
     /** serverid */
     public nID: number = 0;
     public sName: string = '';
     public sIP: string = '';
     public nPort: number = 0;
-    public eState: MsgBase.EServerState =  MsgBase.EServerState.ENULL;
+    public eState: MsgBase.EServerState = MsgBase.EServerState.ENULL;
     /** 认证信息 */
     public sToken: string = '';
     /** 登录时间 */
@@ -20,18 +25,47 @@ export class LoginGSLogic {
     /** 消息处理 */
     private msgHandler: LoginServerMsgHandler = LoginServerMsgHandler.GetInstance();
 
-    constructor() {}
+    constructor() { }
 
-    public SetSocket(s: SocketIO.Socket) {
+    public Init(s: SocketIO.Socket, session: ServerSession) {
         this.sock = s;
+        this.session = session;
     }
 
-    public HandleMsg(recvData: any) {
+    /** 连接成功 */
+    public OnConnected() {
+        // 通知GameServer连接成功
+        this.InformGSConnectSuccess();
+    }
+
+    /** 接收消息 */
+    public OnRecv(recvData: any) {
         this.msgHandler.MessageHandleForGS(this, recvData);
     }
 
+    /** 断开连接与客户端 */
+    public OnDisconnect(info: any) {
+        try {
+            this.sock.disconnect(true);
+            console.log('gs disconnect: ', info);
+        } catch (error) {
+            LoginLog.Error('LoginGSLogic OnDisconnect Error!!! error: ' + error);
+        }
+    }
+
+    /** 错误 */
+    public OnError(e: any) {
+        try {
+            this.sock.disconnect(true);
+            LoginLog.Error('LoginGSLogic OnError Error!!! e: ' + e);
+        } catch (error) {
+            LoginLog.Error('LoginGSLogic OnError Error!!! error: ' + error);
+        }
+    }
+
+    /** 发送消息 */
     public SendMsg(respData: any) {
-        LoginServer.GetInstance().GetCLSession().Send(this.sock, respData);
+        this.session.Send(this.sock, respData);
     }
 
     /** 获取服务器连接状态 */
@@ -39,17 +73,8 @@ export class LoginGSLogic {
         return this.eState;
     }
 
-    /** 更新server信息 */
-    public UpdateInfo(gsLogic: LoginGSLogic) {
-        this.nID = gsLogic.nID;
-        this.sName = gsLogic.sName;
-        this.sIP = gsLogic.sIP;
-        this.nPort = gsLogic.nPort;
-        this.eState = gsLogic.eState;
-    }
-    
     /** 通知GS连接成功 */
-    public InformGSConnectSuccess() {
+    private InformGSConnectSuccess() {
         let msg = MsgLGS.L2GSConnectSuccess.create();
         this.SendMsg(msg);
     }
@@ -62,8 +87,7 @@ export class LoginGSLogic {
         this.sIP = data.ip;
         this.nPort = data.port;
         this.eState = MsgBase.EServerState.EOPEN;
-
-        LoginServer.GetInstance().AddGSLogic(this);
+        this.nLoginTime = Date.now();
 
         let msg = MsgLGS.L2GSConnectAuth.create();
         msg.success = true;

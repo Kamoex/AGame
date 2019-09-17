@@ -20,7 +20,6 @@
  * 	pong
  */
 export const SOCKET_IO_CONNECT        = "connect";
-export const SOCKET_IO_FIRST_MSG      = "first_msg";
 export const SOCKET_IO_MESSAGE        = "message";
 export const SOCKET_IO_DISCONNECT     = "disconnect";
 export const SOCKET_IO_PING           = "ping";          // 发送心跳包

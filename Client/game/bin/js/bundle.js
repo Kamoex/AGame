@@ -67,84 +67,85 @@
     }
 
     const SOCKET_IO_CONNECT = "connect";
-    const SOCKET_IO_FIRST_MSG = "first_msg";
     const SOCKET_IO_MESSAGE = "message";
     const SOCKET_IO_DISCONNECT = "disconnect";
     const SOCKET_IO_ERROR = "error";
     const SOCKET_IO_CONNECT_ERROR = "connect_error";
 
-    var ELGSMessageID;
-    (function (ELGSMessageID) {
-        ELGSMessageID[ELGSMessageID["START"] = 0] = "START";
-        ELGSMessageID[ELGSMessageID["GS2LConnectAuth"] = 1] = "GS2LConnectAuth";
-        ELGSMessageID[ELGSMessageID["L2GSConnectAuth"] = 2] = "L2GSConnectAuth";
-        ELGSMessageID[ELGSMessageID["END"] = 3] = "END";
-    })(ELGSMessageID || (ELGSMessageID = {}));
-    var ELCMessageID;
-    (function (ELCMessageID) {
-        ELCMessageID[ELCMessageID["START"] = 3] = "START";
-        ELCMessageID[ELCMessageID["L2CServerInfo"] = 4] = "L2CServerInfo";
-        ELCMessageID[ELCMessageID["C2LLogin"] = 5] = "C2LLogin";
-        ELCMessageID[ELCMessageID["L2CLogin"] = 6] = "L2CLogin";
-        ELCMessageID[ELCMessageID["END"] = 7] = "END";
-    })(ELCMessageID || (ELCMessageID = {}));
-    var EGSCMessageID;
-    (function (EGSCMessageID) {
-        EGSCMessageID[EGSCMessageID["START"] = 7] = "START";
-        EGSCMessageID[EGSCMessageID["C2GSConnect"] = 8] = "C2GSConnect";
-        EGSCMessageID[EGSCMessageID["GS2CConnect"] = 9] = "GS2CConnect";
-        EGSCMessageID[EGSCMessageID["END"] = 10] = "END";
-    })(EGSCMessageID || (EGSCMessageID = {}));
+    var EMessageID;
+    (function (EMessageID) {
+        EMessageID[EMessageID["START"] = 0] = "START";
+        EMessageID[EMessageID["LGS_START"] = 1] = "LGS_START";
+        EMessageID[EMessageID["L2GSConnectSuccess"] = 2] = "L2GSConnectSuccess";
+        EMessageID[EMessageID["GS2LConnectAuth"] = 3] = "GS2LConnectAuth";
+        EMessageID[EMessageID["L2GSConnectAuth"] = 4] = "L2GSConnectAuth";
+        EMessageID[EMessageID["LGS_END"] = 5] = "LGS_END";
+        EMessageID[EMessageID["ELC_START"] = 6] = "ELC_START";
+        EMessageID[EMessageID["L2CServerInfo"] = 7] = "L2CServerInfo";
+        EMessageID[EMessageID["C2LLogin"] = 8] = "C2LLogin";
+        EMessageID[EMessageID["L2CLogin"] = 9] = "L2CLogin";
+        EMessageID[EMessageID["ELC_END"] = 10] = "ELC_END";
+        EMessageID[EMessageID["EGSC_START"] = 11] = "EGSC_START";
+        EMessageID[EMessageID["C2GSConnect"] = 12] = "C2GSConnect";
+        EMessageID[EMessageID["GS2CConnect"] = 13] = "GS2CConnect";
+        EMessageID[EMessageID["EGSC_END"] = 14] = "EGSC_END";
+        EMessageID[EMessageID["END"] = 15] = "END";
+    })(EMessageID || (EMessageID = {}));
 
     class MsgHandler {
         constructor() {
-            this.msgName2Key = {};
-            this.msgKey2Name = {};
             this.messageFun = {};
         }
-        MessageRegist() { }
-        GetMsgName(msgKey) {
-            return this.msgKey2Name[msgKey];
-        }
-        GetMsgKey(msgName) {
-            return this.msgName2Key[msgName];
-        }
-        MessageHandle(recvData) { }
-    }
-
-    class LCMsgHandler extends MsgHandler {
-        constructor() { super(); }
-        static GetInstance() {
-            if (!LCMsgHandler.ins)
-                LCMsgHandler.ins = new LCMsgHandler();
-            return LCMsgHandler.ins;
-        }
-        MessageRegist() {
-            let props = Reflect.ownKeys(ELCMessageID);
-            for (let i = 0; i <= LCMsgHandler.msgNum; i++) {
-                let index = LCMsgHandler.msgNum + 1 + i;
-                let msgName = props[index].toString();
-                let msgKey = parseInt(props[i].toString());
+        static MessageRegist() {
+            let props = Reflect.ownKeys(EMessageID);
+            for (let i = 1; i <= EMessageID.END; i++) {
+                let keyIndex = EMessageID.START + i;
+                let nameIndex = EMessageID.END + i + 1;
+                let msgName = props[nameIndex].toString();
+                let msgKey = parseInt(props[keyIndex].toString());
                 this.msgKey2Name[msgKey] = msgName;
                 this.msgName2Key[msgName] = msgKey;
             }
-            this.messageFun[ELCMessageID.L2CLogin] = this.HandleL2CLogin;
-            console.log("LCMsgHandler MessageRegist success!");
         }
-        MessageHandle(recvData) {
-            let recvMsg = MsgBase.MessageHead.decode(recvData);
-            let msgID = recvMsg.nMsgID;
-            let msgLen = recvMsg.nMsgLength;
-            let msgName = this.GetMsgName(msgID);
-            let msgBody = MsgLC[msgName].decode(recvMsg.data);
-            this.messageFun[msgID](msgBody);
+        static GetMsgName(msgKey) {
+            return this.msgKey2Name[msgKey];
         }
-        HandleL2CLogin(msg) {
-            console.log("handle msg!!!");
+        static GetMsgKey(msgName) {
+            return this.msgName2Key[msgName];
+        }
+        static HandleFromLogin(msg) {
+            let msgID = 0;
+            try {
+                let recvMsg = MsgBase.MessageHead.decode(msg);
+                msgID = recvMsg.nMsgID;
+                let msgLen = recvMsg.nMsgLength;
+                let msgName = MsgHandler.GetMsgName(msgID);
+                let msgBody = MsgLC[msgName].decode(recvMsg.data);
+                this.LoginEvent.event(msgName, msgBody);
+            }
+            catch (error) {
+                console.error(error.stack + msgID);
+            }
+        }
+        static HandleFromGS(msg) {
+            let msgID = 0;
+            try {
+                let recvMsg = MsgBase.MessageHead.decode(msg);
+                msgID = recvMsg.nMsgID;
+                let msgLen = recvMsg.nMsgLength;
+                let msgName = MsgHandler.GetMsgName(msgID);
+                let msgBody = MsgGSC[msgName].decode(recvMsg.data);
+                this.GSEvent.event(msgName, msgBody);
+            }
+            catch (error) {
+                console.error(error.stack + msgID);
+            }
         }
     }
-    LCMsgHandler.msgNum = ELCMessageID.END - ELCMessageID.START;
-    LCMsgHandler.ins = null;
+    MsgHandler.LoginEvent = new Laya.EventDispatcher();
+    MsgHandler.GSEvent = new Laya.EventDispatcher();
+    MsgHandler.msgName2Key = {};
+    MsgHandler.msgKey2Name = {};
 
     class LoginLogic {
         constructor() {
@@ -157,8 +158,14 @@
             return LoginLogic.ins;
         }
         Init() {
-            LCMsgHandler.GetInstance().MessageRegist();
+            MsgHandler.MessageRegist();
             this.serverHost = "http://127.0.0.1:8001?token=tempToken";
+            MsgHandler.LoginEvent.on("L2CServerInfo", this, this.TestFun);
+        }
+        TestFun(data) {
+            let msg = data;
+            console.log("hahahaha");
+            console.log(msg);
         }
         ConnectLogin() {
             Logger.Info("开始连接服务器服务器: " + this.serverHost);
@@ -178,7 +185,6 @@
         OnConnect() {
             Logger.Info("连接服务器成功: " + this.serverHost);
             this.SetConnect(true);
-            this.socketIO.emit(SOCKET_IO_FIRST_MSG);
             Laya.ResourceVersion.enable("version.json", Laya.Handler.create(this, this.onVersionLoaded), Laya.ResourceVersion.FILENAME_VERSION);
         }
         onVersionLoaded() {
@@ -191,8 +197,7 @@
             let msgID = 0;
             try {
                 let buffer = new Uint8Array(recvData);
-                let msg2 = MsgLC.L2CServerInfo.decode(buffer);
-                LCMsgHandler.GetInstance().MessageHandle(recvData);
+                MsgHandler.HandleFromLogin(buffer);
             }
             catch (error) {
                 this.socketIO.close();
