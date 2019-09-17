@@ -647,7 +647,7 @@ $root.MsgLC = (function() {
          * Properties of a L2CServerInfo.
          * @memberof MsgLC
          * @interface IL2CServerInfo
-         * @property {MsgLC.IServerInfo|null} [serverInfos] L2CServerInfo serverInfos
+         * @property {Array.<MsgLC.IServerInfo>|null} [serverInfos] L2CServerInfo serverInfos
          */
 
         /**
@@ -659,6 +659,7 @@ $root.MsgLC = (function() {
          * @param {MsgLC.IL2CServerInfo=} [properties] Properties to set
          */
         function L2CServerInfo(properties) {
+            this.serverInfos = [];
             if (properties)
                 for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
@@ -667,11 +668,11 @@ $root.MsgLC = (function() {
 
         /**
          * L2CServerInfo serverInfos.
-         * @member {MsgLC.IServerInfo|null|undefined} serverInfos
+         * @member {Array.<MsgLC.IServerInfo>} serverInfos
          * @memberof MsgLC.L2CServerInfo
          * @instance
          */
-        L2CServerInfo.prototype.serverInfos = null;
+        L2CServerInfo.prototype.serverInfos = $util.emptyArray;
 
         /**
          * Creates a new L2CServerInfo instance using the specified properties.
@@ -697,8 +698,9 @@ $root.MsgLC = (function() {
         L2CServerInfo.encode = function encode(message, writer) {
             if (!writer)
                 writer = $Writer.create();
-            if (message.serverInfos != null && message.hasOwnProperty("serverInfos"))
-                $root.MsgLC.ServerInfo.encode(message.serverInfos, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+            if (message.serverInfos != null && message.serverInfos.length)
+                for (var i = 0; i < message.serverInfos.length; ++i)
+                    $root.MsgLC.ServerInfo.encode(message.serverInfos[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
             return writer;
         };
 
@@ -734,7 +736,9 @@ $root.MsgLC = (function() {
                 var tag = reader.uint32();
                 switch (tag >>> 3) {
                 case 1:
-                    message.serverInfos = $root.MsgLC.ServerInfo.decode(reader, reader.uint32());
+                    if (!(message.serverInfos && message.serverInfos.length))
+                        message.serverInfos = [];
+                    message.serverInfos.push($root.MsgLC.ServerInfo.decode(reader, reader.uint32()));
                     break;
                 default:
                     reader.skipType(tag & 7);

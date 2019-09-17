@@ -18,7 +18,7 @@ message ServerInfo {
 
 // 推送GameServer信息
 message L2CServerInfo {
-    ServerInfo serverInfos = 1;
+    repeated ServerInfo serverInfos = 1;
     //int32 nID               = 1; // 服务器ID
 }
 
