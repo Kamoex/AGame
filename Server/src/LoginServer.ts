@@ -47,7 +47,7 @@ export class LoginServer {
     public OnGameServerConnected(socket: SocketIO.Socket, data: any) {
         let gsLogic: LoginGSLogic = new LoginGSLogic();
         gsLogic.Init(socket, this.gsSession);
-        this.gsSession.AddConnector(socket, gsLogic);
+        this.gsSession.AddConnector(socket.id, gsLogic);
         gsLogic.OnConnected();
     }
 
@@ -72,28 +72,8 @@ export class LoginServer {
     public OnClientConnected(socket: SocketIO.Socket, data: any) {
         let clLogic: LoginUser = new LoginUser();
         clLogic.Init(socket, this.clSession);
-        this.clSession.AddConnector(socket, clLogic);
-
-        // 发送给客户端gameserver信息
-        let msg: MsgLC.L2CServerInfo = MsgLC.L2CServerInfo.create();
-        for (let i = 0; i < 3; i++) {
-            let msg2: MsgLC.ServerInfo = MsgLC.ServerInfo.create();
-            // msg.nID = this.gameServers[0].nID;
-            // msg.sName = this.gameServers[0].sName;
-            // msg.sIp = this.gameServers[0].sIP;
-            // msg.nPort = this.gameServers[0].nPort;
-            // msg.eState = MsgBase.EServerState.EOPEN;
-            msg2.nID = (i + 1) * 1000;
-            msg2.sName = i.toString();
-            msg2.sIp = i.toString() + ".1.1.1";
-            msg2.nPort = (i + 1) * 1000 + 1;
-            msg2.eState = i;
-            msg.serverInfos.push(msg2);
-        }
-        clLogic.SendMsg(msg);
-
-        // let dccc = MsgLC.L2CServerInfo.decode(buffer);
-        // let  b = 3;
+        this.clSession.AddConnector(socket.id, clLogic);
+        clLogic.OnConnected();
     }
 
     public GetCLSession(): ServerSession {

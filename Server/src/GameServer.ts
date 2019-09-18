@@ -75,7 +75,7 @@ export class GameServer {
     /** 客户端成功连接 */
     private OnClientConnected(socket: SocketIO.Socket) {
         let clLogic: GSUser = new GSUser();
-        this.clSession.AddConnector(socket, clLogic);
+        this.clSession.AddConnector(socket.id, clLogic);
         clLogic.Init(socket, this.clSession);
         clLogic.OnConnected();
     }

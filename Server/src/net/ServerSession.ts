@@ -32,8 +32,13 @@ export class ServerSession {
 
 
     /** 添加客户端 */
-    public AddConnector(socket: SocketIO.Socket, con: IConnector) {
-        this.connectors[socket.id] = con;
+    public AddConnector(socketID: string, con: IConnector) {
+        this.connectors[socketID] = con;
+    }
+
+     /** 删除客户端 */
+     public RemoveConnector(socketID: string) {
+        delete this.connectors[socketID];
     }
 
     /** 创建服务器session */
