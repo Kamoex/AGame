@@ -29,25 +29,27 @@ export class LoginLogic {
 
     public Init() {
         // 读取连接的login配置
-        // this.connectSrvCfg = Laya.Loader.getRes(this.CONNECT_SRV_CFG);
-        // let conSrv: string = this.connectSrvCfg.connect_srv;
+        Laya.loader.load(
+            [
+                // 加载配置
+                { "url": this.CONNECT_SRV_CFG },
+                // 加载图集
+                { "url": "./res/atlas/img.atlas" }
+            ],
+            Laya.Handler.create(this, this.onLoaded), null, Laya.Loader.JSON
+        );
         // 消息注册
         MsgHandler.MessageRegist();
-        this.serverHost = "http://127.0.0.1:8001?token=tempToken";
-        MsgHandler.LoginEvent.on("L2CServerInfo", this, this.TestFun);
+    }
 
-        // if(this.connectSrvCfg[conSrv]) {
-        //     this.serverHost = this.connected[conSrv].url;
-        // }
-        // else {
-        //     Logger.Error("LoginLogic connectSrv is null!!!");
-        // }
+    private onLoaded() {
+        this.connectSrvCfg = Laya.Loader.getRes(this.CONNECT_SRV_CFG);
+        let conSrv: string = this.connectSrvCfg.connect_srv;
+        this.serverHost = this.connectSrvCfg[conSrv].url + "?token=" + this.connectSrvCfg[conSrv].token;
+        // 连接login
+        this.ConnectLogin();
     }
-    public TestFun(data: any) {
-        let msg = data as MsgLC.L2CServerInfo;
-        console.log("hahahaha");
-        console.log(msg);
-    }
+
     /** 连接login服务器 */
     public ConnectLogin(): void {
         Logger.Info("开始连接服务器服务器: " + this.serverHost);
@@ -69,7 +71,6 @@ export class LoginLogic {
     private OnConnect() {
         Logger.Info("连接服务器成功: " + this.serverHost);
         this.SetConnect(true);
-        // this.socketIO.send(SOCKET_IO_MESSAGE);
         //激活资源版本控制，version.json由IDE发布功能自动生成，如果没有也不影响后续流程
         Laya.ResourceVersion.enable("version.json", Laya.Handler.create(this, this.onVersionLoaded), Laya.ResourceVersion.FILENAME_VERSION);
     }
@@ -88,9 +89,7 @@ export class LoginLogic {
     private OnRecv(recvData: any) {
         let msgID: number = 0;
         try {
-
             let buffer = new Uint8Array(recvData);
-            // let msg2: MsgLC.L2CServerInfo =  MsgLC.L2CServerInfo.decode(buffer);
             MsgHandler.HandleFromLogin(buffer);
         } catch (error) {
             this.socketIO.close();

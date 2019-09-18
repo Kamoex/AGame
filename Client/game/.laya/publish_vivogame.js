@@ -1,4 +1,4 @@
-// v1.0.0
+// v1.0.1
 // publish 2.x 也是用这个文件，需要做兼容
 let isPublish2 = process.argv[2].includes("publish_vivogame.js") && process.argv[3].includes("--evn=publish2");
 // 获取Node插件和工作路径
@@ -397,7 +397,7 @@ gulp.task("modifyFile_VIVO", ["deleteSignFile_VIVO"], function() {
 	manifestJson.versionName = config.vivoInfo.versionName;
 	manifestJson.versionCode = config.vivoInfo.versionCode;
 	manifestJson.minPlatformVersion = config.vivoInfo.minPlatformVersion;
-	manifestJson.icon = `./${path.basename(config.vivoInfo.icon)}`;
+	manifestJson.icon = `/${path.basename(config.vivoInfo.icon)}`;
 	fs.writeFileSync(manifestPath, JSON.stringify(manifestJson, null, 4), "utf8");
 
 	if (config.version) {

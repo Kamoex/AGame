@@ -41,7 +41,6 @@ class Main {
 //激活启动类
 new Main();
 LoginLogic.GetInstance().Init();
-LoginLogic.GetInstance().ConnectLogin();
 
 // new Game();
 // new TestSocketIO();

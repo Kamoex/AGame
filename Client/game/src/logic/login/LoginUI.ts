@@ -1,5 +1,6 @@
 import { ui } from "../../ui/layaMaxUI";
 import { LoginLogic } from "./LoginLogic";
+import { Logger } from "../../util/Logger";
 
 export default class LoginUI extends ui.loginUI {
     static instance: LoginUI = null;
@@ -15,8 +16,8 @@ export default class LoginUI extends ui.loginUI {
     }
 
     private LoginGame() {
-        console.log("login");
-        LoginLogic.GetInstance().ConnectLogin();
+        Logger.Info("LoginGame");
+        // LoginLogic.GetInstance().ConnectLogin();
     }
 
     private RegistAccount() {
@@ -24,7 +25,8 @@ export default class LoginUI extends ui.loginUI {
     }
 
     private TryGame() {
-        Laya.Scene.open("game.scene");
+        Logger.Info("TryGame");
+        Laya.Scene.open("agame.scene");
     }
 
 }

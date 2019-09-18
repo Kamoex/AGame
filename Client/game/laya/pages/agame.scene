@@ -2,11 +2,11 @@
     "x":0,
     "type":"View",
     "selectedBox":2,
-    "selecteID":7,
+    "selecteID":8,
     "searchKey":"View,game",
     "props":{"width":480,"var":"game","sceneColor":"#000000","runtime":"logic/GameUI.ts","height":640},
     "nodeParent":-1,
-    "maxID":8,
+    "maxID":9,
     "label":"game",
     "isOpen":true,
     "isDirectory":true,
@@ -18,7 +18,7 @@
             "x":15,
             "type":"Image",
             "searchKey":"Image",
-            "props":{"y":0,"x":0,"width":480,"skin":"game/img_game_bg.png","height":640},
+            "props":{"y":0,"x":0,"width":480,"skin":"img/game/img_game_bg.png","height":640},
             "nodeParent":2,
             "label":"Image",
             "isDirectory":false,
@@ -30,30 +30,17 @@
         },
         {
             "x":15,
-            "type":"Box",
-            "searchKey":"Box,game_element",
-            "props":{"y":0,"x":433,"var":"game_element"},
+            "type":"Button",
+            "searchKey":"Button,back_login",
+            "props":{"y":0,"x":448,"var":"back_login","skin":"img/comp/btn_close.png"},
             "nodeParent":2,
-            "label":"game_element",
-            "isOpen":null,
-            "isDirectory":true,
+            "label":"back_login",
+            "isDirectory":false,
             "isAniNode":true,
-            "hasChild":true,
-            "compId":7,
+            "hasChild":false,
+            "compId":8,
             "child":[
-                {
-                    "type":"Button",
-                    "searchKey":"Button,back_login",
-                    "props":{"width":47,"var":"back_login","skin":"comp/btn_close.png","height":45},
-                    "nodeParent":7,
-                    "label":"back_login",
-                    "isDirectory":false,
-                    "isAniNode":true,
-                    "hasChild":false,
-                    "compId":6,
-                    "child":[
-                        ]
-                }]
+                ]
         }],
     "animations":[
         {

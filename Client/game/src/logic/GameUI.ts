@@ -1,6 +1,6 @@
 import { ui } from "../ui/layaMaxUI";
 
-export default class GameUI extends ui.gameUI {
+export default class GameUI extends ui.agameUI {
     static instance: GameUI = null;
     constructor() {
         super();

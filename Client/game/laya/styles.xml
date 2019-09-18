@@ -1,0 +1,5 @@
+<res>
+   <item name="login/img_login_bg.png" type="Image" compress="0" pack="0" quality="80" props="" picType="0" scale="0"/>
+   <item name="img/login/img_login_bg.png" type="Image" compress="0" pack="1" quality="80" props="" picType="0" scale="0"/>
+   <item name="img/login/img_regist_bg.png" type="Image" compress="0" pack="1" quality="80" props="" picType="0" scale="0"/>
+</res>

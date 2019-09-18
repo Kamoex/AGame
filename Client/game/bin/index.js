@@ -14,5 +14,6 @@ loadLib("libs/laya.physics.js")
 loadLib("libs/protobuf-library.js")
 loadLib("libs/message_client.min.js")
 loadLib("libs/socket.io-client.js")
+// window.io = require("libs/weapp.socket.io.js")
 //-----libs-end-------
 loadLib("js/bundle.js");

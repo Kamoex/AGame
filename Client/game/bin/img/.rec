@@ -1,18 +1,16 @@
 D .
-D comp
 R DB148A56 .rec
 R 2A8CA215 comp.atlas
-P FA841D14 comp.png
+R FA841D14 comp.png
 R 7A29584F game.atlas
-P 7138A413 game.png
-R 0C9FC93F login.atlas
-P E0C4EACC login.png
-D img
-D img/atlas
+R 7138A413 game.png
+R C9FC93F login.atlas
+R E0C4EACC login.png
+D atlas
 R E094D509 .rec
 R D35E6630 comp.atlas
 R BE441B60 login.atlas
-D img/comp
+D comp
 P 316AD948 btn_close.png
 P 6EF336AE hscroll$bar.png
 P 7FF47AC5 hscroll$down.png
@@ -23,13 +21,13 @@ P 2DCE1DF9 vscroll$bar.png
 P 6FE7EA34 vscroll$down.png
 P 0587871F vscroll$up.png
 P DDDDFB9E vslider$bar.png
-D img/game
+D game
 P EBDBC8E6 img_game_bg.png
-D img/login
+D login
 P 9B2310E3 btn_back_login.png
 P 7FF06E0C btn_login.png
 P 70B8E717 btn_regist.png
 P D45C3985 btn_regist_confirm.png
 P 62E805CD btn_try_play.png
-P 5F1E22EB img_login_bg.png
-P 47621489 img_regist_bg.png
+R 5F1E22EB img_login_bg.png
+R 47621489 img_regist_bg.png

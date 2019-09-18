@@ -1,4 +1,5 @@
 import { EMessageID } from "../../message/msg_define_build";
+import { Logger } from "../../util/Logger";
 
 export class MsgHandler{
     public static LoginEvent: Laya.EventDispatcher = new Laya.EventDispatcher();
@@ -43,6 +44,7 @@ export class MsgHandler{
             let msgLen: number = recvMsg.nMsgLength;
             let msgName = MsgHandler.GetMsgName(msgID);
             let msgBody: any = MsgLC[msgName].decode(recvMsg.data);
+Logger.Info(msgBody);
             this.LoginEvent.event(msgName, msgBody);
         } catch (error) {
             console.error(error.stack + msgID)            

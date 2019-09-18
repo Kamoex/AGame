@@ -4,16 +4,15 @@ import Dialog=Laya.Dialog;
 import Scene=Laya.Scene;
 var REG: Function = Laya.ClassUtils.regClass;
 export module ui {
-    export class gameUI extends Laya.View {
-		public game_element:Laya.Box;
+    export class agameUI extends Laya.View {
 		public back_login:Laya.Button;
         constructor(){ super()}
         createChildren():void {
             super.createChildren();
-            this.loadScene("game");
+            this.loadScene("agame");
         }
     }
-    REG("ui.gameUI",gameUI);
+    REG("ui.agameUI",agameUI);
     export class loginUI extends Laya.View {
 		public btn_login:Laya.Button;
 		public btn_regist:Laya.Button;
