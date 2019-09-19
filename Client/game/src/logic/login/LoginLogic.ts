@@ -32,9 +32,9 @@ export class LoginLogic {
         Laya.loader.load(
             [
                 // 加载配置
-                { "url": this.CONNECT_SRV_CFG },
+                { "url": this.CONNECT_SRV_CFG }
                 // 加载图集
-                { "url": "./res/atlas/img.atlas" }
+                // { "url": "./res/atlas/img.atlas" }
             ],
             Laya.Handler.create(this, this.onLoaded), null, Laya.Loader.JSON
         );
@@ -43,6 +43,7 @@ export class LoginLogic {
     }
 
     private onLoaded() {
+        let ddd = Laya.Loader.getRes(this.CONNECT_SRV_CFG);
         this.connectSrvCfg = Laya.Loader.getRes(this.CONNECT_SRV_CFG);
         let conSrv: string = this.connectSrvCfg.connect_srv;
         this.serverHost = this.connectSrvCfg[conSrv].url + "?token=" + this.connectSrvCfg[conSrv].token;
@@ -52,6 +53,10 @@ export class LoginLogic {
 
     /** 连接login服务器 */
     public ConnectLogin(): void {
+        if(this.IsConnect()) {
+            Logger.Info("与login服务器已经连接! url: " + this.serverHost);
+            return;
+        }
         Logger.Info("开始连接服务器服务器: " + this.serverHost);
         try {
             this.socketIO = io.connect(this.serverHost);

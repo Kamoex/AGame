@@ -49,7 +49,6 @@ export class GameServer {
         await this.mongoDB.Init(GameServerCfg.mongo_user, GameServerCfg.mongo_password, GameServerCfg.mongo_host, GameServerCfg.mongo_port, GameServerCfg.mongo_databass);
         // 初始化连接loginsession
         this.loginSession = new ClientSession(GameServerCfg.server_id, GameServerCfg.server_name, GameLog)
-        this.loginSession.SetEventFun(SOCKET_IO_CONNECT, this.OnConnectLogin.bind(this));
         // 初始化gameserver
         this.clSession = new ServerSession(GameServerCfg.server_id, GameServerCfg.server_name, GameLog, this.OnClientConnected.bind(this));
     }
@@ -57,7 +56,7 @@ export class GameServer {
     /** 启动服务器 */
     public StartServer() {
         // 连接login
-        this.loginSession.CreateSession(GameServerCfg.loginsrv_ip, GameServerCfg.loginsrv_port, GameServerCfg.loginsrv_token);
+        this.loginSession.CreateSession(GameServerCfg.loginsrv_ip, GameServerCfg.loginsrv_port, GameServerCfg.loginsrv_token, this.OnConnectLogin.bind(this));
         // 启动gameserver
         this.clSession.CreateSession(GameServerCfg.port);
     }
@@ -65,8 +64,8 @@ export class GameServer {
     /** 连接login成功 */
     public OnConnectLogin() {
         this.loginLogic = new GSLoginLogic(this.loginSession);
-        this.loginSession.SetEventFun(SOCKET_IO_MESSAGE, this.loginLogic.HandleMsg.bind(this.loginLogic));
-        this.loginSession.SetEventFun(SOCKET_IO_DISCONNECT, this.loginLogic.OnDisConnectLoginSrv.bind(this.loginLogic));
+        this.loginSession.Init(this.loginLogic);
+        this.loginLogic.OnConnected();
     }
 
 
@@ -91,10 +90,10 @@ export class GameServer {
 
     public GetRole(roleID: number): GSUser {
         if (GameAssert(this.rolesDic[roleID], "GameServer GetRole role is null !!! roleID: " + roleID))
-            return;
+            return null;
         let index: number = this.rolesDic[roleID];
         if (GameAssert(index > this.roles.length, "GameServer GetRole error !!! roleID: " + roleID + " index: " + index))
-            return;
+            return null;
         return this.roles[index];
     }
 

@@ -3,6 +3,7 @@ import { MsgHandler } from "./MsgHandler";
 import { MsgLGS, MsgBase, MsgGSC } from "../../message/message_server";
 import { GSUser } from "../logic/Game/GSUser";
 import { GSLoginLogic } from "../logic/Game/GSLoginLogic";
+import { GameLog } from "../log/LogMgr";
 
 
 /**
@@ -34,26 +35,38 @@ export class GameServerMsgHandler extends MsgHandler {
 
     /** 处理客户端消息 */
     public MessageHandleForUser(logic: GSUser, recvData: any) {
-        let recvMsg = MsgBase.MessageHead.decode(recvData);
-        let msgID: number = recvMsg.nMsgID;
-        // TODO 检测下消息长度 看是否过长
-        let msgLen: number = recvMsg.nMsgLength;
-
-        let msgName = MsgHandler.GetMsgName(msgID);
-        let msgBody: any = MsgGSC[msgName].decode(recvMsg.data);
-        this.messageFun[msgID](logic, msgBody);
+        let msgID: number = 0;
+        let msgName: string = '';
+        try {
+            let recvMsg = MsgBase.MessageHead.decode(recvData);
+            msgID = recvMsg.nMsgID;
+            // TODO 检测下消息长度 看是否过长
+            let msgLen: number = recvMsg.nMsgLength;
+    
+            msgName = MsgHandler.GetMsgName(msgID);
+            let msgBody: any = MsgGSC[msgName].decode(recvMsg.data);
+            this.messageFun[msgID](logic, msgBody);
+        } catch (error) {
+            GameLog.Error('MessageHandleForUser error!!! ' + 'msgID: ' + msgID + ' msgName: ' + msgName + ' ', error);
+        }
     }
 
     /** 处理Login消息 */
     public MessageHandleForLogin(logic: GSLoginLogic, recvData: any) {
-        let recvMsg = MsgBase.MessageHead.decode(recvData);
-        let msgID: number = recvMsg.nMsgID;
-        // TODO 检测下消息长度 看是否过长
-        let msgLen: number = recvMsg.nMsgLength;
-
-        let msgName = MsgHandler.GetMsgName(msgID);
-        let msgBody: any = MsgLGS[msgName].decode(recvMsg.data);
-        this.messageFun[msgID](logic, msgBody);
+        let msgID: number = 0;
+        let msgName: string = '';
+        try {
+            let recvMsg = MsgBase.MessageHead.decode(recvData);
+            msgID = recvMsg.nMsgID;
+            // TODO 检测下消息长度 看是否过长
+            let msgLen: number = recvMsg.nMsgLength;
+    
+            msgName = MsgHandler.GetMsgName(msgID);
+            let msgBody: any = MsgLGS[msgName].decode(recvMsg.data);
+            this.messageFun[msgID](logic, msgBody);
+        } catch (error) {
+            GameLog.Error('MessageHandleForLogin error!!!' + ' msgID: ' + msgID + ' msgName: ' + msgName + ' ', error);
+        }
     }
 
 

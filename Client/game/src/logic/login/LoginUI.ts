@@ -17,7 +17,7 @@ export default class LoginUI extends ui.loginUI {
 
     private LoginGame() {
         Logger.Info("LoginGame");
-        // LoginLogic.GetInstance().ConnectLogin();
+        LoginLogic.GetInstance().ConnectLogin();
     }
 
     private RegistAccount() {

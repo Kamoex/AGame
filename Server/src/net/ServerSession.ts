@@ -4,7 +4,7 @@ import { LogMgr } from "../log/LogMgr";
 import { MsgHandler } from "../msg_handler/MsgHandler";
 import { LoginServerCfg } from "../LoginServerCfg";
 import * as scio from 'socket.io'
-import { IConnector } from "./Connector";
+import { ISConnector } from "./Connector";
 var io = require("socket.io");
 
 export class ServerSession {
@@ -20,7 +20,7 @@ export class ServerSession {
     /** 成功连接时需要执行的自定义函数 参数 socket: SocketIO.Socket*/
     private callWhenConnected: Function;
     /** 连接上来的客户端 */
-    private connectors: {[key: string]: IConnector} = {};
+    private connectors: {[key: string]: ISConnector} = {};
 
 
     public constructor(masterID: number, masterName: string, logger: LogMgr, fun: Function) {
@@ -32,7 +32,7 @@ export class ServerSession {
 
 
     /** 添加客户端 */
-    public AddConnector(socketID: string, con: IConnector) {
+    public AddConnector(socketID: string, con: ISConnector) {
         this.connectors[socketID] = con;
     }
 

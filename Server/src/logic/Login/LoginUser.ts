@@ -1,12 +1,12 @@
 import { LoginServerMsgHandler } from "../../msg_handler/LoginServerMsgHandler";
 import { LoginServer } from "../../LoginServer";
 import { Login } from "./LoginServerData"
-import { IConnector } from "../../net/Connector";
+import { ISConnector } from "../../net/Connector";
 import { LoginLog } from "../../log/LogMgr";
 import { ServerSession } from "../../net/ServerSession";
 import { MsgLC } from "../../../message/message_server";
 
-export class LoginUser implements IConnector {
+export class LoginUser implements ISConnector {
     /** socket */
     private sock: SocketIO.Socket;
     /** loginserver的连接信息 */

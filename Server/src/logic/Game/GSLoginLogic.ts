@@ -3,8 +3,9 @@ import { GameServerMsgHandler } from "../../msg_handler/GameServerMsgHandler";
 import { ClientSession } from "../../net/ClientSession";
 import { GameAssert } from "../../utils/Utils";
 import { GameServerCfg } from "../../GameServerCfg";
+import { ICConnector } from "../../net/Connector";
 
-export class GSLoginLogic {
+export class GSLoginLogic implements ICConnector{
     private loginSession: ClientSession;
     /** 消息处理 */
     private msgHandler: GameServerMsgHandler = GameServerMsgHandler.GetInstance();
@@ -13,17 +14,44 @@ export class GSLoginLogic {
         this.loginSession = session;
     }
 
+    /** 连接成功 */
+    public OnConnected() {
 
-    public HandleMsg(recvData: any) {
-        this.msgHandler.MessageHandleForLogin(this, recvData);
     }
 
-    public SendMsg(respData: any) {
-        this.loginSession.Send(respData);
+    /** 接收消息 */
+    public OnRecv(recvData: any) {
+        this.msgHandler.MessageHandleForLogin(this, recvData)
     }
 
-    public OnDisConnectLoginSrv(info: any) {
+    /** 发送心跳包 */
+    public OnPing() {
+
+    }
+
+    /** 收到心跳包 */
+    public OnPong() {
+
+    }
+
+    /** 断开连接 */
+    public OnDisconnect(info: any) {
         GameAssert(null, "login disconnect!!! info: " + info);
+    }
+
+    /** 连接中错误(已建立socket) */
+    public OnError(e: any) {
+
+    }
+
+    /** 连接时错误(未建立socket) */
+    public OnConnectError(e: any) {
+
+    }
+
+    /** 发送消息 */
+    public SendMsg(data: any) {
+        this.loginSession.Send(data);
     }
 
     

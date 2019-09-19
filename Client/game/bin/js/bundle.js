@@ -66,70 +66,6 @@
         }
     }
 
-    class LoginUI extends ui.loginUI {
-        constructor() {
-            super();
-            LoginUI.instance = this;
-        }
-        onEnable() {
-            this.btn_login.on(Laya.Event.CLICK, this, this.LoginGame);
-            this.btn_regist.on(Laya.Event.CLICK, this, this.RegistAccount);
-            this.btn_try.on(Laya.Event.CLICK, this, this.TryGame);
-        }
-        LoginGame() {
-            Logger.Info("LoginGame");
-        }
-        RegistAccount() {
-            Laya.Scene.open("regist.scene");
-        }
-        TryGame() {
-            Logger.Info("TryGame");
-            Laya.Scene.open("agame.scene");
-        }
-    }
-    LoginUI.instance = null;
-
-    class RegistUI extends ui.registUI {
-        constructor() {
-            super();
-            RegistUI.instance = this;
-        }
-        onEnable() {
-            this.btn_reg_confirm.on(Laya.Event.CLICK, this, this.RegistConfirm);
-            this.btn_back_login.on(Laya.Event.CLICK, this, this.Back2Login);
-        }
-        Back2Login() {
-            Laya.Scene.open("login.scene");
-        }
-        RegistConfirm() {
-            console.log("register");
-        }
-    }
-    RegistUI.instance = null;
-
-    class GameConfig {
-        constructor() { }
-        static init() {
-            var reg = Laya.ClassUtils.regClass;
-            reg("logic/GameUI.ts", GameUI);
-            reg("logic/login/LoginUI.ts", LoginUI);
-            reg("logic/login/RegistUI.ts", RegistUI);
-        }
-    }
-    GameConfig.width = 480;
-    GameConfig.height = 640;
-    GameConfig.scaleMode = "fixedwidth";
-    GameConfig.screenMode = "none";
-    GameConfig.alignV = "top";
-    GameConfig.alignH = "left";
-    GameConfig.startScene = "login.scene";
-    GameConfig.sceneRoot = "";
-    GameConfig.debug = false;
-    GameConfig.stat = false;
-    GameConfig.physicsDebug = false;
-    GameConfig.exportSceneToJson = true;
-    GameConfig.init();
-
     const SOCKET_IO_CONNECT = "connect";
     const SOCKET_IO_MESSAGE = "message";
     const SOCKET_IO_DISCONNECT = "disconnect";
@@ -224,18 +160,22 @@
         }
         Init() {
             Laya.loader.load([
-                { "url": this.CONNECT_SRV_CFG },
-                { "url": "./res/atlas/img.atlas" }
+                { "url": this.CONNECT_SRV_CFG }
             ], Laya.Handler.create(this, this.onLoaded), null, Laya.Loader.JSON);
             MsgHandler.MessageRegist();
         }
         onLoaded() {
+            let ddd = Laya.Loader.getRes(this.CONNECT_SRV_CFG);
             this.connectSrvCfg = Laya.Loader.getRes(this.CONNECT_SRV_CFG);
             let conSrv = this.connectSrvCfg.connect_srv;
             this.serverHost = this.connectSrvCfg[conSrv].url + "?token=" + this.connectSrvCfg[conSrv].token;
             this.ConnectLogin();
         }
         ConnectLogin() {
+            if (this.IsConnect()) {
+                Logger.Info("与login服务器已经连接! url: " + this.serverHost);
+                return;
+            }
             Logger.Info("开始连接服务器服务器: " + this.serverHost);
             try {
                 this.socketIO = io.connect(this.serverHost);
@@ -322,6 +262,71 @@
         }
     }
     LoginLogic.ins = null;
+
+    class LoginUI extends ui.loginUI {
+        constructor() {
+            super();
+            LoginUI.instance = this;
+        }
+        onEnable() {
+            this.btn_login.on(Laya.Event.CLICK, this, this.LoginGame);
+            this.btn_regist.on(Laya.Event.CLICK, this, this.RegistAccount);
+            this.btn_try.on(Laya.Event.CLICK, this, this.TryGame);
+        }
+        LoginGame() {
+            Logger.Info("LoginGame");
+            LoginLogic.GetInstance().ConnectLogin();
+        }
+        RegistAccount() {
+            Laya.Scene.open("regist.scene");
+        }
+        TryGame() {
+            Logger.Info("TryGame");
+            Laya.Scene.open("agame.scene");
+        }
+    }
+    LoginUI.instance = null;
+
+    class RegistUI extends ui.registUI {
+        constructor() {
+            super();
+            RegistUI.instance = this;
+        }
+        onEnable() {
+            this.btn_reg_confirm.on(Laya.Event.CLICK, this, this.RegistConfirm);
+            this.btn_back_login.on(Laya.Event.CLICK, this, this.Back2Login);
+        }
+        Back2Login() {
+            Laya.Scene.open("login.scene");
+        }
+        RegistConfirm() {
+            console.log("register");
+        }
+    }
+    RegistUI.instance = null;
+
+    class GameConfig {
+        constructor() { }
+        static init() {
+            var reg = Laya.ClassUtils.regClass;
+            reg("logic/GameUI.ts", GameUI);
+            reg("logic/login/LoginUI.ts", LoginUI);
+            reg("logic/login/RegistUI.ts", RegistUI);
+        }
+    }
+    GameConfig.width = 480;
+    GameConfig.height = 640;
+    GameConfig.scaleMode = "fixedwidth";
+    GameConfig.screenMode = "none";
+    GameConfig.alignV = "top";
+    GameConfig.alignH = "left";
+    GameConfig.startScene = "login.scene";
+    GameConfig.sceneRoot = "";
+    GameConfig.debug = false;
+    GameConfig.stat = false;
+    GameConfig.physicsDebug = false;
+    GameConfig.exportSceneToJson = true;
+    GameConfig.init();
 
     class Main {
         constructor() {

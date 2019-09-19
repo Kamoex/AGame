@@ -1,10 +1,10 @@
 import { GameServerMsgHandler } from "../../msg_handler/GameServerMsgHandler";
 import { GameServer } from "../../GameServer";
-import { IConnector } from "../../net/Connector";
+import { ISConnector } from "../../net/Connector";
 import { ServerSession } from "../../net/ServerSession";
 import { GameLog } from "../../log/LogMgr";
 
-export class GSUser implements IConnector {
+export class GSUser implements ISConnector {
     /** socket */
     private sock: SocketIO.Socket;
     /** gs的连接信息 */
