@@ -68,25 +68,22 @@ export class LoginUser implements ISConnector {
 
     /** 断开连接与客户端 */
     public OnDisconnect(info: any) {
-        try {
-            this.sock.disconnect(true);
-            this.session.RemoveConnector(this.sock.id);
-            console.log('LoginUser disconnect: ', info);
-        } catch (error) {
-            LoginLog.Error('LoginUser OnDisconnect Error!!! error: ' + error);
-        }
+        console.log('LoginUser disconnect: ', info);
     }
 
     /** 错误 */
     public OnError(e: any) {
-        this.sock.disconnect(true);
-        this.session.RemoveConnector(this.sock.id);
         LoginLog.Error('LoginUser OnError Error!!! error: ' + e);
     }
 
     /** 发送消息 */
     public SendMsg(data: any) {
         LoginServer.GetInstance().GetCLSession().Send(this.sock, data);
+    }
+
+    /** 关闭sokcet处理 */
+    public Close() {
+        LoginLog.Assert("loginUser close");
     }
 
     public GetSockID(): string {

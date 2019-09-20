@@ -5,7 +5,6 @@ import { LoginLog } from "./log/LogMgr";
 import { LoginServerMsgHandler } from "./msg_handler/LoginServerMsgHandler";
 import { LoginGSLogic } from "./logic/Login/LoginGSLogic";
 import { LoginUser } from "./logic/Login/LoginUser";
-import { MsgLC } from "../message/message_server";
 
 
 export class LoginServer {
@@ -33,7 +32,6 @@ export class LoginServer {
         // 初始化session
         this.gsSession = new ServerSession(LoginServerCfg.server_id, LoginServerCfg.server_name, LoginLog, this.OnGameServerConnected.bind(this));
         this.clSession = new ServerSession(LoginServerCfg.server_id, LoginServerCfg.server_name, LoginLog, this.OnClientConnected.bind(this));
-
     }
 
     /** 启动服务器 */

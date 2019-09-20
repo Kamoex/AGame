@@ -1,4 +1,4 @@
-import { SOCKET_IO_CONNECT, SOCKET_IO_MESSAGE, SOCKET_IO_DISCONNECT, SOCKET_IO_ERROR, HEART_BEAT_TIME_OUT, HEART_BEAT_TIME_INTERVAL } from "../common/CommonDefine";
+import { SOCKET_IO_CONNECT, SOCKET_IO_MESSAGE, SOCKET_IO_DISCONNECT, SOCKET_IO_ERROR, HEART_BEAT_TIME_OUT, HEART_BEAT_TIME_INTERVAL, SOCKET_IO_PING, SOCKET_IO_PONG, ERROR_NONE } from "../common/CommonDefine";
 import { MsgBase } from "../../message/message_server";
 import { LogMgr } from "../log/LogMgr";
 import { MsgHandler } from "../msg_handler/MsgHandler";
@@ -20,7 +20,7 @@ export class ServerSession {
     /** 成功连接时需要执行的自定义函数 参数 socket: SocketIO.Socket*/
     private callWhenConnected: Function;
     /** 连接上来的客户端 */
-    private connectors: {[key: string]: ISConnector} = {};
+    private connectors: { [key: string]: ISConnector } = {};
 
 
     public constructor(masterID: number, masterName: string, logger: LogMgr, fun: Function) {
@@ -36,11 +36,6 @@ export class ServerSession {
         this.connectors[socketID] = con;
     }
 
-     /** 删除客户端 */
-     public RemoveConnector(socketID: string) {
-        delete this.connectors[socketID];
-    }
-
     /** 创建服务器session */
     public CreateSession(nPort: number) {
         try {
@@ -48,7 +43,8 @@ export class ServerSession {
             this.serverIO = new io(nPort, {
                 pingTimeout: HEART_BEAT_TIME_OUT * 1000,
                 pingInterval: HEART_BEAT_TIME_INTERVAL * 1000,
-                allowRequest: this.Allow.bind(this)
+                allowRequest: this.Allow.bind(this),
+                transport: ['websocket', 'polling']
             });
             // 连接处理
             this.infos = this.serverIO.on(SOCKET_IO_CONNECT, this.OnConnected.bind(this));
@@ -85,24 +81,59 @@ export class ServerSession {
             socket.on(SOCKET_IO_DISCONNECT, this.OnDisconnect.bind(this, socket));
             // 错误处理
             socket.on(SOCKET_IO_ERROR, this.OnError.bind(this, socket));
+
         } catch (error) {
-            this.logger.Error('ServerSession onConnected error!!! master: ' + this.nMasterID + '|' + this.sMasterName + ' socket: ' + socket, error);
+            if (error.message != ERROR_NONE) {
+                this.logger.Error('ServerSession onConnected error!!! master: ' + this.nMasterID + '|' + this.sMasterName + ' socket: ' + socket, error);
+            }
         }
     }
 
     /** 接收消息 */
     private OnRecv(socket: SocketIO.Socket, recvData: any): void {
-        this.connectors[socket.id].OnRecv(recvData);
+        try {
+            this.connectors[socket.id].OnRecv(recvData);
+        } catch (error) {
+            if (error.message != ERROR_NONE) {
+                this.logger.Error('ServerSession OnRecv error!!! master: ' + this.nMasterID + '|' + this.sMasterName + ' socket: ' + socket, error);
+            }
+        }
     }
 
     /** 断开连接与客户端 */
     private OnDisconnect(socket: SocketIO.Socket, info: any): void {
-        this.connectors[socket.id].OnDisconnect(info);
+        try {
+            this.connectors[socket.id].OnDisconnect(info);
+        } catch (error) {
+            if (error.message != ERROR_NONE) {
+                this.logger.Error('ServerSession OnDisconnect error!!! master: ' + this.nMasterID + '|' + this.sMasterName + ' socket: ' + socket, error);
+            }
+        }
+        this.CloseSocket(socket);
     }
 
     /** 错误 */
     private OnError(socket: SocketIO.Socket, e: any): void {
-        this.connectors[socket.id].OnError(e);
+        try {
+            this.connectors[socket.id].OnError(e);
+        } catch (error) {
+            if (error.message != ERROR_NONE) {
+                this.logger.Error('ServerSession OnError error!!! master: ' + this.nMasterID + '|' + this.sMasterName + ' socket: ' + socket, error);
+            }
+        }
+    }
+
+    /** 关闭连接 释放资源 */
+    private CloseSocket(socket: SocketIO.Socket) {
+        try {
+            this.connectors[socket.id].Close();
+            socket.disconnect(true);
+            delete this.connectors[socket.id];
+        } catch (error) {
+            if (error.message != ERROR_NONE) {
+                this.logger.Error('ServerSession CloseSocket', error);
+            }
+        }
     }
 
     /** 发送消息 */
@@ -116,7 +147,9 @@ export class ServerSession {
             socket.send(msg);
             console.log("send data: ", data);
         } catch (error) {
-            this.logger.Error('ServerSession Send error!!! master: ' + this.nMasterID + '|' + this.sMasterName + 'data: ' + data, error);
+            if (error.message != ERROR_NONE) {
+                this.logger.Error('ServerSession Send error!!! master: ' + this.nMasterID + '|' + this.sMasterName + 'data: ' + data, error);
+            }
         }
     }
 
@@ -131,7 +164,9 @@ export class ServerSession {
             this.serverIO.send(msg)
             console.log("broadcast data: ", data);
         } catch (error) {
-            this.logger.Error('ServerSession Send error!!! master: ' + this.nMasterID + '|' + this.sMasterName + 'data: ' + data, error);
+            if (error.message != ERROR_NONE) {
+                this.logger.Error('ServerSession Send error!!! master: ' + this.nMasterID + '|' + this.sMasterName + 'data: ' + data, error);
+            }
         }
     }
 

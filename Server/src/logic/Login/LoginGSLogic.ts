@@ -1,5 +1,4 @@
 import { LoginServerMsgHandler } from "../../msg_handler/LoginServerMsgHandler";
-import { LoginServer } from "../../LoginServer";
 import { MsgLGS, MsgBase } from "../../../message/message_server";
 import { ISConnector } from "../../net/Connector";
 import { LoginLog } from "../../log/LogMgr";
@@ -45,27 +44,22 @@ export class LoginGSLogic implements ISConnector {
 
     /** 断开连接与客户端 */
     public OnDisconnect(info: any) {
-        try {
-            this.sock.disconnect(true);
-            console.log('gs disconnect: ', info);
-        } catch (error) {
-            LoginLog.Error('LoginGSLogic OnDisconnect Error!!! error: ' + error);
-        }
+        console.log('gs disconnect: ', info);
     }
 
     /** 错误 */
     public OnError(e: any) {
-        try {
-            this.sock.disconnect(true);
-            LoginLog.Error('LoginGSLogic OnError Error!!! e: ' + e);
-        } catch (error) {
-            LoginLog.Error('LoginGSLogic OnError Error!!! error: ' + error);
-        }
+        LoginLog.Error('LoginGSLogic OnError Error!!! ' + e);
     }
 
     /** 发送消息 */
     public SendMsg(respData: any) {
         this.session.Send(this.sock, respData);
+    }
+
+    /** 关闭sokcet处理 */
+    public Close() {
+        LoginLog.Assert("logingsLogic close");
     }
 
     /** 获取服务器连接状态 */

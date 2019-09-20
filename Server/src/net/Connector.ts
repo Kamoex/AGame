@@ -15,12 +15,21 @@ export interface ISConnector {
 
     /** 发送消息 */
     SendMsg(data: any);
+
+    /** 关闭处理 */
+    Close();
 }
 
 export interface ICConnector {
 
     /** 连接成功 */
     OnConnected();
+
+    /** 重连 */
+    OnReConnect(attempNum: number);
+
+    /** 重连错误 */
+    OnReConnectError(e: any);
 
     /** 接收消息 */
     OnRecv(recvData: any);
@@ -42,4 +51,5 @@ export interface ICConnector {
 
     /** 发送消息 */
     SendMsg(data: any);
+
 }

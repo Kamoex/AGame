@@ -53,11 +53,11 @@ export class LogMgr {
     }
     public Error(content: string, err: any = null) {
         let stack: any = null;
-        if(err) {
+        if(err instanceof Error) {
             stack = err.stack;
         }
         else {
-            stack = new Error().stack;
+            stack = new Error(err).stack;
         }
         this.Log(content + ' 出错堆栈: ' + stack, true, 'error');
         debugger;

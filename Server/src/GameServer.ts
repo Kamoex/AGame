@@ -25,7 +25,7 @@ export class GameServer {
     private clSession: ServerSession = null;
     /** login连接信息处理 */
     private loginSession: ClientSession = null;
-    /** 与login服务器连接状态 */
+    /** gs处理login的逻辑 */
     private loginLogic: GSLoginLogic = null;
     /** 连接的所有玩家 */
     private roles: Array<GSUser> = [];
@@ -60,12 +60,14 @@ export class GameServer {
         // 启动gameserver
         this.clSession.CreateSession(GameServerCfg.port);
     }
-    
+
     /** 连接login成功 */
     public OnConnectLogin() {
-        this.loginLogic = new GSLoginLogic(this.loginSession);
-        this.loginSession.Init(this.loginLogic);
-        this.loginLogic.OnConnected();
+        if(this.loginLogic == null) {
+            this.loginLogic = new GSLoginLogic(this.loginSession);
+            this.loginSession.Init(this.loginLogic);
+            this.loginLogic.OnConnected();
+        }
     }
 
 
@@ -97,7 +99,7 @@ export class GameServer {
         return this.roles[index];
     }
 
-    public GetCLSession() : ServerSession{
+    public GetCLSession(): ServerSession {
         return this.clSession;
     }
 
@@ -111,7 +113,7 @@ export class GameServer {
     /*                                                                                                                                */
     /*--------------------------------------------------------------------------------------------------------------------------------*/
 
-    
+
 }
 
 let paramAry2 = process.argv.slice(2);

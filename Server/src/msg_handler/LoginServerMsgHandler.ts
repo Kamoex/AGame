@@ -4,6 +4,7 @@ import { MsgLGS, MsgBase, MsgLC } from "../../message/message_server";
 import { LoginLog } from "../log/LogMgr";
 import { LoginUser } from "../logic/Login/LoginUser";
 import { LoginGSLogic } from "../logic/Login/LoginGSLogic";
+import { ERROR_NONE } from "../common/CommonDefine";
 
 /**
  * login与gameserver之间的消息处理器
@@ -45,6 +46,7 @@ export class LoginServerMsgHandler extends MsgHandler {
             this.messageFun[msgID](logic, msgBody);
         } catch (error) {
             LoginLog.Error('MessageHandleForUser error!!! ' + 'msgID: ' + msgID + ' msgName: ' + msgName + ' ', error);
+            throw new Error(ERROR_NONE);
         }
     }
 
@@ -63,6 +65,7 @@ export class LoginServerMsgHandler extends MsgHandler {
             this.messageFun[msgID](logic, msgBody);
         } catch (error) {
             LoginLog.Error('MessageHandleForGS error!!!' + ' msgID: ' + msgID + ' msgName: ' + msgName + ' ', error);
+            throw new Error(ERROR_NONE);
         }
     }
 

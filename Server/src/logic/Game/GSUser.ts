@@ -37,25 +37,24 @@ export class GSUser implements ISConnector {
         this.msgHandler.MessageHandleForUser(this, recvData);
     }
 
-    /** 断开连接与客户端 */
+    /** 与客户端断开连接 */
     public OnDisconnect(info: any) {
-        try {
-            this.sock.disconnect(true);
-            console.log('GameUser disconnect: ', info);
-        } catch (error) {
-            GameLog.Error('GameUser OnDisconnect Error!!! error: ' + error);
-        }
+        console.log('GameUser disconnect: ', info);
     }
 
     /** 错误 */
     public OnError(e: any) {
-        this.sock.disconnect(true);
         GameLog.Error('LoginUser OnError Error!!! error: ' + e);
     }
 
     /** 发送消息 */
     public SendMsg(respData: any) {
         GameServer.GetInstance().GetCLSession().Send(this.sock, respData);
+    }
+
+    /** 关闭sokcet处理 */
+    public Close() {
+        GameLog.Assert("gsuser close");
     }
     
 }

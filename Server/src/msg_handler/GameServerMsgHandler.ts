@@ -4,6 +4,7 @@ import { MsgLGS, MsgBase, MsgGSC } from "../../message/message_server";
 import { GSUser } from "../logic/Game/GSUser";
 import { GSLoginLogic } from "../logic/Game/GSLoginLogic";
 import { GameLog } from "../log/LogMgr";
+import { ERROR_NONE } from "../common/CommonDefine";
 
 
 /**
@@ -48,6 +49,7 @@ export class GameServerMsgHandler extends MsgHandler {
             this.messageFun[msgID](logic, msgBody);
         } catch (error) {
             GameLog.Error('MessageHandleForUser error!!! ' + 'msgID: ' + msgID + ' msgName: ' + msgName + ' ', error);
+            throw new Error(ERROR_NONE);
         }
     }
 
@@ -66,6 +68,7 @@ export class GameServerMsgHandler extends MsgHandler {
             this.messageFun[msgID](logic, msgBody);
         } catch (error) {
             GameLog.Error('MessageHandleForLogin error!!!' + ' msgID: ' + msgID + ' msgName: ' + msgName + ' ', error);
+            throw new Error(ERROR_NONE);
         }
     }
 
