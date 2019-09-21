@@ -83,7 +83,7 @@ export class ServerSession {
             socket.on(SOCKET_IO_ERROR, this.OnError.bind(this, socket));
 
         } catch (error) {
-            if (error.message != ERROR_NONE) {
+            if (error instanceof Error && error.message != ERROR_NONE) {
                 this.logger.Error('ServerSession onConnected error!!! master: ' + this.nMasterID + '|' + this.sMasterName + ' socket: ' + socket, error);
             }
         }
@@ -94,7 +94,7 @@ export class ServerSession {
         try {
             this.connectors[socket.id].OnRecv(recvData);
         } catch (error) {
-            if (error.message != ERROR_NONE) {
+            if (error instanceof Error && error.message != ERROR_NONE) {
                 this.logger.Error('ServerSession OnRecv error!!! master: ' + this.nMasterID + '|' + this.sMasterName + ' socket: ' + socket, error);
             }
         }
@@ -105,7 +105,7 @@ export class ServerSession {
         try {
             this.connectors[socket.id].OnDisconnect(info);
         } catch (error) {
-            if (error.message != ERROR_NONE) {
+            if (error instanceof Error && error.message != ERROR_NONE) {
                 this.logger.Error('ServerSession OnDisconnect error!!! master: ' + this.nMasterID + '|' + this.sMasterName + ' socket: ' + socket, error);
             }
         }
@@ -117,7 +117,7 @@ export class ServerSession {
         try {
             this.connectors[socket.id].OnError(e);
         } catch (error) {
-            if (error.message != ERROR_NONE) {
+            if (error instanceof Error && error.message != ERROR_NONE) {
                 this.logger.Error('ServerSession OnError error!!! master: ' + this.nMasterID + '|' + this.sMasterName + ' socket: ' + socket, error);
             }
         }
@@ -130,7 +130,7 @@ export class ServerSession {
             socket.disconnect(true);
             delete this.connectors[socket.id];
         } catch (error) {
-            if (error.message != ERROR_NONE) {
+            if (error instanceof Error && error.message != ERROR_NONE) {
                 this.logger.Error('ServerSession CloseSocket', error);
             }
         }
@@ -147,7 +147,7 @@ export class ServerSession {
             socket.send(msg);
             console.log("send data: ", data);
         } catch (error) {
-            if (error.message != ERROR_NONE) {
+            if (error instanceof Error && error.message != ERROR_NONE) {
                 this.logger.Error('ServerSession Send error!!! master: ' + this.nMasterID + '|' + this.sMasterName + 'data: ' + data, error);
             }
         }
@@ -164,7 +164,7 @@ export class ServerSession {
             this.serverIO.send(msg)
             console.log("broadcast data: ", data);
         } catch (error) {
-            if (error.message != ERROR_NONE) {
+            if (error instanceof Error && error.message != ERROR_NONE) {
                 this.logger.Error('ServerSession Send error!!! master: ' + this.nMasterID + '|' + this.sMasterName + 'data: ' + data, error);
             }
         }

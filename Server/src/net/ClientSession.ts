@@ -58,7 +58,7 @@ export class ClientSession {
             this.sUrl = 'http://' + ip + ':' + port + '?token=' + token;
             this.sock = io_client.connect(this.sUrl, {
                 reconnection: true,
-                reconnectionAttempts: Infinity,      // 无线重连
+                reconnectionAttempts: Infinity,      // 无限重连
                 reconnectionDelay: 2000,             // 重连间隔时间 2s一次
                 randomizationFactor: 1,              // 重连时间的随机参数 不让随机
                 transports: ['websocket', 'polling'] // 默认用websocket模式
@@ -98,7 +98,7 @@ export class ClientSession {
                 return;
             this.callWhenConnected();
         } catch (error) {
-            if (error.message != ERROR_NONE) {
+            if (error instanceof Error && error.message != ERROR_NONE) {
                 this.logger.Error('ClientSession OnConnect Error!!! master: ' + this.nMasterID + '|' + this.sMasterName, error);
             }
         }
@@ -110,7 +110,7 @@ export class ClientSession {
             this.bReconnect = true;
             this.connector.OnReConnect(attempNum);
         } catch (error) {
-            if (error.message != ERROR_NONE) {
+            if (error instanceof Error && error.message != ERROR_NONE) {
                 this.logger.Error('ClientSession OnReConnect Error!!! master: ' + this.nMasterID + '|' + this.sMasterName, error);
             }
         }
@@ -121,7 +121,7 @@ export class ClientSession {
         try {
             this.connector.OnRecv(recvData);
         } catch (error) {
-            if (error.message != ERROR_NONE) {
+            if (error instanceof Error && error.message != ERROR_NONE) {
                 this.logger.Error('ClientSession OnRecv Error!!! master: ' + this.nMasterID + '|' + this.sMasterName, error);
             }
         }
@@ -132,7 +132,7 @@ export class ClientSession {
         try {
             this.connector.OnDisconnect(info);
         } catch (error) {
-            if (error.message != ERROR_NONE) {
+            if (error instanceof Error && error.message != ERROR_NONE) {
                 this.logger.Error('ClientSession OnDisConnect Error!!! master: ' + this.nMasterID + '|' + this.sMasterName, error);
             }
         }
@@ -143,7 +143,7 @@ export class ClientSession {
         try {
             this.connector.OnConnectError(e);
         } catch (error) {
-            if (error.message != ERROR_NONE) {
+            if (error instanceof Error && error.message != ERROR_NONE) {
                 this.logger.Error('ClientSession OnConnectError Error!!! master: ' + this.nMasterID + '|' + this.sMasterName, error);
             }
         }
@@ -154,7 +154,7 @@ export class ClientSession {
         try {
             this.connector.OnError(e);
         } catch (error) {
-            if (error.message != ERROR_NONE) {
+            if (error instanceof Error && error.message != ERROR_NONE) {
                 this.logger.Error('ClientSession OnError Error!!! master: ' + this.nMasterID + '|' + this.sMasterName, error);
             }
         }
@@ -165,7 +165,7 @@ export class ClientSession {
         try {
             this.connector.OnReConnectError(e);
         } catch (error) {
-            if (error.message != ERROR_NONE) {
+            if (error instanceof Error && error.message != ERROR_NONE) {
                 this.logger.Error('ClientSession OnReConnectError Error!!! master: ' + this.nMasterID + '|' + this.sMasterName, error);
             }
         }
@@ -200,7 +200,7 @@ export class ClientSession {
             msg.nMsgLength = msg.data.byteLength;
             this.sock.send(MsgBase.MessageHead.encode(msg).finish());
         } catch (error) {
-            if (error.message != ERROR_NONE) {
+            if (error instanceof Error && error.message != ERROR_NONE) {
                 this.logger.Error('MessageHandleForLogin error!!!' + ' msgID: ' + msgID + ' msgName: ' + msgName + ' ', error);
             }
         }
