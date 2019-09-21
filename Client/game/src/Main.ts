@@ -4,6 +4,8 @@ import {TestSocketIO} from "./test_socketio"
 import Browser = Laya.Browser;
 import { LoginLogic } from "./logic/login/LoginLogic";
 import { MsgHandler } from "./logic/net/MsgHandler";
+import { ERROR_NONE } from "./logic/CommonDefine";
+import { Logger } from "./util/Logger";
 class Main {
 	constructor() {
 		//根据IDE设置初始化引擎		
@@ -39,8 +41,16 @@ class Main {
 	}
 }
 //激活启动类
-new Main();
-LoginLogic.GetInstance().Init();
+try {
+	new Main();
+	// 注册消息
+	MsgHandler.MessageRegist();
+	// login模块儿初始化
+	LoginLogic.GetInstance().Init();
+} catch (error) {
+	if(error != ERROR_NONE)	
+		Logger.Error(error);
+}
 
 // new Game();
 // new TestSocketIO();

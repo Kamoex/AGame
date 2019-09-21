@@ -6,6 +6,7 @@ export class Logger {
     static Error(str: string, ...optionalParams: any[]) {
         optionalParams.push(new Error().stack);
         console.error(str, ...optionalParams);
+        // TODO 发送到clientlog服务器
     }
 
     /** 打印堆栈 */

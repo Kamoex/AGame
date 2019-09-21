@@ -1,5 +1,6 @@
 import { EMessageID } from "../../message/msg_define_build";
 import { Logger } from "../../util/Logger";
+import { ERROR_NONE } from "../CommonDefine";
 
 export class MsgHandler{
     public static LoginEvent: Laya.EventDispatcher = new Laya.EventDispatcher();
@@ -38,31 +39,35 @@ export class MsgHandler{
     /** 处理login发来的消息 */
     public static HandleFromLogin(msg: any) {
         let msgID: number = 0;
+        let msgName: string = '';
         try {
             let recvMsg = MsgBase.MessageHead.decode(msg);
             msgID = recvMsg.nMsgID;
             let msgLen: number = recvMsg.nMsgLength;
-            let msgName = MsgHandler.GetMsgName(msgID);
+            msgName = MsgHandler.GetMsgName(msgID);
             let msgBody: any = MsgLC[msgName].decode(recvMsg.data);
 Logger.Info(msgBody);
             this.LoginEvent.event(msgName, msgBody);
         } catch (error) {
-            console.error(error.stack + msgID)            
+            Logger.Error('msgID: ' + msgID + ' msgName: ' + msgName + ' ' + error.stack);
+            throw new Error(ERROR_NONE);
         }
     }
 
     /** 处理gameserver发来的消息 */
     public static HandleFromGS(msg: any) {
         let msgID: number = 0;
+        let msgName: string = '';
         try {
             let recvMsg = MsgBase.MessageHead.decode(msg);
             msgID = recvMsg.nMsgID;
             let msgLen: number = recvMsg.nMsgLength;
-            let msgName = MsgHandler.GetMsgName(msgID);
+            msgName = MsgHandler.GetMsgName(msgID);
             let msgBody: any = MsgGSC[msgName].decode(recvMsg.data);
             this.GSEvent.event(msgName, msgBody);
         } catch (error) {
-            console.error(error.stack + msgID)            
+            Logger.Error('msgID: ' + msgID + ' msgName: ' + msgName + ' ' + error.stack);
+            throw new Error(ERROR_NONE);
         }        
     }
 }
