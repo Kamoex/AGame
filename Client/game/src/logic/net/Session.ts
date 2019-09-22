@@ -40,6 +40,10 @@ export class Session {
     /** 连接login服务器 */
     public ConnectServer(url: string): void {
         if (this.IsConnect()) {
+            if(this.sServerHost == url) {
+                Logger.Info("client已与 url: " + this.sServerHost + "连接");
+                return;
+            }
             Logger.Info("client目前正与 url: " + this.sServerHost + "连接");
             Logger.Info("client将连接到 url: " + url);
             this.SetReConnect(false);
